@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MRC7DWCN');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9780551626385647" crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="حاسبة الطاقة الشمسية الذكية: تطبيق هندسي متكامل">
+    <title>حاسبة الطاقة الشمسية الذكية</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #e2e8f0; margin: 0; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 500px; background-color: #1e293b; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4); overflow: visible; padding-bottom: 24px; }
+        .header { background: linear-gradient(135deg, #059669, #10b981); color: white; text-align: center; padding: 28px 16px; border-top-left-radius: 24px; border-top-right-radius: 24px; }
+        .header h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+        .header p { margin: 6px 0 0 0; font-size: 13px; opacity: 0.9; font-weight: 500; }
+        .section { padding: 20px 16px; border-bottom: 1px solid #334155; }
+        .section:last-of-type { border-bottom: none; }
+        .section-title { font-size: 15px; font-weight: 700; color: #10b981; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .title-text { display: flex; align-items: center; gap: 6px; }
+        .device-counter { display: none; color: #10b981; font-size: 12.5px; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 20px; }
+        
+        .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; } 
+        .input-group label { font-size: 11px; color: #94a3b8; font-weight: 600; line-height: 1.4; white-space: normal; } 
+        
+        input, select { width: 100%; background-color: #0f172a; border: 1px solid #475569; color: white; padding: 11px; border-radius: 10px; font-size: 14px; text-align: center; outline: none; transition: border-color 0.2s, box-shadow 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        input[type="number"] { direction: ltr; font-family: Arial, Helvetica, sans-serif; }
+        
+        input:focus, select:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+        .btn { width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-add { background-color: #059669; color: white; margin-top: 8px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2); }
+        .btn-export { background-color: #2563eb; color: white; margin: 20px auto 12px auto; width: calc(100% - 32px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+        .btn-reset { background-color: #dc2626; color: white; margin: 0 auto; width: calc(100% - 32px); font-size: 14px; padding: 12px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
+        
+        .appliance-item { background-color: #0f172a; border: 1px solid #334155; border-radius: 14px; padding: 14px; margin-bottom: 14px; scroll-margin-top: 24px; overflow: hidden; width: 100%; }
+        
+        .appliance-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 12px; width: 100%; }
+        .device-name-input { flex: 1 1 0%; min-width: 0; background: transparent; border: none; border-bottom: 1.5px solid #475569; color: #e2e8f0; font-weight: 700; text-align: right; padding: 6px 2px; border-radius: 0; margin: 0; margin-top: 4px; }
+        
+        .controls-wrapper { flex: 0 0 75px; width: 75px; display: flex; flex-direction: column; gap: 10px; align-items: center; margin: 0; padding: 0; }
+        
+        .btn-delete { width: 100%; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.4); border-radius: 6px; color: #f43f5e; cursor: pointer; font-size: 11.5px; font-weight: 700; padding: 6px 0; text-align: center; white-space: nowrap; transition: 0.2s; margin: 0; }
+        .btn-delete:active { transform: scale(0.9); }
+        .checkbox-container { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 12.5px; color: #94a3b8; cursor: pointer; font-weight: 600; white-space: nowrap; margin: 0; }
+        
+        .item-summary { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 10px 14px; border-radius: 10px; margin-top: 14px; font-size: 12px; border: 1px solid #334155; color: #94a3b8; flex-wrap: wrap; gap: 8px; }
+        .empty-msg { color: #64748b; text-align: center; font-size: 13.5px; padding: 24px 12px; line-height: 1.6; }
+        .results-container { background-color: #0f172a; border: 1px solid #065f46; border-radius: 16px; padding: 6px; }
+        .result-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 12px; border-bottom: 1px solid #1e293b; }
+        .result-row:last-child { border-bottom: none; }
+        .result-label { font-size: 13px; color: #94a3b8; font-weight: 500; }
+        /* التعديل الجمالي الجديد لضمان عدم تداخل النصوص */
+        .result-value { font-weight: 700; font-size: 14.5px; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px; }
+        .value-amber { color: #f59e0b; }
+        .value-green { color: #10b981; }
+        .value-blue { color: #38bdf8; }
+        .solar-footer { background-color: #0f172a; text-align: center; padding: 24px 16px; margin-top: 24px; border-top: 1px solid #334155; }
+        .copyright-text { font-size: 14px; margin: 0 0 6px 0; color: #e2e8f0; }
+        .author-name { color: #10b981; font-weight: 700; }
+        .tagline { font-size: 11px; color: #94a3b8; margin: 0 0 16px 0; }
+        .social-links { display: flex; justify-content: center; gap: 16px; }
+        .social-btn { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; color: white; text-decoration: none; transition: transform 0.2s; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
+        .social-btn:hover { transform: scale(1.1); }
+        .whatsapp { background-color: #25D366; }
+        .facebook { background-color: #1877F2; }
+        .social-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+        @media print {
+            body, html { background-color: white !important; color: black !important; padding: 0; margin: 0; height: auto !important; overflow: visible !important; }
+            .container { box-shadow: none !important; max-width: 100% !important; width: 100% !important; background: white !important; overflow: visible !important; border-radius: 0 !important; }
+            .header { background: #059669 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 15px 10px !important; border-radius: 0 !important; }
+            button, .btn, .btn-add, .btn-delete, input[type="checkbox"], .checkbox-container, .social-links, .solar-footer, .google-auto-placed, ins.adsbygoogle { display: none !important; }
+            input, select { border: none !important; background: transparent !important; color: black !important; padding: 2px !important; font-weight: bold !important; text-align: right; }
+            .appliance-item { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; margin-bottom: 8px !important; padding: 8px !important; page-break-inside: avoid; }
+            .item-summary { background: #e2e8f0 !important; border: 1px solid #94a3b8 !important; color: black !important; }
+            .results-container { background: #f1f5f9 !important; border: 1px solid #94a3b8 !important; color: black !important; page-break-inside: avoid; }
+            .result-label, .summary-wh-text, .summary-sync-text { color: #334155 !important; }
+            .result-value, .value-amber, .value-green { color: black !important; }
+        }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRC7DWCN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div class="container">
+    <div class="header">
+        <h1>حاسبة الطاقة الشمسية الذكية</h1>
+        <p>إصدار احترافي متكامل</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">⚡ إعدادات المنظومة الهندسية:</div>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label>جهد النظام (Volt):</label>
+                <select id="systemVoltage">
+                    <option value="12">12 فولت</option>
+                    <option value="24">24 فولت</option>
+                    <option value="48" selected>48 فولت</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>قدرة اللوح المستهدف (W):</label>
+                <input type="number" id="panelWatts" value="450" min="10" lang="en">
+            </div>
+            <div class="input-group">
+                <label>ساعات ذروة الشمس:</label>
+                <input type="number" id="sunHours" value="6" min="1" max="15" step="0.5" lang="en">
+            </div>
+            <div class="input-group">
+                <label>نسبة حماية البطارية:</label>
+                <select id="dodValue">
+                    <option value="0.8" selected>20% أمان (DoD 80%)</option>
+                    <option value="0.5">50% أمان (DoD 50%)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">
+            <div class="title-text">📋 جدول حصر أحمال الأجهزة:</div>
+            <div class="device-counter" id="deviceCounter"></div>
+        </div>
+        <div id="appliancesList" aria-live="polite"></div>
+        <button class="btn btn-add" id="add-device-btn" onclick="addDevice()">+ إضافة جهاز جـديد</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">📊 نتائج ومخرجات المنظومة بالمعادلات</div>
+        <div class="results-container" aria-live="polite">
+            <div class="result-row"><div class="result-label">الطاقة الكلية شاملة الفقد (E_total):</div><div class="result-value" id="resTotalEnergy">0 واط.ساعة / يوم</div></div>
+            <div class="result-row"><div class="result-label">سعة بطارية الليثيوم المطلوبة:</div><div class="result-value value-amber" id="resBatteryAh">0 Ah</div></div>
+            <div class="result-row"><div class="result-label" style="font-size: 11px;">سعة طاقة البطارية الفعلية:</div><div class="result-value value-blue" id="resBatteryKwh" style="font-size: 12px;">0 واط.ساعة (0.00 kWh)</div></div>
+            <div class="result-row"><div class="result-label">عدد الألواح الشمسية المطلوبة:</div><div class="result-value value-green" id="resPanelsCount">0 ألواح (0 واط)</div></div>
+            <div class="result-row"><div class="result-label">تيار منظم الشحن الأدنى (MPPT):</div><div class="result-value value-blue" id="resMpptCurrent">0 أمبير</div></div>
+            <div class="result-row"><div class="result-label">القدرة المطلوبة للإنفرتر (Inverter):</div><div class="result-value value-amber" id="resInverterWatts">0 واط</div></div>
+        </div>
+    </div>
+
+    <button class="btn btn-export" onclick="window.print()">📄 تصدير التقرير إلى PDF</button>
+    <button class="btn btn-reset" onclick="resetToDefault()">⚠️ تصفير البيانات (مسح كل شيء)</button>
+
+    <footer class="solar-footer">
+        <p class="copyright-text">تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026</p>
+        <p class="tagline">تطبيق حاسبة الطاقة الشمسية الاحترافية</p>
+        <div class="social-links">
+            <a href="https://wa.me/message/BSOAV5RVXBNQP1" target="_blank" class="social-btn whatsapp"><svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966C16.528 1.975 14.067 1.053 12 1.053c-5.438 0-9.864 4.373-9.868 9.803-.001 1.714.453 3.39 1.317 4.873L2.43 21.48l5.857-1.534zM16.71 14.65c-.259-.13-1.534-.759-1.773-.846-.239-.087-.413-.13-.587.13-.174.26-.674.846-.826 1.018-.152.173-.304.195-.563.065-.259-.13-1.096-.404-2.088-1.292-.771-.69-1.292-1.542-1.444-1.802-.152-.26-.016-.4.114-.53.117-.117.259-.304.39-.455.13-.152.174-.26.26-.433.087-.173.043-.325-.022-.455-.065-.13-.587-1.413-.804-1.944-.213-.518-.447-.448-.607-.456-.157-.008-.337-.01-.517-.01-.18 0-.474.067-.72.337-.247.271-.943.924-.943 2.255s.967 2.61 1.101 2.784c.134.173 1.902 2.904 4.609 4.07.644.277 1.148.443 1.541.568.647.206 1.236.177 1.701.108.519-.077 1.534-.627 1.751-1.234.217-.607.217-1.127.152-1.234-.064-.108-.239-.173-.499-.303z"/></svg></a>
+            <a href="https://www.facebook.com/share/1YF9n8KTFK/" target="_blank" class="social-btn facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        </div>
+    </footer>
+</div>
+
+<script>
+/* 
+ * 🔐 PROPRIETARY & CONFIDENTIAL - V6 Pro - Encrypted
+ */
+!function(){
+    var _0xdomain=["solar-pro-calculator.netlify.app","localhost","127.0.0.1"];
+    var _0xhost=window.location.hostname;
+    if(!_0xdomain.includes(_0xhost)&&_0xhost!==""){
+        document.body.innerHTML="<div style='color:#ffffff;background:#dc2626;text-align:center;padding:50px 20px;font-size:22px;font-weight:bold;border-radius:15px;margin:20px;line-height:1.8;box-shadow:0 10px 25px rgba(0,0,0,0.5);'><h2 style='color:#fde047;margin-top:0;font-size:28px;'>⚠️ تحذير أمني:</h2> هذه النسخة مسروقة وغير مصرح بها.<br><br>تم تسجيل المحاولة.<br>يرجى زيارة الرابط الرسمي.</div>";
+        return;
+    }
+    document.addEventListener("contextmenu",function(e){e.preventDefault()});
+    document.addEventListener("keydown",function(e){
+        if(e.key==="F12"||(e.ctrlKey&&e.shiftKey&&(e.key==="I"||e.key==="J"))||(e.ctrlKey&&(e.key==="U"||e.key==="S"||e.key==="C"))){
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    const _0xdef=[];
+    window.appliances=[];
+    
+    window.startApp=function(){
+        try{
+            const _0xsaved=localStorage.getItem("solar_appliances_data_v6");
+            if(_0xsaved){
+                appliances=JSON.parse(_0xsaved);
+            }else{
+                appliances=[..._0xdef];
+            }
+        }catch(e){
+            appliances=[..._0xdef];
+        }
+        
+        const _0xvars=["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_dod_value"];
+        const _0xids=["systemVoltage","panelWatts","sunHours","dodValue"];
+        for(let i=0;i<4;i++){
+            if(localStorage.getItem(_0xvars[i])) document.getElementById(_0xids[i]).value=localStorage.getItem(_0xvars[i]);
+        }
+        
+        document.getElementById("systemVoltage").addEventListener("change",saveDataAndCalculate);
+        document.getElementById("panelWatts").addEventListener("input",saveDataAndCalculate);
+        document.getElementById("sunHours").addEventListener("input",saveDataAndCalculate);
+        document.getElementById("dodValue").addEventListener("change",saveDataAndCalculate);
+        
+        renderAppliances();
+    };
+
+    window.renderAppliances=function(){
+        const _0xlist=document.getElementById("appliancesList");
+        _0xlist.innerHTML="";
+        
+        if(appliances.length===0){
+            _0xlist.innerHTML='<div class="empty-msg">لا توجد أجهزة مضافة حالياً. اضغط على "+ إضافة جهاز جـديد" للبدء.</div>';
+            document.getElementById("deviceCounter").style.display="none";
+            calculateResults();
+            return;
+        }
+        
+        document.getElementById("deviceCounter").style.display="inline-block";
+        document.getElementById("deviceCounter").innerText=`(العدد الإجمالي: ${appliances.length})`;
+        
+        appliances.forEach((_0xapp,_0xi)=>{
+            const _0xw=_0xapp.watts||0, _0xsw=_0xapp.surgeWatts||'', _0xc=_0xapp.count||0, _0xdh=_0xapp.dayHours||0, _0xnh=_0xapp.nightHours||0, _0xd=typeof _0xapp.duty!=="undefined"?_0xapp.duty:100;
+            const _0xhtml=`<div class="appliance-item" id="appliance-card-${_0xi}"><div class="appliance-header"><input type="text" class="device-name-input" placeholder="اسم الجهاز" value="${_0xapp.name||''}" onchange="updateApplianceProperty(${_0xi},'name',this.value)"><div class="controls-wrapper"><button class="btn-delete" onclick="deleteDevice(${_0xi})">حذف</button><label class="checkbox-container"><input type="checkbox" ${_0xapp.sync?'checked':''} onchange="updateApplianceProperty(${_0xi},'sync',this.checked)"> تزامن</label></div></div><div class="grid-inputs"><div class="input-group"><label>القدرة المستمرة (واط):</label><input type="number" lang="en" placeholder="للبطارية والألواح" value="${_0xw||''}" min="0" step="any" oninput="updateApplianceProperty(${_0xi},'watts',this.value)"></div><div class="input-group"><label title="اختياري: للأجهزة الثقيلة فقط">قدرة الإقلاع (أجهزة ثقيلة):</label><input type="number" lang="en" placeholder="للإنفرتر فقط" value="${_0xsw}" min="0" step="any" oninput="updateApplianceProperty(${_0xi},'surgeWatts',this.value)"></div><div class="input-group"><label>العدد:</label><input type="number" lang="en" value="${_0xc}" min="1" step="1" oninput="updateApplianceProperty(${_0xi},'count',this.value)"></div><div class="input-group"><label title="معدل استهلاك الجهاز الفعلي">نسبة التشغيل (% Duty):</label><select onchange="updateApplianceProperty(${_0xi},'duty',this.value)"><option value="100" ${_0xd==100?'selected':''}>100% مستمر (إضاءة/شاشات)</option><option value="70" ${_0xd==70?'selected':''}>70% متوسط (مكيف/سخان)</option><option value="50" ${_0xd==50?'selected':''}>50% متقطع (ثلاجة/براد)</option><option value="30" ${_0xd==30?'selected':''}>30% اقتصادي (إنفرتر)</option></select></div><div class="input-group"><label>ساعات العمل (نهاراً):</label><input type="number" lang="en" placeholder="مثال: 8" value="${_0xdh||''}" min="0" max="24" step="any" oninput="updateApplianceProperty(${_0xi},'dayHours',this.value)"></div><div class="input-group"><label>ساعات العمل (ليلاً):</label><input type="number" lang="en" placeholder="مثال: 9" value="${_0xnh||''}" min="0" max="24" step="any" oninput="updateApplianceProperty(${_0xi},'nightHours',this.value)"></div></div><div class="item-summary"><div id="item-sync-${_0xi}" class="summary-sync-text"></div><div class="summary-wh-text">الاستهلاك الكلي: <span id="item-wh-${_0xi}" class="value-green">0 واط.ساعة</span></div></div></div>`;
+            _0xlist.insertAdjacentHTML("beforeend",_0xhtml);
+        });
+        calculateResults();
+    };
+
+    window.addDevice=function(){
+        appliances.push({name:"",watts:0,surgeWatts:"",count:1,dayHours:0,nightHours:0,duty:100,sync:true});
+        saveDataAndCalculate();
+        renderAppliances();
+        const _0xlc=document.getElementById(`appliance-card-${appliances.length-1}`);
+        if(_0xlc) _0xlc.scrollIntoView({behavior:"smooth",block:"nearest"});
+    };
+
+    window.deleteDevice=function(_0xi){
+        appliances.splice(_0xi,1);
+        saveDataAndCalculate();
+        renderAppliances();
+    };
+
+    window.updateApplianceProperty=function(_0xi,_0xp,_0xv){
+        if(_0xp==="sync"||_0xp==="name"||_0xp==="surgeWatts") appliances[_0xi][_0xp]=_0xv;
+        else appliances[_0xi][_0xp]=_0xv===""?"":parseFloat(_0xv);
+        saveDataAndCalculate();
+    };
+
+    window.saveDataAndCalculate=function(){
+        localStorage.setItem("solar_appliances_data_v6",JSON.stringify(appliances));
+        localStorage.setItem("solar_system_voltage",document.getElementById("systemVoltage").value);
+        localStorage.setItem("solar_panel_watts",document.getElementById("panelWatts").value);
+        localStorage.setItem("solar_sun_hours",document.getElementById("sunHours").value);
+        localStorage.setItem("solar_dod_value",document.getElementById("dodValue").value);
+        calculateResults();
+    };
+
+    window.calculateResults = function() {
+        const sysVolt = parseFloat(document.getElementById("systemVoltage").value) || 48;
+        const panelWatts = parseFloat(document.getElementById("panelWatts").value) || 450;
+        const sunHours = parseFloat(document.getElementById("sunHours").value) || 6;
+        const dodValue = parseFloat(document.getElementById("dodValue").value) || 0.8;
+        
+        let dailyWh = 0, nightWh = 0, syncSurge = 0;
+        
+        appliances.forEach((app, i) => {
+            const w = parseFloat(app.watts) || 0;
+            const surge = parseFloat(app.surgeWatts) || w;
+            const count = parseFloat(app.count) || 0;
+            const dHours = parseFloat(app.dayHours) || 0;
+            const nHours = parseFloat(app.nightHours) || 0;
+            const duty = parseFloat(app.duty) || 0;
+            
+            const h = dHours + nHours;
+            const wh = w * count * h * (duty / 100);
+            const nwh = w * count * nHours * (duty / 100);
+            
+            dailyWh += wh;
+            nightWh += nwh;
+            
+            const loadW = surge * count;
+            if (app.sync) syncSurge += loadW;
+            
+            const we = document.getElementById(`item-wh-${i}`);
+            const se = document.getElementById(`item-sync-${i}`);
+            
+            if (we) we.innerText = `${Math.round(wh).toLocaleString("en-US")} واط.ساعة`;
+            if (se) {
+                if (app.sync && loadW > 0) se.innerHTML = `إقلاع: <span class="value-amber">${Math.round(loadW).toLocaleString("en-US")} واط</span>`;
+                else se.innerHTML = "";
+            }
+        });
+        
+        const eTotal = dailyWh * 1.3;
+        const eNightTotal = nightWh * 1.3;
+        const battAh = sysVolt > 0 ? eNightTotal / (sysVolt * dodValue) : 0;
+        const battKwh = (battAh * sysVolt) / 1000;
+        
+        const reqPv = sunHours > 0 ? eTotal / sunHours : 0;
+        const panelsCount = panelWatts > 0 ? Math.ceil(reqPv / panelWatts) : 0;
+        const mpptCurrent = sysVolt > 0 ? (panelsCount * panelWatts) / sysVolt : 0;
+        
+        const invRequired = Math.max(syncSurge, reqPv);
+        let marketInv = [];
+        
+        if (sysVolt === 12) {
+            marketInv = [1000, 1500, 2000, 3000];
+        } else if (sysVolt === 24) {
+            marketInv = [2000, 2500, 4000];
+        } else if (sysVolt === 48) {
+            marketInv = [6000, 8000, 10000, 11000, 12000, 16000];
+        }
+        
+        let finalInv = 0;
+        if (marketInv.length > 0) {
+            finalInv = marketInv.find(size => size >= invRequired) || marketInv[marketInv.length - 1];
+        } else {
+            finalInv = invRequired;
+        }
+        
+        document.getElementById("resTotalEnergy").innerText = `${Math.round(eTotal).toLocaleString("en-US")} واط.ساعة / يوم`;
+        document.getElementById("resBatteryAh").innerText = `${Math.round(battAh).toLocaleString("en-US")} Ah`;
+        document.getElementById("resBatteryKwh").innerText = `${Math.round(battAh * sysVolt).toLocaleString("en-US")} واط.ساعة (${battKwh.toFixed(2)} kWh)`;
+        document.getElementById("resPanelsCount").innerText = `${panelsCount.toLocaleString("en-US")} ألواح (${(panelsCount * panelWatts).toLocaleString("en-US")} واط)`;
+        document.getElementById("resMpptCurrent").innerText = `${Math.round(mpptCurrent).toLocaleString("en-US")} أمبير`;
+        
+        if (dailyWh > 0) {
+            document.getElementById("resInverterWatts").innerHTML = `<span style="white-space: nowrap;">${finalInv.toLocaleString("en-US")} واط</span> <span style="font-size:11px;background-color:#f59e0b;color:#000;padding:2px 8px;border-radius:10px;font-weight:bold;white-space:nowrap;display:inline-block;">حجم قياسي</span>`;
+        } else {
+            document.getElementById("resInverterWatts").innerHTML = `0 واط`;
+        }
+    };
+    
+    window.resetToDefault=function(){
+        if(confirm("⚠️ هل أنت متأكد من مسح جميع الأجهزة؟")){
+            localStorage.clear();
+            appliances=[];
+            document.getElementById("systemVoltage").value="48";
+            document.getElementById("panelWatts").value="450";
+            document.getElementById("sunHours").value="6";
+            document.getElementById("dodValue").value="0.8";
+            saveDataAndCalculate();
+            renderAppliances();
+        }
+    };
+    
+    window.onload=window.startApp;
+}();
+</script>
+</body>
+</html>
+
