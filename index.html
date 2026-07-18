@@ -26,9 +26,53 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #e2e8f0; margin: 0; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; transition: all 0.3s ease; }
         .container { width: 100%; max-width: 500px; background-color: #1e293b; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4); overflow: visible; padding-bottom: 24px; position: relative; }
         
-        .lang-toggle { position: absolute; top: 12px; left: 12px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px); transition: 0.2s; z-index: 10; }
-        html[dir="ltr"] .lang-toggle { left: auto; right: 12px; }
-        .lang-toggle:hover { background: rgba(255, 255, 255, 0.3); }
+        /* تصميم زر اللغة بثبات الحجم */
+        .lang-toggle { 
+            position: absolute; 
+            top: 14px; 
+            left: 14px; 
+            background: rgba(15, 23, 42, 0.45); 
+            border: 1px solid rgba(255, 255, 255, 0.25); 
+            color: #ffffff; 
+            padding: 6px 0; 
+            width: 110px; /* عرض ثابت لتوحيد الحجم */
+            border-radius: 30px; 
+            font-size: 13.5px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 10; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; /* توسيط المحتوى */
+            gap: 8px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        html[dir="ltr"] .lang-toggle { left: auto; right: 14px; direction: ltr; }
+        
+        .lang-toggle svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.9;
+            transition: transform 0.4s ease;
+        }
+        
+        .lang-toggle:hover { 
+            background: rgba(255, 255, 255, 0.15); 
+            border-color: rgba(255, 255, 255, 0.6); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .lang-toggle:hover svg {
+            transform: rotate(45deg); 
+        }
+        
+        .lang-toggle:active {
+            transform: translateY(1px);
+        }
 
         .header { background: linear-gradient(135deg, #059669, #10b981); color: white; text-align: center; padding: 44px 16px 28px; border-top-left-radius: 24px; border-top-right-radius: 24px; }
         
@@ -127,7 +171,15 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRC7DWCN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="container">
-    <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">🌐 EN</button>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn" title="تغيير اللغة / Change Language">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span id="langText">English</span>
+    </button>
+
     <div class="header">
         <div class="title-box">
             <h1 data-i18n="appTitle">حاسبة الطاقة الشمسية الذكية</h1>
@@ -364,7 +416,11 @@ if ('serviceWorker' in navigator) {
         const t = dict[window.currentLang];
         document.documentElement.lang = window.currentLang;
         document.documentElement.dir = window.currentLang === 'ar' ? 'rtl' : 'ltr';
-        document.getElementById('langBtn').innerText = window.currentLang === 'ar' ? '🌐 EN' : '🌐 AR';
+        
+        const langBtnText = document.getElementById('langText');
+        if(langBtnText) {
+            langBtnText.innerText = window.currentLang === 'ar' ? 'English' : 'عربي';
+        }
         
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
