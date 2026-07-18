@@ -24,7 +24,12 @@
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #e2e8f0; margin: 0; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; transition: all 0.3s ease; }
-        .container { width: 100%; max-width: 500px; background-color: #1e293b; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4); overflow: visible; padding-bottom: 24px; position: relative; }
+        
+        /* تنسيقات الجدول المضافة لضمان الترويسة */
+        .main-table { width: 100%; max-width: 500px; border-collapse: collapse; margin: 0 auto; border: none; }
+        .main-table td { padding: 0; border: none; }
+
+        .container { width: 100%; max-width: 500px; background-color: #1e293b; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4); overflow: visible; padding-bottom: 24px; position: relative; margin: 0 auto; }
         
         .lang-toggle { position: absolute; top: 12px; left: 12px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px); transition: 0.2s; z-index: 10; }
         html[dir="ltr"] .lang-toggle { left: auto; right: 12px; }
@@ -115,7 +120,14 @@
 
         @media print {
             body, html { background-color: white !important; color: black !important; padding: 0; margin: 0; height: auto !important; overflow: visible !important; }
-            .container { box-shadow: none !important; max-width: 100% !important; width: 100% !important; background: white !important; overflow: visible !important; border-radius: 0 !important; }
+            
+            /* إعدادات الجدول للطباعة */
+            .main-table { width: 100% !important; max-width: 100% !important; border: none !important; margin: 0 !important; }
+            thead { display: table-header-group !important; }
+            tbody { display: table-row-group !important; }
+            tr, td { page-break-inside: auto; }
+            
+            .container { box-shadow: none !important; max-width: 100% !important; width: 100% !important; background: white !important; overflow: visible !important; border-radius: 0 !important; margin: 0 !important; }
             
             .print-only-header { display: block !important; padding: 10px 20px 20px 20px; border-bottom: 2px solid #059669; margin-bottom: 20px; }
             .print-title { color: #059669 !important; text-align: center; font-size: 24px !important; margin: 0 0 20px 0 !important; font-weight: bold; }
@@ -141,126 +153,140 @@
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRC7DWCN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-<div class="print-only-header">
-    <h1 class="print-title" data-i18n="techReportTitle">تقرير تصميم منظومة طاقة شمسية</h1>
-    <div class="print-info-row">
-        <div><strong data-i18n="prepBy">إعداد:</strong> <span id="printOutEngName"></span></div>
-        <div><strong data-i18n="dateTxt">التاريخ:</strong> <span id="printOutDate"></span></div>
-    </div>
-    <div class="print-client-box">
-        <span data-i18n="clientNameLabel">اسم العميل/المشروع:</span> 
-        <span id="printOutCliName" class="print-client-name"></span>
-    </div>
-</div>
-
-<div class="container">
-    <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">🌐 EN</button>
-    <div class="header">
-        <div class="title-box">
-            <h1 data-i18n="appTitle">حاسبة الطاقة الشمسية الذكية</h1>
-            <p class="subtitle" data-i18n="appSubtitle">إصدار احترافي متكامل</p>
-        </div>
-    </div>
-
-    <div class="section">
-        <div class="section-title" data-i18n="sysSettings">⚡ إعدادات المنظومة الهندسية:</div>
-        <div class="grid-inputs">
-            
-            <div class="input-group">
-                <label data-i18n="sysVoltage">جهد النظام (Volt):</label>
-                <div class="custom-select-wrapper">
-                    <div class="custom-select-display" onclick="toggleDropdown('sysVoltDropdown')">
-                        <span id="sysVoltDisplay" data-i18n="volt48">48 فولت</span>
-                        <span>▼</span>
+<!-- الهيكلية الجديدة باستخدام الجدول لضمان الترويسة في الطباعة -->
+<table class="main-table">
+    <thead>
+        <tr>
+            <td>
+                <div class="print-only-header">
+                    <h1 class="print-title" data-i18n="techReportTitle">تقرير تصميم منظومة طاقة شمسية</h1>
+                    <div class="print-info-row">
+                        <div><strong data-i18n="prepBy">إعداد:</strong> <span id="printOutEngName"></span></div>
+                        <div><strong data-i18n="dateTxt">التاريخ:</strong> <span id="printOutDate"></span></div>
                     </div>
-                    <div class="custom-select-options" id="sysVoltDropdown">
-                        <div class="custom-option" onclick="selectGlobalOption('systemVoltage', '12', 'volt12', 'sysVoltDisplay', 'sysVoltDropdown')" data-i18n="volt12">12 فولت</div>
-                        <div class="custom-option" onclick="selectGlobalOption('systemVoltage', '24', 'volt24', 'sysVoltDisplay', 'sysVoltDropdown')" data-i18n="volt24">24 فولت</div>
-                        <div class="custom-option" onclick="selectGlobalOption('systemVoltage', '48', 'volt48', 'sysVoltDisplay', 'sysVoltDropdown')" data-i18n="volt48">48 فولت</div>
+                    <div class="print-client-box">
+                        <span data-i18n="clientNameLabel">اسم العميل/المشروع:</span> 
+                        <span id="printOutCliName" class="print-client-name"></span>
                     </div>
-                    <input type="hidden" id="systemVoltage" value="48">
                 </div>
-            </div>
-
-            <div class="input-group">
-                <label data-i18n="panelWattsLabel">قدرة اللوح المستهدف (W):</label>
-                <input type="number" id="panelWatts" value="450" min="10" lang="en">
-            </div>
-            <div class="input-group">
-                <label data-i18n="sunHoursLabel">ساعات ذروة الشمس:</label>
-                <input type="number" id="sunHours" value="6" min="1" max="15" step="0.5" lang="en">
-            </div>
-
-            <div class="input-group">
-                <label data-i18n="dodLabel">نسبة حماية البطارية:</label>
-                <div class="custom-select-wrapper">
-                    <div class="custom-select-display" onclick="toggleDropdown('dodDropdown')">
-                        <span id="dodDisplay" data-i18n="dod80">20% أمان (DoD 80%)</span>
-                        <span>▼</span>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <div class="container">
+                    <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">🌐 EN</button>
+                    <div class="header">
+                        <div class="title-box">
+                            <h1 data-i18n="appTitle">حاسبة الطاقة الشمسية الذكية</h1>
+                            <p class="subtitle" data-i18n="appSubtitle">إصدار احترافي متكامل</p>
+                        </div>
                     </div>
-                    <div class="custom-select-options" id="dodDropdown">
-                        <div class="custom-option" onclick="selectGlobalOption('dodValue', '0.8', 'dod80', 'dodDisplay', 'dodDropdown')" data-i18n="dod80">20% أمان (DoD 80%)</div>
-                        <div class="custom-option" onclick="selectGlobalOption('dodValue', '0.5', 'dod50', 'dodDisplay', 'dodDropdown')" data-i18n="dod50">50% أمان (DoD 50%)</div>
+
+                    <div class="section">
+                        <div class="section-title" data-i18n="sysSettings">⚡ إعدادات المنظومة الهندسية:</div>
+                        <div class="grid-inputs">
+                            
+                            <div class="input-group">
+                                <label data-i18n="sysVoltage">جهد النظام (Volt):</label>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select-display" onclick="toggleDropdown('sysVoltDropdown')">
+                                        <span id="sysVoltDisplay" data-i18n="volt48">48 فولت</span>
+                                        <span>▼</span>
+                                    </div>
+                                    <div class="custom-select-options" id="sysVoltDropdown">
+                                        <div class="custom-option" onclick="selectGlobalOption('systemVoltage', '12', 'volt12', 'sysVoltDisplay', 'sysVoltDropdown')" data-i18n="volt12">12 فولت</div>
+                                        <div class="custom-option" onclick="selectGlobalOption('systemVoltage', '24', 'volt24', 'sysVoltDisplay', 'sysVoltDropdown')" data-i18n="volt24">24 فولت</div>
+                                        <div class="custom-option" onclick="selectGlobalOption('systemVoltage', '48', 'volt48', 'sysVoltDisplay', 'sysVoltDropdown')" data-i18n="volt48">48 فولت</div>
+                                    </div>
+                                    <input type="hidden" id="systemVoltage" value="48">
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label data-i18n="panelWattsLabel">قدرة اللوح المستهدف (W):</label>
+                                <input type="number" id="panelWatts" value="450" min="10" lang="en">
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="sunHoursLabel">ساعات ذروة الشمس:</label>
+                                <input type="number" id="sunHours" value="6" min="1" max="15" step="0.5" lang="en">
+                            </div>
+
+                            <div class="input-group">
+                                <label data-i18n="dodLabel">نسبة حماية البطارية:</label>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select-display" onclick="toggleDropdown('dodDropdown')">
+                                        <span id="dodDisplay" data-i18n="dod80">20% أمان (DoD 80%)</span>
+                                        <span>▼</span>
+                                    </div>
+                                    <div class="custom-select-options" id="dodDropdown">
+                                        <div class="custom-option" onclick="selectGlobalOption('dodValue', '0.8', 'dod80', 'dodDisplay', 'dodDropdown')" data-i18n="dod80">20% أمان (DoD 80%)</div>
+                                        <div class="custom-option" onclick="selectGlobalOption('dodValue', '0.5', 'dod50', 'dodDisplay', 'dodDropdown')" data-i18n="dod50">50% أمان (DoD 50%)</div>
+                                    </div>
+                                    <input type="hidden" id="dodValue" value="0.8">
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <input type="hidden" id="dodValue" value="0.8">
+
+                    <div class="section">
+                        <div class="section-title">
+                            <div class="title-text" data-i18n="devicesList">📋 جدول حصر أحمال الأجهزة:</div>
+                            <div class="device-counter" id="deviceCounter"></div>
+                        </div>
+                        <div id="appliancesList" aria-live="polite"></div>
+                        <button class="btn btn-add" id="add-device-btn" onclick="addDevice()" data-i18n="addDevice">+ إضافة جهاز جـديد</button>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title" data-i18n="resultsTitle">📊 نتائج ومخرجات المنظومة بالمعادلات</div>
+                        <div class="results-container" aria-live="polite">
+                            <div class="result-row"><div class="result-label" data-i18n="eTotal">الطاقة الكلية شاملة الفقد (E_total):</div><div class="result-value" id="resTotalEnergy">0</div></div>
+                            <div class="result-row"><div class="result-label" data-i18n="battAh">سعة بطارية الليثيوم المطلوبة:</div><div class="result-value value-amber" id="resBatteryAh">0 Ah</div></div>
+                            <div class="result-row"><div class="result-label" style="font-size: 11px;" data-i18n="battKwh">سعة طاقة البطارية الفعلية:</div><div class="result-value value-blue" id="resBatteryKwh" style="font-size: 12px;">0</div></div>
+                            <div class="result-row"><div class="result-label" data-i18n="panelsCount">عدد الألواح الشمسية المطلوبة:</div><div class="result-value value-green" id="resPanelsCount">0</div></div>
+                            <div class="result-row"><div class="result-label" data-i18n="mpptCurrent">تيار منظم الشحن الأدنى (MPPT):</div><div class="result-value value-blue" id="resMpptCurrent">0</div></div>
+                            <div class="result-row"><div class="result-label" data-i18n="invRequired">القدرة المطلوبة للإنفرتر (Inverter):</div><div class="result-value value-amber" id="resInverterWatts" style="flex-direction: column; align-items: flex-end;">0</div></div>
+                        </div>
+                    </div>
+
+                    <div class="pdf-accordion" id="pdfAccordion">
+                        <div class="pdf-accordion-header" onclick="togglePdfAccordion()">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span data-i18n="pdfSettingsTitle">📄 إعدادات تصدير التقرير (PDF)</span>
+                            </div>
+                            <span class="pdf-icon">▼</span>
+                        </div>
+                        <div class="pdf-accordion-body">
+                            <div class="input-group" style="margin-bottom: 12px; margin-top: 5px;">
+                                <label data-i18n="engNameLabel">اسم المهندس/المؤسسة:</label>
+                                <input type="text" id="engineerNameInput" oninput="saveEngineerName(this.value)">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 16px;">
+                                <label data-i18n="clientNameLabel">اسم العميل/المشروع:</label>
+                                <input type="text" id="clientNameInput">
+                            </div>
+                            <button class="btn btn-export" style="width: 100%;" onclick="prepareAndPrint()" data-i18n="exportPdfBtn">📄 تصدير التقرير PDF</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-reset" onclick="resetToDefault()" data-i18n="resetData">⚠️ تصفير البيانات (مسح كل شيء)</button>
+
+                    <footer class="solar-footer">
+                        <p class="copyright-text" data-i18n="copyright">تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026 <span style="font-size: 11px; opacity: 0.5;">V7</span></p>
+                        <p class="tagline" data-i18n="tagline">تطبيق حاسبة الطاقة الشمسية الاحترافية</p>
+                        <div class="social-links">
+                            <a href="https://wa.me/message/BSOAV5RVXBNQP1" target="_blank" class="social-btn whatsapp"><svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966C16.528 1.975 14.067 1.053 12 1.053c-5.438 0-9.864 4.373-9.868 9.803-.001 1.714.453 3.39 1.317 4.873L2.43 21.48l5.857-1.534zM16.71 14.65c-.259-.13-1.534-.759-1.773-.846-.239-.087-.413-.13-.587.13-.174.26-.674.846-.826 1.018-.152.173-.304.195-.563.065-.259-.13-1.096-.404-2.088-1.292-.771-.69-1.292-1.542-1.444-1.802-.152-.26-.016-.4.114-.53.117-.117.259-.304.39-.455.13-.152.174-.26.26-.433.087-.173.043-.325-.022-.455-.065-.13-.587-1.413-.804-1.944-.213-.518-.447-.448-.607-.456-.157-.008-.337-.01-.517-.01-.18 0-.474.067-.72.337-.247.271-.943.924-.943 2.255s.967 2.61 1.101 2.784c.134.173 1.902 2.904 4.609 4.07.644.277 1.148.443 1.541.568.647.206 1.236.177 1.701.108.519-.077 1.534-.627 1.751-1.234.217-.607.217-1.127.152-1.234-.064-.108-.239-.173-.499-.303z"/></svg></a>
+                            <a href="https://www.facebook.com/share/1YF9n8KTFK/" target="_blank" class="social-btn facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                        </div>
+                    </footer>
                 </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="section">
-        <div class="section-title">
-            <div class="title-text" data-i18n="devicesList">📋 جدول حصر أحمال الأجهزة:</div>
-            <div class="device-counter" id="deviceCounter"></div>
-        </div>
-        <div id="appliancesList" aria-live="polite"></div>
-        <button class="btn btn-add" id="add-device-btn" onclick="addDevice()" data-i18n="addDevice">+ إضافة جهاز جـديد</button>
-    </div>
-
-    <div class="section">
-        <div class="section-title" data-i18n="resultsTitle">📊 نتائج ومخرجات المنظومة بالمعادلات</div>
-        <div class="results-container" aria-live="polite">
-            <div class="result-row"><div class="result-label" data-i18n="eTotal">الطاقة الكلية شاملة الفقد (E_total):</div><div class="result-value" id="resTotalEnergy">0</div></div>
-            <div class="result-row"><div class="result-label" data-i18n="battAh">سعة بطارية الليثيوم المطلوبة:</div><div class="result-value value-amber" id="resBatteryAh">0 Ah</div></div>
-            <div class="result-row"><div class="result-label" style="font-size: 11px;" data-i18n="battKwh">سعة طاقة البطارية الفعلية:</div><div class="result-value value-blue" id="resBatteryKwh" style="font-size: 12px;">0</div></div>
-            <div class="result-row"><div class="result-label" data-i18n="panelsCount">عدد الألواح الشمسية المطلوبة:</div><div class="result-value value-green" id="resPanelsCount">0</div></div>
-            <div class="result-row"><div class="result-label" data-i18n="mpptCurrent">تيار منظم الشحن الأدنى (MPPT):</div><div class="result-value value-blue" id="resMpptCurrent">0</div></div>
-            <div class="result-row"><div class="result-label" data-i18n="invRequired">القدرة المطلوبة للإنفرتر (Inverter):</div><div class="result-value value-amber" id="resInverterWatts" style="flex-direction: column; align-items: flex-end;">0</div></div>
-        </div>
-    </div>
-
-    <div class="pdf-accordion" id="pdfAccordion">
-        <div class="pdf-accordion-header" onclick="togglePdfAccordion()">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span data-i18n="pdfSettingsTitle">📄 إعدادات تصدير التقرير (PDF)</span>
-            </div>
-            <span class="pdf-icon">▼</span>
-        </div>
-        <div class="pdf-accordion-body">
-            <div class="input-group" style="margin-bottom: 12px; margin-top: 5px;">
-                <label data-i18n="engNameLabel">اسم المهندس/المؤسسة:</label>
-                <input type="text" id="engineerNameInput" oninput="saveEngineerName(this.value)">
-            </div>
-            <div class="input-group" style="margin-bottom: 16px;">
-                <label data-i18n="clientNameLabel">اسم العميل/المشروع:</label>
-                <input type="text" id="clientNameInput">
-            </div>
-            <button class="btn btn-export" style="width: 100%;" onclick="prepareAndPrint()" data-i18n="exportPdfBtn">📄 تصدير التقرير PDF</button>
-        </div>
-    </div>
-
-    <button class="btn btn-reset" onclick="resetToDefault()" data-i18n="resetData">⚠️ تصفير البيانات (مسح كل شيء)</button>
-
-    <footer class="solar-footer">
-        <p class="copyright-text" data-i18n="copyright">تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026 <span style="font-size: 11px; opacity: 0.5;">V7</span></p>
-        <p class="tagline" data-i18n="tagline">تطبيق حاسبة الطاقة الشمسية الاحترافية</p>
-        <div class="social-links">
-            <a href="https://wa.me/message/BSOAV5RVXBNQP1" target="_blank" class="social-btn whatsapp"><svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966C16.528 1.975 14.067 1.053 12 1.053c-5.438 0-9.864 4.373-9.868 9.803-.001 1.714.453 3.39 1.317 4.873L2.43 21.48l5.857-1.534zM16.71 14.65c-.259-.13-1.534-.759-1.773-.846-.239-.087-.413-.13-.587.13-.174.26-.674.846-.826 1.018-.152.173-.304.195-.563.065-.259-.13-1.096-.404-2.088-1.292-.771-.69-1.292-1.542-1.444-1.802-.152-.26-.016-.4.114-.53.117-.117.259-.304.39-.455.13-.152.174-.26.26-.433.087-.173.043-.325-.022-.455-.065-.13-.587-1.413-.804-1.944-.213-.518-.447-.448-.607-.456-.157-.008-.337-.01-.517-.01-.18 0-.474.067-.72.337-.247.271-.943.924-.943 2.255s.967 2.61 1.101 2.784c.134.173 1.902 2.904 4.609 4.07.644.277 1.148.443 1.541.568.647.206 1.236.177 1.701.108.519-.077 1.534-.627 1.751-1.234.217-.607.217-1.127.152-1.234-.064-.108-.239-.173-.499-.303z"/></svg></a>
-            <a href="https://www.facebook.com/share/1YF9n8KTFK/" target="_blank" class="social-btn facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-        </div>
-    </footer>
-</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <script>
 if ('serviceWorker' in navigator) {
