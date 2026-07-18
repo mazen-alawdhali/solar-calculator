@@ -26,53 +26,9 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #e2e8f0; margin: 0; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; transition: all 0.3s ease; }
         .container { width: 100%; max-width: 500px; background-color: #1e293b; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4); overflow: visible; padding-bottom: 24px; position: relative; }
         
-        /* تصميم زر اللغة بثبات الحجم */
-        .lang-toggle { 
-            position: absolute; 
-            top: 14px; 
-            left: 14px; 
-            background: rgba(15, 23, 42, 0.45); 
-            border: 1px solid rgba(255, 255, 255, 0.25); 
-            color: #ffffff; 
-            padding: 6px 0; 
-            width: 110px; /* عرض ثابت لتوحيد الحجم */
-            border-radius: 30px; 
-            font-size: 13.5px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            z-index: 10; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; /* توسيط المحتوى */
-            gap: 8px; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        html[dir="ltr"] .lang-toggle { left: auto; right: 14px; direction: ltr; }
-        
-        .lang-toggle svg {
-            width: 16px;
-            height: 16px;
-            opacity: 0.9;
-            transition: transform 0.4s ease;
-        }
-        
-        .lang-toggle:hover { 
-            background: rgba(255, 255, 255, 0.15); 
-            border-color: rgba(255, 255, 255, 0.6); 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .lang-toggle:hover svg {
-            transform: rotate(45deg); 
-        }
-        
-        .lang-toggle:active {
-            transform: translateY(1px);
-        }
+        .lang-toggle { position: absolute; top: 12px; left: 12px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px); transition: 0.2s; z-index: 10; }
+        html[dir="ltr"] .lang-toggle { left: auto; right: 12px; }
+        .lang-toggle:hover { background: rgba(255, 255, 255, 0.3); }
 
         .header { background: linear-gradient(135deg, #059669, #10b981); color: white; text-align: center; padding: 44px 16px 28px; border-top-left-radius: 24px; border-top-right-radius: 24px; }
         
@@ -110,7 +66,7 @@
         .btn { width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
         .btn:active { transform: scale(0.98); }
         .btn-add { background-color: #059669; color: white; margin-top: 8px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2); }
-        .btn-export { background-color: #2563eb; color: white; margin: 20px auto 12px auto; width: calc(100% - 32px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+        .btn-export { background-color: #2563eb; color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
         .btn-reset { background-color: #dc2626; color: white; margin: 0 auto; width: calc(100% - 32px); font-size: 14px; padding: 12px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
         
         .appliance-item { background-color: #0f172a; border: 1px solid #334155; border-radius: 14px; padding: 14px; margin-bottom: 14px; scroll-margin-top: 24px; overflow: visible; width: 100%; }
@@ -147,19 +103,34 @@
         .facebook { background-color: #1877F2; }
         .social-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
+        .pdf-accordion { border: 1px solid #2563eb; border-radius: 16px; margin: 20px auto 16px auto; width: calc(100% - 32px); background-color: rgba(37, 99, 235, 0.05); overflow: hidden; transition: all 0.3s ease; }
+        .pdf-accordion-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #38bdf8; font-weight: 700; font-size: 15px; user-select: none; }
+        .pdf-accordion-header:hover { background-color: rgba(37, 99, 235, 0.1); }
+        .pdf-accordion-body { max-height: 0; opacity: 0; padding: 0 16px; overflow: hidden; transition: all 0.3s ease; }
+        .pdf-accordion.open .pdf-accordion-body { max-height: 300px; opacity: 1; padding: 0 16px 16px 16px; }
+        .pdf-icon { transition: transform 0.3s ease; }
+        .pdf-accordion.open .pdf-icon { transform: rotate(180deg); }
+
+        .print-only-header { display: none; }
+
         @media print {
             body, html { background-color: white !important; color: black !important; padding: 0; margin: 0; height: auto !important; overflow: visible !important; }
             .container { box-shadow: none !important; max-width: 100% !important; width: 100% !important; background: white !important; overflow: visible !important; border-radius: 0 !important; }
-            .header { background: #059669 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 15px 10px !important; border-radius: 0 !important; }
-            .title-box { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; filter: none !important; }
-            .title-box h1, .title-box .subtitle { text-shadow: none !important; color: white !important; }
-            button, .btn, .btn-add, .btn-delete, input[type="checkbox"], .checkbox-container, .social-links, .solar-footer, .lang-toggle, .google-auto-placed, ins.adsbygoogle { display: none !important; }
+            
+            .print-only-header { display: block !important; padding: 10px 20px 20px 20px; border-bottom: 2px solid #059669; margin-bottom: 20px; }
+            .print-title { color: #059669 !important; text-align: center; font-size: 24px !important; margin: 0 0 20px 0 !important; font-weight: bold; }
+            .print-info-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; }
+            .print-client-box { background-color: #f8fafc !important; border: 1px solid #cbd5e1 !important; padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 14px; display: flex; gap: 8px; }
+            .print-client-name { color: #2563eb !important; font-weight: bold; }
+
+            .header, .pdf-accordion, button, .btn, .btn-add, .btn-delete, input[type="checkbox"], .checkbox-container, .social-links, .solar-footer, .lang-toggle, .google-auto-placed, ins.adsbygoogle { display: none !important; }
+            
             input { border: none !important; background: transparent !important; color: black !important; padding: 2px !important; font-weight: bold !important; }
             .custom-select-options { display: none !important; }
             .custom-select-display { background: transparent !important; border: none !important; color: black !important; padding: 2px !important; font-weight: bold !important; border-bottom: 1px solid #ccc !important; }
             .appliance-item { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; margin-bottom: 8px !important; padding: 8px !important; page-break-inside: avoid; overflow: visible !important; }
             .item-summary { background: #e2e8f0 !important; border: 1px solid #94a3b8 !important; color: black !important; }
-            .results-container { background: #f1f5f9 !important; border: 1px solid #94a3b8 !important; color: black !important; page-break-inside: avoid; }
+            .results-container { background: #f1f5f9 !important; border: 1px solid #94a3b8 !important; color: black !important; page-break-inside: avoid; margin-top: 10px; }
             .result-label, .summary-wh-text, .summary-sync-text { color: #334155 !important; }
             .result-value, .value-amber, .value-green { color: black !important; }
             .engineering-alert { display: block !important; background: #fff5f5 !important; border: 1.5px solid #dc2626 !important; color: #b91c1c !important; box-shadow: none !important; margin-top: 8px !important; padding: 10px !important; border-radius: 8px !important; font-size: 12.5px !important; text-align: center !important; }
@@ -170,16 +141,20 @@
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRC7DWCN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-<div class="container">
-    <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn" title="تغيير اللغة / Change Language">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-        </svg>
-        <span id="langText">English</span>
-    </button>
+<div class="print-only-header">
+    <h1 class="print-title" data-i18n="techReportTitle">تقرير تصميم منظومة طاقة شمسية</h1>
+    <div class="print-info-row">
+        <div><strong data-i18n="prepBy">إعداد:</strong> <span id="printOutEngName"></span></div>
+        <div><strong data-i18n="dateTxt">التاريخ:</strong> <span id="printOutDate"></span></div>
+    </div>
+    <div class="print-client-box">
+        <span data-i18n="clientNameLabel">اسم العميل/المشروع:</span> 
+        <span id="printOutCliName" class="print-client-name"></span>
+    </div>
+</div>
 
+<div class="container">
+    <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">🌐 EN</button>
     <div class="header">
         <div class="title-box">
             <h1 data-i18n="appTitle">حاسبة الطاقة الشمسية الذكية</h1>
@@ -255,7 +230,26 @@
         </div>
     </div>
 
-    <button class="btn btn-export" onclick="window.print()" data-i18n="exportPdf">📄 تصدير التقرير إلى PDF</button>
+    <div class="pdf-accordion" id="pdfAccordion">
+        <div class="pdf-accordion-header" onclick="togglePdfAccordion()">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span data-i18n="pdfSettingsTitle">📄 إعدادات تصدير التقرير (PDF)</span>
+            </div>
+            <span class="pdf-icon">▼</span>
+        </div>
+        <div class="pdf-accordion-body">
+            <div class="input-group" style="margin-bottom: 12px; margin-top: 5px;">
+                <label data-i18n="engNameLabel">اسم المهندس/المؤسسة:</label>
+                <input type="text" id="engineerNameInput" oninput="saveEngineerName(this.value)">
+            </div>
+            <div class="input-group" style="margin-bottom: 16px;">
+                <label data-i18n="clientNameLabel">اسم العميل/المشروع:</label>
+                <input type="text" id="clientNameInput">
+            </div>
+            <button class="btn btn-export" style="width: 100%;" onclick="prepareAndPrint()" data-i18n="exportPdfBtn">📄 تصدير التقرير PDF</button>
+        </div>
+    </div>
+
     <button class="btn btn-reset" onclick="resetToDefault()" data-i18n="resetData">⚠️ تصفير البيانات (مسح كل شيء)</button>
 
     <footer class="solar-footer">
@@ -278,7 +272,6 @@ if ('serviceWorker' in navigator) {
 !function(){
     var _0xdomain=["solar-pro-calculator.netlify.app","localhost","127.0.0.1","mazen-alawdhali.github.io","solar-pro-calculator.vercel.app","solar-calculator-pro.vercel.app"];
     var _0xhost=window.location.hostname;
-    // استثناء روابط المعاينة (Deploy Previews) من قفل النطاق
     var _0xpreview=_0xhost.indexOf("--solar-pro-calculator.netlify.app")!==-1||_0xhost.indexOf("agent-")!==-1;
     if(!_0xdomain.includes(_0xhost)&&!_0xpreview&&_0xhost!==""){
         document.body.innerHTML="<div style='color:#ffffff;background:#dc2626;text-align:center;padding:50px 20px;font-size:22px;font-weight:bold;border-radius:15px;margin:20px;line-height:1.8;box-shadow:0 10px 25px rgba(0,0,0,0.5);'><h2 style='color:#fde047;margin-top:0;font-size:28px;'>⚠️ تحذير أمني:</h2> هذه النسخة مسروقة وغير مصرح بها.<br><br>تم تسجيل المحاولة.<br>يرجى زيارة الرابط الرسمي.</div>";
@@ -292,7 +285,6 @@ if ('serviceWorker' in navigator) {
         }
     });
 
-    // ميزة التحديد التلقائي للنصوص عند الضغط (Auto-Select)
     document.addEventListener('focusin', function(e) {
         if (e.target && e.target.tagName === 'INPUT' && (e.target.type === 'number' || e.target.type === 'text')) {
             e.target.select();
@@ -311,7 +303,7 @@ if ('serviceWorker' in navigator) {
             eTotal: "الطاقة الكلية شاملة الفقد (E_total):", battAh: "سعة بطارية الليثيوم المطلوبة:",
             battKwh: "سعة طاقة البطارية الفعلية:", panelsCount: "عدد الألواح الشمسية المطلوبة:",
             mpptCurrent: "تيار منظم الشحن الأدنى (MPPT):", invRequired: "القدرة المطلوبة للإنفرتر (Inverter):",
-            exportPdf: "📄 تصدير التقرير إلى PDF", resetData: "⚠️ تصفير البيانات (مسح كل شيء)",
+            resetData: "⚠️ تصفير البيانات (مسح كل شيء)",
             copyright: 'تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026 <span style="font-size: 11px; opacity: 0.5;">V7</span>',
             tagline: "تطبيق حاسبة الطاقة الشمسية الاحترافية",
             devNamePh: "اسم الجهاز", delBtn: "حذف", syncCb: "تزامن",
@@ -328,7 +320,11 @@ if ('serviceWorker' in navigator) {
             mpptAlert1: "تحتاج", mpptAlert2: "منظمات", mpptAlert3: "كحد أدنى",
             invAlert1: "تنبيه هندسي صارم:", invAlert2: "هذا النظام", invAlert3: "فولت) غير آمن ولا يوصى به لهذه الأحمال.",
             invAlert4: "المقترح الفني: إنفرتر بقدرة", invAlert5: "واط", invAlert6: "مع ضرورة الترقية الفورية لنظام 48 فولت.",
-            confirmDel: "⚠️ هل أنت متأكد من مسح جميع الأجهزة؟"
+            confirmDel: "⚠️ هل أنت متأكد من مسح جميع الأجهزة والبيانات؟",
+            pdfSettingsTitle: "📄 إعدادات تصدير التقرير (PDF)", engNameLabel: "اسم المهندس/المؤسسة:",
+            clientNameLabel: "اسم العميل/المشروع:", techReportTitle: "تقرير تصميم منظومة طاقة شمسية",
+            prepBy: "إعداد:", dateTxt: "التاريخ:", exportPdfBtn: "📄 تصدير التقرير PDF",
+            engNamePh: "مثال: م. أحمد أو مؤسسة الأفق", clientNamePh: "أدخل اسم العميل أو المشروع"
         },
         en: {
             appTitle: "Smart Solar Calculator", appSubtitle: "Professional Integrated Edition",
@@ -341,7 +337,7 @@ if ('serviceWorker' in navigator) {
             eTotal: "Total Energy with Losses (E_total):", battAh: "Required Lithium Battery Capacity:",
             battKwh: "Actual Battery Energy:", panelsCount: "Required Solar Panels:",
             mpptCurrent: "Minimum MPPT Charge Current:", invRequired: "Required Inverter Capacity:",
-            exportPdf: "📄 Export Report to PDF", resetData: "⚠️ Reset Data (Clear All)",
+            resetData: "⚠️ Reset Data (Clear All)",
             copyright: 'Designed & Developed by <span class="author-name">Mazen Al-Awdhali</span> &copy; 2026 <span style="font-size: 11px; opacity: 0.5;">V7</span>',
             tagline: "Professional Solar Energy Calculator App",
             devNamePh: "Appliance Name", delBtn: "Delete", syncCb: "Sync",
@@ -358,14 +354,17 @@ if ('serviceWorker' in navigator) {
             mpptAlert1: "Requires at least", mpptAlert2: "Controllers", mpptAlert3: "",
             invAlert1: "Strict Engineering Alert:", invAlert2: "This", invAlert3: "V) system is unsafe & not recommended for these loads.",
             invAlert4: "Technical Proposal: Inverter with", invAlert5: "W", invAlert6: "with immediate upgrade to 48V system required.",
-            confirmDel: "⚠️ Are you sure you want to clear all appliances?"
+            confirmDel: "⚠️ Are you sure you want to clear all appliances and data?",
+            pdfSettingsTitle: "📄 PDF Report Settings", engNameLabel: "Engineer/Company Name:",
+            clientNameLabel: "Client/Project Name:", techReportTitle: "Solar System Design Report",
+            prepBy: "Prepared by:", dateTxt: "Date:", exportPdfBtn: "📄 Export PDF Report",
+            engNamePh: "e.g., Eng. John or Skyline Co.", clientNamePh: "Enter client or project name"
         }
     };
 
     window.currentLang = localStorage.getItem('solar_app_lang') || 'ar';
     window.appliances = [];
 
-    // تنسيق موحّد لكل النتائج الحسابية: تقريب لأقرب رقمين عشريين مع فواصل الآلاف
     window.fmt2 = function(n) {
         const v = Number(n);
         return (isFinite(v) ? v : 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -416,11 +415,7 @@ if ('serviceWorker' in navigator) {
         const t = dict[window.currentLang];
         document.documentElement.lang = window.currentLang;
         document.documentElement.dir = window.currentLang === 'ar' ? 'rtl' : 'ltr';
-        
-        const langBtnText = document.getElementById('langText');
-        if(langBtnText) {
-            langBtnText.innerText = window.currentLang === 'ar' ? 'English' : 'عربي';
-        }
+        document.getElementById('langBtn').innerText = window.currentLang === 'ar' ? '🌐 EN' : '🌐 AR';
         
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
@@ -432,7 +427,36 @@ if ('serviceWorker' in navigator) {
         document.getElementById('sysVoltDisplay').innerText = sysVal == "12" ? t.volt12 : (sysVal == "24" ? t.volt24 : t.volt48);
         document.getElementById('dodDisplay').innerText = dodVal == "0.5" ? t.dod50 : t.dod80;
 
+        document.getElementById("engineerNameInput").placeholder = t.engNamePh;
+        document.getElementById("clientNameInput").placeholder = t.clientNamePh;
+
         renderAppliances();
+    };
+
+    window.togglePdfAccordion = function() {
+        document.getElementById('pdfAccordion').classList.toggle('open');
+    };
+
+    window.saveEngineerName = function(val) {
+        localStorage.setItem("solar_engineer_name", val);
+    };
+
+    window.prepareAndPrint = function() {
+        const engVal = document.getElementById("engineerNameInput").value;
+        const cliVal = document.getElementById("clientNameInput").value;
+        
+        // التعديل: اسم افتراضي للحاسبة إذا لم يتم إدخال اسم مهندس
+        const defaultEng = window.currentLang === 'ar' ? 'حاسبة الطاقة الشمسية الذكية' : 'Smart Solar Calculator';
+        const defaultCli = window.currentLang === 'ar' ? 'عميل عام' : 'General Client';
+
+        document.getElementById("printOutEngName").innerText = engVal || defaultEng;
+        document.getElementById("printOutCliName").innerText = cliVal || defaultCli;
+        
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        const locale = window.currentLang === 'ar' ? 'ar-EG' : 'en-US';
+        document.getElementById("printOutDate").innerText = new Date().toLocaleDateString(locale, dateOptions);
+
+        window.print();
     };
 
     window.startApp = function() {
@@ -441,6 +465,9 @@ if ('serviceWorker' in navigator) {
         const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_dod_value"];
         ids.forEach((id, i) => { if(localStorage.getItem(keys[i])) document.getElementById(id).value = localStorage.getItem(keys[i]); });
         
+        const savedEng = localStorage.getItem("solar_engineer_name");
+        if(savedEng) document.getElementById("engineerNameInput").value = savedEng;
+
         document.getElementById("panelWatts").addEventListener("input", saveDataAndCalculate);
         document.getElementById("sunHours").addEventListener("input", saveDataAndCalculate);
         
@@ -504,10 +531,21 @@ if ('serviceWorker' in navigator) {
         calculateResults();
     };
 
-    window.addDevice = function() { appliances.push({name:"",watts:"",surgeWatts:"",count:1,dayHours:0,nightHours:0,duty:100,sync:true}); saveDataAndCalculate(); renderAppliances(); };
+    window.addDevice = function() { 
+        appliances.push({name:"",watts:"",surgeWatts:"",count:1,dayHours:0,nightHours:0,duty:100,sync:true}); 
+        saveDataAndCalculate(); 
+        renderAppliances(); 
+        
+        setTimeout(() => {
+            const items = document.querySelectorAll('.appliance-item');
+            if(items.length > 0) {
+                items[items.length - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 50);
+    };
+    
     window.deleteDevice = function(i) { appliances.splice(i,1); saveDataAndCalculate(); renderAppliances(); };
     
-    // دالة التحديث الذكية والمباشرة (دون فقدان لوحة المفاتيح)
     window.updateApplianceProperty = function(i,p,v) { 
         appliances[i][p] = (p==="sync"||p==="name"||p==="surgeWatts") ? v : (v===""?"":parseFloat(v)); 
         saveDataAndCalculate(); 
@@ -515,7 +553,6 @@ if ('serviceWorker' in navigator) {
         const app = appliances[i];
         const t = dict[window.currentLang];
         
-        // تحديث النصوص الفردية في نفس اللحظة
         const surgeEl = document.getElementById('summary-surge-' + i);
         const whEl = document.getElementById('summary-wh-' + i);
         
@@ -553,15 +590,13 @@ if ('serviceWorker' in navigator) {
             if(app.sync) syncSurge += (parseFloat(app.surgeWatts)||w) * count;
         });
         
-        // معاملات هندسية واضحة (بدلاً من الأرقام السحرية)
-        const SYSTEM_LOSS_FACTOR = 1.3;        // فقد النظام الكلي (~30%): أسلاك + إنفرتر + دورة شحن/تفريغ البطارية
-        const PANEL_PERFORMANCE_RATIO = 0.75;  // كفاءة الألواح الفعلية في الميدان (حرارة/غبار/تقادم/عدم تطابق)
-        const INVERTER_SAFETY_FACTOR = 1.20;   // هامش أمان الإنفرتر (20%)
+        const SYSTEM_LOSS_FACTOR = 1.3;
+        const PANEL_PERFORMANCE_RATIO = 0.75;
+        const INVERTER_SAFETY_FACTOR = 1.20;
 
         const eTotal = dailyWh * SYSTEM_LOSS_FACTOR, eNightTotal = nightWh * SYSTEM_LOSS_FACTOR;
         const battAh = sysVolt > 0 ? eNightTotal / (sysVolt * dodValue) : 0;
         const battKwh = (battAh * sysVolt) / 1000;
-        // عدد الألواح = الطاقة اليومية ÷ (معدل الإشعاع اليومي × كفاءة الألواح الفعلية) ÷ قدرة اللوح الواحد
         const reqPv = sunHours > 0 ? dailyWh / (sunHours * PANEL_PERFORMANCE_RATIO) : 0;
         const panelsCount = panelWatts > 0 ? Math.ceil(reqPv / panelWatts) : 0;
         const totalPanelPower = panelsCount * panelWatts;
@@ -601,6 +636,8 @@ if ('serviceWorker' in navigator) {
             document.getElementById("panelWatts").value="450"; 
             document.getElementById("sunHours").value="6"; 
             document.getElementById("dodValue").value="0.8"; 
+            document.getElementById("engineerNameInput").value="";
+            document.getElementById("clientNameInput").value="";
             saveDataAndCalculate(); 
             applyLanguage(); 
         } 
