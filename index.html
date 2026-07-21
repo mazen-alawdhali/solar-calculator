@@ -299,10 +299,10 @@
                         <p class="copyright-text" data-i18n="copyright">تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026</p>
                         <p class="tagline" data-i18n="tagline">تطبيق حاسبة الطاقة الشمسية الذكية<br><span style="background: #eab308; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 6px;">V7 Pro</span></p>
                         
-                        <!-- حاوية العداد المخفية لونياً (نفس لون خلفية الفوتر تماماً #0f172a) -->
-                        <div id="visitor-counter-box" style="margin-top: 15px; font-size: 13px; color: #0f172a; text-align: center; user-select: text;">
-                            <span data-i18n="visitorCountText" style="color: #0f172a;">إجمالي مرات استخدام الأداة: </span>
-                            <span id="visitor-count" style="font-weight: bold; color: #0f172a;" dir="ltr">...</span>
+                        <!-- حاوية العداد الظاهرة الآن بشكل احترافي -->
+                        <div id="visitor-counter-box" style="margin-top: 15px; font-size: 13px; color: #94a3b8; text-align: center;">
+                            <span data-i18n="visitorCountText">عدد زيارات الحاسبة: </span>
+                            <span id="visitor-count" style="font-weight: bold; color: #10b981;" dir="ltr">...</span>
                         </div>
 
                         <div class="social-links">
@@ -389,7 +389,7 @@ if ('serviceWorker' in navigator) {
             prepBy: "إعداد:", dateTxt: "التاريخ:", exportPdfBtn: "📄 تصدير التقرير PDF",
             engNamePh: "مثال: م. أحمد أو مؤسسة الأفق", clientNamePh: "أدخل اسم العميل أو المشروع",
             reportFooterText: "تم إنشاء هذا التقرير آلياً بواسطة حاسبة الطاقة الشمسية الذكية",
-            visitorCountText: "إجمالي مرات استخدام الأداة: ", visitorCountOffline: "أوفلاين", visitorCountError: "غير متاح"
+            visitorCountText: "عدد زيارات الحاسبة: ", visitorCountOffline: "أوفلاين", visitorCountError: "غير متاح"
         },
         en: {
             appTitle: "Smart Solar Calculator", appSubtitle: "Professional Integrated Edition",
@@ -425,7 +425,7 @@ if ('serviceWorker' in navigator) {
             prepBy: "Prepared by:", dateTxt: "Date:", exportPdfBtn: "📄 Export PDF Report",
             engNamePh: "e.g., Eng. John or Skyline Co.", clientNamePh: "Enter client or project name",
             reportFooterText: "Report generated automatically by Smart Solar Calculator",
-            visitorCountText: "Total App Usage: ", visitorCountOffline: "Offline", visitorCountError: "Unavailable"
+            visitorCountText: "Calculator Visits: ", visitorCountOffline: "Offline", visitorCountError: "Unavailable"
         }
     };
 
@@ -479,7 +479,10 @@ if ('serviceWorker' in navigator) {
         
         if (!navigator.onLine) {
             const el = document.getElementById('visitor-count');
-            if(el) el.textContent = dict[window.currentLang].visitorCountOffline;
+            if(el) {
+                el.textContent = dict[window.currentLang].visitorCountOffline;
+                el.style.color = '#f59e0b';
+            }
         }
     };
 
@@ -537,7 +540,7 @@ if ('serviceWorker' in navigator) {
         window.print();
     };
 
-    // دالة العداد المبسطة والمموهة لونياً
+    // دالة العداد مع الألوان المرئية للجميع
     window.updateVisitorCount = async function() {
         const counterElement = document.getElementById('visitor-count');
         const t = dict[window.currentLang];
@@ -546,7 +549,8 @@ if ('serviceWorker' in navigator) {
 
         if (!navigator.onLine) {
             counterElement.textContent = t.visitorCountOffline;
-            return; // لم نعد نغير اللون ليبقى مموهاً
+            counterElement.style.color = '#f59e0b'; // لون برتقالي عند انقطاع النت
+            return;
         }
 
         try {
@@ -554,11 +558,18 @@ if ('serviceWorker' in navigator) {
             if (!response.ok) throw new Error('Network response was not ok');
             
             const data = await response.json();
-            counterElement.textContent = data.count.toLocaleString('en-US');
+            
+            // إضافة الرقم 9000 كقاعدة تاريخية سابقة
+            const historicalOffset = 9000;
+            const totalVisits = data.count + historicalOffset;
+            
+            counterElement.textContent = totalVisits.toLocaleString('en-US');
+            counterElement.style.color = '#10b981'; // لون أخضر عند جلب الرقم بنجاح
             
         } catch (error) {
             console.error('تعذر جلب العداد:', error);
             counterElement.textContent = t.visitorCountError;
+            counterElement.style.color = '#ef4444'; // لون أحمر عند حدوث خطأ
         }
     };
 
@@ -584,6 +595,7 @@ if ('serviceWorker' in navigator) {
         const counterElement = document.getElementById('visitor-count');
         if (counterElement) {
             counterElement.textContent = dict[window.currentLang].visitorCountOffline;
+            counterElement.style.color = '#f59e0b'; // لون برتقالي
         }
     });
 
