@@ -84,7 +84,10 @@
         .btn-delete { width: 100%; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.4); border-radius: 6px; color: #f43f5e; cursor: pointer; font-size: 11.5px; font-weight: 700; padding: 6px 0; text-align: center; white-space: nowrap; transition: 0.2s; margin: 0; }
         .checkbox-container { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 12.5px; color: #94a3b8; cursor: pointer; font-weight: 600; white-space: nowrap; margin: 0; }
         
-        .item-summary { display: flex; justify-content: space-between; align-items: center; background-color: #1e293b; padding: 10px 14px; border-radius: 10px; margin-top: 14px; font-size: 12px; border: 1px solid #334155; color: #94a3b8; flex-wrap: wrap; gap: 8px; }
+        /* تم تعديل هذا الجزء ليكون بشكل عمودي flex-start */
+        .item-summary { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; background-color: #1e293b; padding: 12px 14px; border-radius: 10px; margin-top: 14px; font-size: 13px; border: 1px solid #334155; color: #94a3b8; gap: 8px; }
+        .summary-sync-text, .summary-wh-text { text-align: start; width: 100%; }
+        
         .empty-msg { color: #64748b; text-align: center; font-size: 13.5px; padding: 24px 12px; line-height: 1.6; }
         .results-container { background-color: #0f172a; border: 1px solid #065f46; border-radius: 16px; padding: 6px; }
         .result-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 12px; border-bottom: 1px solid #1e293b; }
@@ -486,7 +489,6 @@ if ('serviceWorker' in navigator) {
         document.getElementById("engineerNameInput").placeholder = t.engNamePh;
         document.getElementById("clientNameInput").placeholder = t.clientNamePh;
         
-        // تحديث ترقيم الصفحات في الطباعة ديناميكياً حسب اللغة
         const printStyle = document.getElementById('dynamic-print-style');
         if (window.currentLang === 'en') {
             printStyle.innerHTML = '@media print { @page { @bottom-right { content: "Page " counter(page) " of " counter(pages); font-size: 10pt; color: #64748b; } } }';
@@ -585,8 +587,8 @@ if ('serviceWorker' in navigator) {
                     <div class="input-group"><label>${t.nightH}</label><input type="number" lang="en" value="${app.nightHours||0}" min="0" max="24" step="any" oninput="updateApplianceProperty(${i},'nightHours',this.value)"></div>
                 </div>
                 <div class="item-summary">
-                    <div class="summary-sync-text" id="summary-surge-${i}">${app.sync && app.surgeWatts ? `${t.surgeText} <span class="value-amber">${fmt2(app.surgeWatts * (app.count||1))} ${t.wWord}</span>` : ""}</div>
-                    <div class="summary-wh-text" id="summary-wh-${i}">${t.totalCons} <span class="value-green">${fmt2((app.watts||0)*(app.count||1)*((app.dayHours||0)+(app.nightHours||0))*((app.duty||100)/100))} ${t.wh}</span></div>
+                    <div class="summary-sync-text" id="summary-surge-${i}" style="${(app.sync && app.surgeWatts) ? 'display:block;' : 'display:none;'}">${app.sync && app.surgeWatts ? `${t.surgeText} <span class="value-amber"><span dir="ltr" style="display:inline-block;">${fmt2(app.surgeWatts * (app.count||1))}</span> ${t.wWord}</span>` : ""}</div>
+                    <div class="summary-wh-text" id="summary-wh-${i}">${t.totalCons} <span class="value-green"><span dir="ltr" style="display:inline-block;">${fmt2((app.watts||0)*(app.count||1)*((app.dayHours||0)+(app.nightHours||0))*((app.duty||100)/100))}</span> ${t.wh}</span></div>
                 </div>
             </div>`;
             list.insertAdjacentHTML("beforeend", html);
@@ -620,11 +622,16 @@ if ('serviceWorker' in navigator) {
         const whEl = document.getElementById('summary-wh-' + i);
         
         if(surgeEl) {
-            surgeEl.innerHTML = (app.sync && app.surgeWatts) ? `${t.surgeText} <span class="value-amber">${fmt2(app.surgeWatts * (app.count||1))} ${t.wWord}</span>` : "";
+            if(app.sync && app.surgeWatts) {
+                surgeEl.style.display = 'block';
+                surgeEl.innerHTML = `${t.surgeText} <span class="value-amber"><span dir="ltr" style="display:inline-block;">${fmt2(app.surgeWatts * (app.count||1))}</span> ${t.wWord}</span>`;
+            } else {
+                surgeEl.style.display = 'none';
+            }
         }
         if(whEl) {
             const whVal = (app.watts||0)*(app.count||1)*((app.dayHours||0)+(app.nightHours||0))*((parseFloat(app.duty)||100)/100);
-            whEl.innerHTML = `${t.totalCons} <span class="value-green">${fmt2(whVal)} ${t.wh}</span>`;
+            whEl.innerHTML = `${t.totalCons} <span class="value-green"><span dir="ltr" style="display:inline-block;">${fmt2(whVal)}</span> ${t.wh}</span>`;
         }
     };
     
@@ -672,23 +679,25 @@ if ('serviceWorker' in navigator) {
         
         let isOverloaded = (dailyWh > 0) && ((sysVolt === 12 && (eTotal > 5000 || totalPanelPower > 3000 || invRequired > 3000)) || (sysVolt === 24 && (eTotal > 12000 || totalPanelPower > 5000 || invRequired > 5000)));
         
-        let mpptDisplay = `${fmt2(mpptCurrent)} ${t.ampWord}`;
+        let mpptDisplay = `<span dir="ltr" style="display:inline-block;">${fmt2(mpptCurrent)}</span> ${t.ampWord}`;
         if ((sysVolt !== 48 && mpptCurrent > 100) || (sysVolt === 48 && mpptCurrent > 120)) {
             let limit = (sysVolt === 48) ? 100 : 80;
             mpptDisplay += `<br><span style="font-size:11px; color:#ef4444; font-weight:normal;">(${t.mpptAlert1} ${Math.ceil(mpptCurrent/limit)} ${t.mpptAlert2} ${limit}A ${t.mpptAlert3})</span>`;
         }
         
-        document.getElementById("resTotalEnergy").innerText = `${fmt2(eTotal)} ${t.wh}${t.dayUnit}`;
-        document.getElementById("resBatteryAh").innerText = `${fmt2(battAh)} Ah`;
-        document.getElementById("resBatteryKwh").innerText = `${fmt2(battAh * sysVolt)} ${t.wh} (${battKwh.toFixed(2)} kWh)`;
-        document.getElementById("resPanelsCount").innerText = `${panelsCount.toLocaleString("en-US")} ${t.pnlWord} (${fmt2(totalPanelPower)} ${t.wWord})`;
+        document.getElementById("resTotalEnergy").innerHTML = `<span dir="ltr" style="display:inline-block;">${fmt2(eTotal)}</span> ${t.wh}${t.dayUnit}`;
+        document.getElementById("resBatteryAh").innerHTML = `<span dir="ltr" style="display:inline-block;">${fmt2(battAh)}</span> Ah`;
+        document.getElementById("resBatteryKwh").innerHTML = `<span dir="ltr" style="display:inline-block;">${fmt2(battAh * sysVolt)}</span> ${t.wh} (<span dir="ltr" style="display:inline-block;">${battKwh.toFixed(2)}</span> kWh)`;
+        document.getElementById("resPanelsCount").innerHTML = `<span dir="ltr" style="display:inline-block;">${panelsCount.toLocaleString("en-US")}</span> ${t.pnlWord} (<span dir="ltr" style="display:inline-block;">${fmt2(totalPanelPower)}</span> ${t.wWord})`;
         document.getElementById("resMpptCurrent").innerHTML = mpptDisplay;
         
         if (dailyWh > 0) {
             document.getElementById("resInverterWatts").innerHTML = isOverloaded ? 
                 `<div class="engineering-alert">⚠️ ${t.invAlert1}<br>${t.invAlert2} (${sysVolt}${t.invAlert3}<br>${t.invAlert4} <strong>${Math.max(5000, marketInv.find(s => s >= invRequired) || invRequired).toLocaleString("en-US")} ${t.invAlert5}</strong>، ${t.invAlert6}</div>` :
-                `<div style="display:flex; align-items:center; flex-wrap:wrap; gap:6px; justify-content:flex-end;"><span style="white-space: nowrap;">${finalInv.toLocaleString("en-US")} ${t.wWord}</span> <span class="stdSize">${t.stdSize}</span></div>`;
-        } else document.getElementById("resInverterWatts").innerHTML = `0 ${t.wWord}`;
+                `<div style="display:flex; align-items:center; flex-wrap:wrap; gap:6px; justify-content:flex-end;"><span style="white-space: nowrap;"><span dir="ltr" style="display:inline-block;">${finalInv.toLocaleString("en-US")}</span> ${t.wWord}</span> <span class="stdSize">${t.stdSize}</span></div>`;
+        } else {
+            document.getElementById("resInverterWatts").innerHTML = `<span dir="ltr" style="display:inline-block;">0</span> ${t.wWord}`;
+        }
     };
 
     window.resetToDefault = function() { 
