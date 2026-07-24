@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -61,6 +60,15 @@
         .custom-option:last-child { border-bottom: none; }
         .custom-option:hover { background-color: #0f172a; color: #10b981; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hybrid-accordion { border: 1px solid #0ea5e9; border-radius: 16px; margin-top: 20px; background-color: rgba(14, 165, 233, 0.05); overflow: hidden; transition: all 0.3s ease; }
+        .hybrid-accordion-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #38bdf8; font-weight: 700; font-size: 13.5px; user-select: none; }
+        .hybrid-accordion-header:hover { background-color: rgba(14, 165, 233, 0.1); }
+        .hybrid-accordion-body { max-height: 0; opacity: 0; padding: 0 16px; overflow: hidden; transition: all 0.3s ease; }
+        .hybrid-accordion.open .hybrid-accordion-body { max-height: 400px; opacity: 1; padding: 0 16px 16px 16px; }
+        .hybrid-icon { transition: transform 0.3s ease; font-size: 12px; }
+        .hybrid-accordion.open .hybrid-icon { transform: rotate(180deg); }
+        .hybrid-hint { font-size: 11.5px; color: #cbd5e1; margin-top: 8px; margin-bottom: 14px; line-height: 1.5; }
 
         .btn { width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
         .btn:active { transform: scale(0.98); }
@@ -136,7 +144,7 @@
             .print-client-box { background-color: #f8fafc !important; border: 1px solid #cbd5e1 !important; padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 14pt !important; display: flex; gap: 8px; }
             .print-client-name { color: #2563eb !important; font-weight: bold; }
 
-            .header, .pdf-accordion, button, .btn, .btn-add, .btn-delete, input[type="checkbox"], .checkbox-container, .social-links, .solar-footer, .lang-toggle, .google-auto-placed, ins.adsbygoogle { display: none !important; }
+            .header, .pdf-accordion, button, .btn, .btn-add, .btn-delete, input[type="checkbox"], .checkbox-container, .social-links, .solar-footer, .lang-toggle { display: none !important; }
             
             .section-title, .title-text { font-size: 16pt !important; color: #059669 !important; margin-bottom: 10px !important; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; text-align: start !important; }
             .device-counter { display: none !important; }
@@ -162,6 +170,15 @@
             .engineering-alert { display: block !important; background: #fff5f5 !important; border: 2px solid #dc2626 !important; color: #b91c1c !important; box-shadow: none !important; margin-top: 15px !important; padding: 15px !important; border-radius: 8px !important; font-size: 13pt !important; text-align: center !important; }
             .engineering-alert strong { color: #dc2626 !important; font-weight: bold !important; font-size: 14pt !important; }
             .print-footer-content { display: block !important; text-align: center; font-size: 11pt; color: #64748b; padding-top: 10px; border-top: 1px solid #cbd5e1; margin-top: 20px; font-weight: bold; }
+
+            .hybrid-accordion { border: 1px dashed #38bdf8 !important; background: #f0f9ff !important; margin-top: 15px !important; }
+            .hybrid-accordion-header { color: #0284c7 !important; padding: 10px !important; border-bottom: 1px solid #bae6fd !important; }
+            .hybrid-icon { display: none !important; }
+            .hybrid-accordion-body { max-height: none !important; opacity: 1 !important; display: block !important; padding: 10px 16px 16px 16px !important; }
+            .hybrid-hint { color: #334155 !important; }
+            
+            .hide-hybrid-print { display: none !important; }
+            .full-width-print { width: 100% !important; max-width: 100% !important; display: block !important; text-align: center !important; margin-top: 10px !important; }
         }
     </style>
 </head>
@@ -240,8 +257,40 @@
                                     <input type="hidden" id="dodValue" value="0.8">
                                 </div>
                             </div>
-
                         </div>
+
+                        <!-- النظام الهجين -->
+                        <div class="hybrid-accordion" id="hybridAccordion">
+                            <div class="hybrid-accordion-header" onclick="toggleHybridAccordion()">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span data-i18n="hybridTitle">🔌 إعدادات النظام الهجين (Hybrid - اختياري)</span>
+                                </div>
+                                <span class="hybrid-icon">▼</span>
+                            </div>
+                            <div class="hybrid-accordion-body">
+                                <div class="hybrid-hint" data-i18n="hybridHint">إذا كانت الكهرباء العمومية متوفرة، أدخل البيانات هنا لتقليل حجم المنظومة. (اتركها 0 لنظام مستقل).</div>
+                                
+                                <div class="grid-inputs">
+                                    <div class="input-group">
+                                        <label data-i18n="gridDayHoursLabel">ساعات الشحن نهاراً (ألواح):</label>
+                                        <input type="number" id="gridDayHours" value="0" min="0" max="24" step="0.5" lang="en">
+                                    </div>
+                                    <div class="input-group">
+                                        <label data-i18n="gridNightHoursLabel">ساعات الشحن ليلاً (بطارية):</label>
+                                        <input type="number" id="gridNightHours" value="0" min="0" max="24" step="0.5" lang="en">
+                                    </div>
+                                </div>
+                                
+                                <!-- حقل تيار الشحن في المنتصف بالأسفل -->
+                                <div class="grid-inputs full-width-print" style="grid-template-columns: 1fr; margin-top: 12px;">
+                                    <div class="input-group" style="max-width: 220px; margin: 0 auto; width: 100%;">
+                                        <label data-i18n="acAmpsLabel" style="text-align: center; width: 100%;">تيار شاحن الشبكة (Amps):</label>
+                                        <input type="number" id="acChargeCurrent" value="30" min="0" max="200" step="1" lang="en">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="section">
@@ -289,9 +338,8 @@
 
                     <footer class="solar-footer">
                         <p class="copyright-text" data-i18n="copyright">تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026</p>
-                        <p class="tagline" data-i18n="tagline">تطبيق حاسبة الطاقة الشمسية الذكية<br><span style="background: #eab308; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 6px;">V7 Pro</span></p>
+                        <p class="tagline" data-i18n="tagline">تطبيق حاسبة الطاقة الشمسية الذكية<br><span style="background: #eab308; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 6px;">V8 Pro</span></p>
                         
-                        <!-- حاوية العداد الظاهرة الآن بشكل احترافي -->
                         <div id="visitor-counter-box" style="margin-top: 15px; font-size: 13px; color: #94a3b8; text-align: center;">
                             <span data-i18n="visitorCountText">عدد زيارات الحاسبة: </span>
                             <span id="visitor-count" style="font-weight: bold; color: #10b981;" dir="ltr">...</span>
@@ -353,6 +401,9 @@ if ('serviceWorker' in navigator) {
             volt12: "12 فولت", volt24: "24 فولت", volt48: "48 فولت",
             panelWattsLabel: "قدرة اللوح المستهدف (W):", sunHoursLabel: "ساعات ذروة الشمس:",
             dodLabel: "نسبة حماية البطارية:", dod80: "20% أمان (DoD 80%)", dod50: "50% أمان (DoD 50%)",
+            hybridTitle: "🔌 إعدادات النظام الهجين (Hybrid - اختياري)",
+            hybridHint: "إذا كانت الكهرباء العمومية متوفرة، أدخل البيانات هنا لتقليل حجم المنظومة. (اتركها 0 لنظام مستقل).",
+            gridDayHoursLabel: "ساعات الشحن نهاراً (ألواح):", gridNightHoursLabel: "ساعات الشحن ليلاً (بطارية):", acAmpsLabel: "تيار شاحن الشبكة (Amps):",
             devicesList: "📋 جدول حصر أحمال الأجهزة:", addDevice: "+ إضافة جهاز جـديد",
             resultsTitle: "📊 نتائج ومخرجات المنظومة بالمعادلات",
             eTotal: "الطاقة الكلية شاملة الفقد (E_total):", battAh: "سعة بطارية الليثيوم المطلوبة:",
@@ -360,7 +411,7 @@ if ('serviceWorker' in navigator) {
             mpptCurrent: "تيار منظم الشحن الأدنى (MPPT):", invRequired: "القدرة المطلوبة للإنفرتر (Inverter):",
             resetData: "⚠️ تصفير البيانات (مسح كل شيء)",
             copyright: 'تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026',
-            tagline: 'تطبيق حاسبة الطاقة الشمسية الذكية<br><span style="background: #eab308; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 6px;">V7 Pro</span>',
+            tagline: 'تطبيق حاسبة الطاقة الشمسية الذكية<br><span style="background: #eab308; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 6px;">V8 Pro</span>',
             devNamePh: "اسم الجهاز", delBtn: "حذف", syncCb: "تزامن",
             contW: "القدرة المستمرة (واط):", contWPh: "للبطارية والألواح",
             surgeW: "قدرة الإقلاع (أجهزة ثقيلة):", surgeWPh: "للإنفرتر فقط",
@@ -389,6 +440,9 @@ if ('serviceWorker' in navigator) {
             volt12: "12 Volts", volt24: "24 Volts", volt48: "48 Volts",
             panelWattsLabel: "Target Panel Power (W):", sunHoursLabel: "Peak Sun Hours:",
             dodLabel: "Battery Protection (DoD):", dod80: "20% Safe (DoD 80%)", dod50: "50% Safe (DoD 50%)",
+            hybridTitle: "🔌 Hybrid System Settings (Optional)",
+            hybridHint: "If grid/gen is available, enter details to reduce required system size. (Leave 0 for Off-Grid).",
+            gridDayHoursLabel: "Daytime Charge Hours (Panels):", gridNightHoursLabel: "Nighttime Charge Hours (Battery):", acAmpsLabel: "AC Charge Current (A):",
             devicesList: "📋 Appliances Load Schedule:", addDevice: "+ Add New Appliance",
             resultsTitle: "📊 System Output & Calculations",
             eTotal: "Total Energy with Losses (E_total):", battAh: "Required Lithium Battery Capacity:",
@@ -396,7 +450,7 @@ if ('serviceWorker' in navigator) {
             mpptCurrent: "Minimum MPPT Charge Current:", invRequired: "Required Inverter Capacity:",
             resetData: "⚠️ Reset Data (Clear All)",
             copyright: 'Designed & Developed by <span class="author-name">Mazen Al-Awdhali</span> &copy; 2026',
-            tagline: 'Smart Solar Calculator App<br><span style="background: #eab308; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 6px;">V7 Pro</span>',
+            tagline: 'Smart Solar Calculator App<br><span style="background: #eab308; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 6px;">V8 Pro</span>',
             devNamePh: "Appliance Name", delBtn: "Delete", syncCb: "Sync",
             contW: "Continuous Power (W):", contWPh: "For Battery/Panels",
             surgeW: "Surge Power (Heavy):", surgeWPh: "For Inverter Only",
@@ -511,6 +565,10 @@ if ('serviceWorker' in navigator) {
         document.getElementById('pdfAccordion').classList.toggle('open');
     };
 
+    window.toggleHybridAccordion = function() {
+        document.getElementById('hybridAccordion').classList.toggle('open');
+    };
+
     window.saveEngineerName = function(val) {
         localStorage.setItem("solar_engineer_name", val);
     };
@@ -532,7 +590,6 @@ if ('serviceWorker' in navigator) {
         window.print();
     };
 
-    // دالة العداد مع الألوان المرئية للجميع
     window.updateVisitorCount = async function() {
         const counterElement = document.getElementById('visitor-count');
         const t = dict[window.currentLang];
@@ -541,7 +598,7 @@ if ('serviceWorker' in navigator) {
 
         if (!navigator.onLine) {
             counterElement.textContent = t.visitorCountOffline;
-            counterElement.style.color = '#f59e0b'; // لون برتقالي عند انقطاع النت
+            counterElement.style.color = '#f59e0b'; 
             return;
         }
 
@@ -550,35 +607,40 @@ if ('serviceWorker' in navigator) {
             if (!response.ok) throw new Error('Network response was not ok');
             
             const data = await response.json();
-            
-            // إضافة الرقم 9000 كقاعدة تاريخية سابقة
             const historicalOffset = 9000;
             const totalVisits = data.count + historicalOffset;
             
             counterElement.textContent = totalVisits.toLocaleString('en-US');
-            counterElement.style.color = '#10b981'; // لون أخضر عند جلب الرقم بنجاح
+            counterElement.style.color = '#10b981'; 
             
         } catch (error) {
             console.error('تعذر جلب العداد:', error);
             counterElement.textContent = t.visitorCountError;
-            counterElement.style.color = '#ef4444'; // لون أحمر عند حدوث خطأ
+            counterElement.style.color = '#ef4444'; 
         }
     };
 
     window.startApp = function() {
         try { const data = localStorage.getItem("solar_appliances_data_v6"); appliances = data ? JSON.parse(data) : []; } catch(e) { appliances = []; }
-        const ids = ["systemVoltage","panelWatts","sunHours","dodValue"];
-        const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_dod_value"];
+        const ids = ["systemVoltage","panelWatts","sunHours","dodValue", "gridDayHours", "gridNightHours", "acChargeCurrent"];
+        const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_dod_value", "solar_grid_day_hours", "solar_grid_night_hours", "solar_ac_amps"];
         ids.forEach((id, i) => { if(localStorage.getItem(keys[i])) document.getElementById(id).value = localStorage.getItem(keys[i]); });
         
         const savedEng = localStorage.getItem("solar_engineer_name");
         if(savedEng) document.getElementById("engineerNameInput").value = savedEng;
 
+        // فتح الأكورديون الهجين تلقائياً إذا كان هناك أي بيانات مخزنة لساعات الشحن
+        if(parseFloat(document.getElementById("gridDayHours").value) > 0 || parseFloat(document.getElementById("gridNightHours").value) > 0) {
+            document.getElementById('hybridAccordion').classList.add('open');
+        }
+
         document.getElementById("panelWatts").addEventListener("input", saveDataAndCalculate);
         document.getElementById("sunHours").addEventListener("input", saveDataAndCalculate);
+        document.getElementById("gridDayHours").addEventListener("input", saveDataAndCalculate);
+        document.getElementById("gridNightHours").addEventListener("input", saveDataAndCalculate);
+        document.getElementById("acChargeCurrent").addEventListener("input", saveDataAndCalculate);
         
         applyLanguage();
-        
         window.updateVisitorCount();
     };
 
@@ -587,7 +649,7 @@ if ('serviceWorker' in navigator) {
         const counterElement = document.getElementById('visitor-count');
         if (counterElement) {
             counterElement.textContent = dict[window.currentLang].visitorCountOffline;
-            counterElement.style.color = '#f59e0b'; // لون برتقالي
+            counterElement.style.color = '#f59e0b'; 
         }
     });
 
@@ -693,6 +755,9 @@ if ('serviceWorker' in navigator) {
         localStorage.setItem("solar_panel_watts", document.getElementById("panelWatts").value);
         localStorage.setItem("solar_sun_hours", document.getElementById("sunHours").value);
         localStorage.setItem("solar_dod_value", document.getElementById("dodValue").value);
+        localStorage.setItem("solar_grid_day_hours", document.getElementById("gridDayHours").value);
+        localStorage.setItem("solar_grid_night_hours", document.getElementById("gridNightHours").value);
+        localStorage.setItem("solar_ac_amps", document.getElementById("acChargeCurrent").value);
         calculateResults();
     };
 
@@ -703,6 +768,17 @@ if ('serviceWorker' in navigator) {
         const sunHours = parseFloat(document.getElementById("sunHours").value) || 6;
         const dodValue = parseFloat(document.getElementById("dodValue").value) || 0.8;
         
+        const gridDayHours = parseFloat(document.getElementById("gridDayHours").value) || 0;
+        const gridNightHours = parseFloat(document.getElementById("gridNightHours").value) || 0;
+        const acChargeCurrent = parseFloat(document.getElementById("acChargeCurrent").value) || 0;
+        
+        // تطبيق فئة الإخفاء للطباعة إذا كان الهجين معطلاً
+        if (gridDayHours > 0 || gridNightHours > 0) {
+            document.getElementById("hybridAccordion").classList.remove("hide-hybrid-print");
+        } else {
+            document.getElementById("hybridAccordion").classList.add("hide-hybrid-print");
+        }
+
         let dailyWh = 0, nightWh = 0, syncSurge = 0, maxContinuous = 0;
         appliances.forEach(app => {
             const w = parseFloat(app.watts)||0, count = parseFloat(app.count)||0, dH = parseFloat(app.dayHours)||0, nH = parseFloat(app.nightHours)||0, duty = parseFloat(app.duty)||0;
@@ -716,10 +792,24 @@ if ('serviceWorker' in navigator) {
         const PANEL_PERFORMANCE_RATIO = 0.75;
         const INVERTER_SAFETY_FACTOR = 1.20;
 
-        const eTotal = dailyWh * SYSTEM_LOSS_FACTOR, eNightTotal = nightWh * SYSTEM_LOSS_FACTOR;
-        const battAh = sysVolt > 0 ? eNightTotal / (sysVolt * dodValue) : 0;
+        // حساب طاقة الشحن حسب الفترة (طاقة تيار مستمر تدخل النظام: ساعات × أمبير × جهد)
+        const gridDayWh = gridDayHours * acChargeCurrent * sysVolt;
+        const gridNightWh = gridNightHours * acChargeCurrent * sysVolt;
+
+        // إجمالي الطاقة المطلوبة بعد تطبيق معامل الفقد الكلي للنظام (نهاراً وليلاً)
+        const eTotal = dailyWh * SYSTEM_LOSS_FACTOR;
+        const eNightTotal = nightWh * SYSTEM_LOSS_FACTOR;
+
+        // خصم طاقة المولد النهاري من إجمالي الطاقة اليومية (بعد الفقد) الملقاة على الألواح
+        const solarDailyWh = Math.max(0, eTotal - gridDayWh);
+
+        // خصم طاقة المولد الليلي من الطاقة الليلية (بعد الفقد) الملقاة على البطاريات
+        const solarNightWh = Math.max(0, eNightTotal - gridNightWh);
+        const battAh = sysVolt > 0 ? solarNightWh / (sysVolt * dodValue) : 0;
         const battKwh = (battAh * sysVolt) / 1000;
-        const reqPv = sunHours > 0 ? dailyWh / (sunHours * PANEL_PERFORMANCE_RATIO) : 0;
+        
+        // حساب الألواح بناءً على العبء المتبقي بعد خصم الشحن النهاري
+        const reqPv = sunHours > 0 ? solarDailyWh / (sunHours * PANEL_PERFORMANCE_RATIO) : 0;
         const panelsCount = panelWatts > 0 ? Math.ceil(reqPv / panelWatts) : 0;
         const totalPanelPower = panelsCount * panelWatts;
         const mpptCurrent = sysVolt > 0 ? totalPanelPower / sysVolt : 0;
@@ -760,8 +850,16 @@ if ('serviceWorker' in navigator) {
             document.getElementById("panelWatts").value="450"; 
             document.getElementById("sunHours").value="6"; 
             document.getElementById("dodValue").value="0.8"; 
+            
+            document.getElementById("gridDayHours").value="0";
+            document.getElementById("gridNightHours").value="0";
+            
+            document.getElementById("acChargeCurrent").value="30";
             document.getElementById("engineerNameInput").value="";
             document.getElementById("clientNameInput").value="";
+            
+            document.getElementById('hybridAccordion').classList.remove('open');
+            
             saveDataAndCalculate(); 
             applyLanguage(); 
         } 
@@ -772,3 +870,4 @@ if ('serviceWorker' in navigator) {
 </script>
 </body>
 </html>
+
