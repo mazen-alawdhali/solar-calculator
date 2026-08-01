@@ -1443,46 +1443,77 @@ if ('serviceWorker' in navigator) {
         const acDist = (entDailyKwh > 0) ? 0 : (aDistEl ? (parseFloat(aDistEl.value) || 0) : 0);
         const climateFactor = climEl ? (parseFloat(climEl.value) || 1.25) : 1.25;
         
-        let dailyWh = 0, nightWh = 0, syncSurge = 0, maxContinuous = 0;
+        let dayLoadWh = 0, nightLoadWh = 0, syncSurge = 0, maxContinuous = 0;
         
         if (entDailyKwh > 0) {
-            dailyWh = entDailyKwh * 1000;
-            nightWh = dailyWh * 0.5;
-            let entPeakLoad = dailyWh / 5;
+            let totalLoad = entDailyKwh * 1000;
+            nightLoadWh = totalLoad * 0.5;
+            dayLoadWh = totalLoad - nightLoadWh;
+            let entPeakLoad = totalLoad / 5;
             maxContinuous = entPeakLoad;
             syncSurge = maxContinuous;
         } else {
             appliances.forEach(app => {
                 const w = parseFloat(app.watts)||0, count = parseFloat(app.count)||0, dH = parseFloat(app.dayHours)||0, nH = parseFloat(app.nightHours)||0, duty = parseFloat(app.duty)||0;
-                dailyWh += (w * count * (dH + nH) * (duty/100));
-                nightWh += (w * count * nH * (duty/100));
+                let itemDay = w * count * dH * (duty/100);
+                let itemNight = w * count * nH * (duty/100);
+                dayLoadWh += itemDay;
+                nightLoadWh += itemNight;
                 maxContinuous += (w * count);
                 if(app.sync) syncSurge += (parseFloat(app.surgeWatts)||w) * count;
             });
+        }
+        
+        let totalDailyWh = dayLoadWh + nightLoadWh;
+
+        let maxDayHours = 0;
+        let maxNightHours = 0;
+        if (entDailyKwh === 0) {
+            appliances.forEach(app => {
+                let dH = parseFloat(app.dayHours)||0;
+                let nH = parseFloat(app.nightHours)||0;
+                if (dH > maxDayHours) maxDayHours = dH;
+                if (nH > maxNightHours) maxNightHours = nH;
+            });
+        } else {
+            maxDayHours = 12;
+            maxNightHours = 12;
         }
 
         const SYSTEM_LOSS_FACTOR = 1.3;
         const PANEL_PERFORMANCE_RATIO = 0.75;
         const INVERTER_SAFETY_FACTOR = 1.20;
 
-        const gridDayWh = gridDayHours * acChargeCurrent * sysVolt;
-        const gridNightWh = gridNightHours * acChargeCurrent * sysVolt;
-
-        const eTotal = dailyWh * SYSTEM_LOSS_FACTOR;
-        const eNightTotal = nightWh * SYSTEM_LOSS_FACTOR;
-
-        const solarDailyWh = Math.max(0, eTotal - gridDayWh);
-        const solarNightWh = Math.max(0, eNightTotal - gridNightWh);
-        const minBufferWh = dailyWh * 0.15;
-        const effectiveSolarNightWh = Math.max(solarNightWh, minBufferWh);
+        const gridPowerW = acChargeCurrent * sysVolt;
         
-        let battKwh = (effectiveSolarNightWh / dodValue) / 1000;
-        if (dailyWh > 0) {
+        const avgLoadDayW = maxDayHours > 0 ? (dayLoadWh / maxDayHours) : 0;
+        const gridDirectDayWh = Math.min(gridPowerW, avgLoadDayW) * Math.min(gridDayHours, maxDayHours);
+        const gridChargeDayWh = Math.max(0, gridPowerW - avgLoadDayW) * gridDayHours;
+
+        const avgLoadNightW = maxNightHours > 0 ? (nightLoadWh / maxNightHours) : 0;
+        const gridDirectNightWh = Math.min(gridPowerW, avgLoadNightW) * Math.min(gridNightHours, maxNightHours);
+        const gridChargeNightWh = Math.max(0, gridPowerW - avgLoadNightW) * gridNightHours;
+
+        const eDayTotal = dayLoadWh * SYSTEM_LOSS_FACTOR;
+        const eNightTotal = nightLoadWh * SYSTEM_LOSS_FACTOR;
+        const eTotal = eDayTotal + eNightTotal;
+
+        // 1. حساب الطاقة المطلوبة للبطارية (سعة التخزين الحقيقية)
+        const nightOutageWh = Math.max(0, eNightTotal - (gridDirectNightWh * SYSTEM_LOSS_FACTOR));
+        let battKwh = (nightOutageWh / dodValue) / 1000;
+        
+        if (totalDailyWh > 0) {
             let minBattKwh = (sysVolt === 12) ? 1.28 : 2.56; 
             battKwh = Math.max(battKwh, minBattKwh);
         }
+
+        // 2. حساب الطاقة المطلوبة من الألواح الشمسية (الشحن والنهار)
+        const totalGridChargeEnergy = gridChargeDayWh + gridChargeNightWh;
+        const solarReqNightWh = Math.max(0, nightOutageWh - totalGridChargeEnergy);
+        const dayOutageWh = Math.max(0, eDayTotal - (gridDirectDayWh * SYSTEM_LOSS_FACTOR));
         
-        const reqPv = sunHours > 0 ? solarDailyWh / (sunHours * PANEL_PERFORMANCE_RATIO) : 0;
+        const totalSolarWhRequired = dayOutageWh + solarReqNightWh;
+        const reqPv = sunHours > 0 ? totalSolarWhRequired / (sunHours * PANEL_PERFORMANCE_RATIO) : 0;
         const panelsCount = panelWatts > 0 ? Math.ceil(reqPv / panelWatts) : 0;
         const totalPanelPower = panelsCount * panelWatts;
         
@@ -1495,7 +1526,7 @@ if ('serviceWorker' in navigator) {
              finalInv = Math.ceil(invRequired / 1000) * 1000; 
         }
 
-        let isOverloaded = (dailyWh > 0 && entDailyKwh === 0) && ((sysVolt === 12 && (eTotal > 5000 || totalPanelPower > 3000 || invRequired > 3000)) || (sysVolt === 24 && (eTotal > 12000 || totalPanelPower > 5000 || invRequired > 5000)));
+        let isOverloaded = (totalDailyWh > 0 && entDailyKwh === 0) && ((sysVolt === 12 && (eTotal > 5000 || totalPanelPower > 3000 || invRequired > 3000)) || (sysVolt === 24 && (eTotal > 12000 || totalPanelPower > 5000 || invRequired > 5000)));
 
         let effectiveSysVolt = sysVolt;
         let standardRackKwh = 5.12; 
@@ -1529,7 +1560,7 @@ if ('serviceWorker' in navigator) {
         if(document.getElementById("resMpptCurrent")) document.getElementById("resMpptCurrent").innerHTML = mpptDisplay;
         
         if(document.getElementById("resInverterWatts")) {
-            if (dailyWh > 0) {
+            if (totalDailyWh > 0) {
                 document.getElementById("resInverterWatts").innerHTML = isOverloaded ? 
                     `<div class="engineering-alert" style="direction: rtl;">⚠️ ${t.invAlert1}<br>${t.invAlert2} (${sysVolt}${t.invAlert3}<br>${t.invAlert4} <strong>${Math.max(5000, marketInv.find(s => s >= invRequired) || invRequired).toLocaleString("en-US")} ${t.invAlert5}</strong>، ${t.invAlert6}</div>` :
                     `<div style="display:flex; justify-content:space-between; align-items:center; width:100%; flex-wrap:nowrap;"><span><span dir="ltr" style="display:inline-block;">${finalInv.toLocaleString("en-US")}</span> ${t.wWord}</span> <span class="stdSize" style="margin:0;">${t.stdSize}</span></div>`;
@@ -1542,7 +1573,7 @@ if ('serviceWorker' in navigator) {
         const alertContainer = document.getElementById("ent-warning-container");
         
         if (enterpriseWrapper && alertContainer) {
-            if (entDailyKwh > 0 && dailyWh > 0) {
+            if (entDailyKwh > 0 && totalDailyWh > 0) {
                 enterpriseWrapper.style.display = "block";
                 
                 let archTitle = "";
@@ -1641,7 +1672,7 @@ if ('serviceWorker' in navigator) {
         const industrialSlot = document.getElementById("industrial-warning-slot");
         
         if (cablesWrapper) {
-            if ((battDist > 0 || acDist > 0) && dailyWh > 0 && entDailyKwh === 0) {
+            if ((battDist > 0 || acDist > 0) && totalDailyWh > 0 && entDailyKwh === 0) {
                 cablesWrapper.style.display = "block";
                 
                 let isIndustrialScale = finalInv > 30000;
