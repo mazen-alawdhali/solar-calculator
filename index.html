@@ -309,6 +309,105 @@
             .hide-hybrid-print { display: none !important; }
             .full-width-print { width: 100% !important; max-width: 100% !important; display: block !important; text-align: center !important; margin-top: 8px !important; }
         }
+
+        /* --- Custom Modal CSS --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            color: #f1f5f9;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .modal-message {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        
+        .modal-btn:active {
+            transform: scale(0.96);
+        }
+
+        .modal-btn-cancel {
+            background-color: #334155;
+            color: #e2e8f0;
+        }
+        
+        .modal-btn-cancel:hover {
+            opacity: 0.9;
+        }
+
+        .modal-btn-confirm {
+            background-color: #dc2626;
+            color: white;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .modal-btn-confirm:hover {
+            background-color: #b91c1c;
+        }
     </style>
 </head>
 <body>
@@ -649,6 +748,19 @@
     </tfoot>
 </table>
 
+<!-- Custom Modal HTML -->
+<div class="modal-overlay" id="customModal">
+    <div class="modal-container">
+        <div class="modal-icon">⚠️</div>
+        <div class="modal-title" id="modalTitle">تأكيد مسح البيانات</div>
+        <div class="modal-message" id="modalMessage">هل أنت متأكد من مسح جميع الأجهزة والبيانات المدخلة؟ لا يمكن التراجع عن هذه الخطوة.</div>
+        <div class="modal-buttons">
+            <button class="modal-btn modal-btn-cancel" onclick="closeModal()" id="modalCancelBtn">إلغاء</button>
+            <button class="modal-btn modal-btn-confirm" onclick="confirmResetAction()" id="modalConfirmBtn">نعم، امسح البيانات</button>
+        </div>
+    </div>
+</div>
+
 <script>
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -750,7 +862,6 @@ if ('serviceWorker' in navigator) {
             invAlert4: "المقترح الفني: إنفرتر بقدرة", 
             invAlert5: "واط", 
             invAlert6: "مع ضرورة الترقية الفورية لنظام 48 فولت.",
-            confirmDel: "⚠️ هل أنت متأكد من مسح جميع الأجهزة والبيانات؟",
             pdfSettingsTitle: "📄 إعدادات تصدير التقرير (PDF)", engNameLabel: "اسم المهندس/المؤسسة:",
             clientNameLabel: "اسم العميل/المشروع:", techReportTitle: "تقرير تصميم منظومة طاقة شمسية",
             prepBy: "إعداد:", dateTxt: "التاريخ:", exportPdfBtn: "📄 تصدير التقرير PDF",
@@ -829,7 +940,6 @@ if ('serviceWorker' in navigator) {
             invAlert4: "Technical Proposal: Inverter with", 
             invAlert5: "W", 
             invAlert6: "with immediate upgrade to 48V system required.",
-            confirmDel: "⚠️ Are you sure you want to clear all appliances and data?",
             pdfSettingsTitle: "📄 PDF Report Settings", engNameLabel: "Engineer/Company Name:",
             clientNameLabel: "Client/Project Name:", techReportTitle: "Solar System Design Report",
             prepBy: "Prepared by:", dateTxt: "Date:", exportPdfBtn: "📄 Export PDF Report",
@@ -1582,42 +1692,74 @@ if ('serviceWorker' in navigator) {
         }
     };
 
+    // Custom Modal Functions
+    window.openResetModal = function() {
+        const modal = document.getElementById('customModal');
+        const t = dict[window.currentLang];
+        
+        if (window.currentLang === 'en') {
+            document.getElementById('modalTitle').innerText = 'Confirm Data Reset';
+            document.getElementById('modalMessage').innerText = 'Are you sure you want to clear all appliances and data? This action cannot be undone.';
+            document.getElementById('modalCancelBtn').innerText = 'Cancel';
+            document.getElementById('modalConfirmBtn').innerText = 'Yes, Clear Data';
+        } else {
+            document.getElementById('modalTitle').innerText = 'تأكيد مسح البيانات';
+            document.getElementById('modalMessage').innerText = 'هل أنت متأكد من مسح جميع الأجهزة والبيانات المدخلة؟ لا يمكن التراجع عن هذه الخطوة.';
+            document.getElementById('modalCancelBtn').innerText = 'إلغاء';
+            document.getElementById('modalConfirmBtn').innerText = 'نعم، امسح البيانات';
+        }
+        
+        modal.classList.add('active');
+    };
+
+    window.closeModal = function() {
+        const modal = document.getElementById('customModal');
+        modal.classList.remove('active');
+    };
+
+    window.confirmResetAction = function() {
+        window.closeModal();
+        window.performReset();
+    };
+
     window.resetToDefault = function() { 
-        if(confirm(dict[window.currentLang].confirmDel)) { 
-            localStorage.clear(); 
-            appliances=[]; 
-            if(document.getElementById("systemVoltage")) document.getElementById("systemVoltage").value="48"; 
-            if(document.getElementById("panelWatts")) document.getElementById("panelWatts").value="450"; 
-            if(document.getElementById("sunHours")) document.getElementById("sunHours").value="6"; 
-            if(document.getElementById("dodValue")) document.getElementById("dodValue").value="0.8"; 
-            
-            if(document.getElementById("gridDayHours")) document.getElementById("gridDayHours").value="";
-            if(document.getElementById("gridNightHours")) document.getElementById("gridNightHours").value="";
-            if(document.getElementById("acChargeCurrent")) document.getElementById("acChargeCurrent").value="";
-            
-            if(document.getElementById("enterpriseSystemType")) document.getElementById("enterpriseSystemType").value="single";
-            if(document.getElementById("sysTypeDisplay")) document.getElementById("sysTypeDisplay").innerText = dict[window.currentLang].singlePhaseOpt;
-            if(document.getElementById("enterpriseDailyKwh")) document.getElementById("enterpriseDailyKwh").value="";
-            
-            if(document.getElementById("battDistance")) document.getElementById("battDistance").value="";
-            if(document.getElementById("acDistance")) document.getElementById("acDistance").value="";
-            if(document.getElementById("climateFactor")) document.getElementById("climateFactor").value="1.25";
-            
-            if(document.getElementById("engineerNameInput")) document.getElementById("engineerNameInput").value="";
-            if(document.getElementById("clientNameInput")) document.getElementById("clientNameInput").value="";
-            
-            const hybAcc = document.getElementById('hybridAccordion');
-            if(hybAcc) hybAcc.classList.remove('open', 'has-data');
-            
-            const cabAcc = document.getElementById('cablesAccordion');
-            if(cabAcc) cabAcc.classList.remove('open', 'has-data');
-            
-            const entAcc = document.getElementById('enterpriseAccordion');
-            if(entAcc) entAcc.classList.remove('open', 'has-data');
-            
-            saveDataAndCalculate(); 
-            applyLanguage(); 
-        } 
+        window.openResetModal();
+    };
+    
+    window.performReset = function() {
+        localStorage.clear(); 
+        appliances=[]; 
+        if(document.getElementById("systemVoltage")) document.getElementById("systemVoltage").value="48"; 
+        if(document.getElementById("panelWatts")) document.getElementById("panelWatts").value="450"; 
+        if(document.getElementById("sunHours")) document.getElementById("sunHours").value="6"; 
+        if(document.getElementById("dodValue")) document.getElementById("dodValue").value="0.8"; 
+        
+        if(document.getElementById("gridDayHours")) document.getElementById("gridDayHours").value="";
+        if(document.getElementById("gridNightHours")) document.getElementById("gridNightHours").value="";
+        if(document.getElementById("acChargeCurrent")) document.getElementById("acChargeCurrent").value="";
+        
+        if(document.getElementById("enterpriseSystemType")) document.getElementById("enterpriseSystemType").value="single";
+        if(document.getElementById("sysTypeDisplay")) document.getElementById("sysTypeDisplay").innerText = dict[window.currentLang].singlePhaseOpt;
+        if(document.getElementById("enterpriseDailyKwh")) document.getElementById("enterpriseDailyKwh").value="";
+        
+        if(document.getElementById("battDistance")) document.getElementById("battDistance").value="";
+        if(document.getElementById("acDistance")) document.getElementById("acDistance").value="";
+        if(document.getElementById("climateFactor")) document.getElementById("climateFactor").value="1.25";
+        
+        if(document.getElementById("engineerNameInput")) document.getElementById("engineerNameInput").value="";
+        if(document.getElementById("clientNameInput")) document.getElementById("clientNameInput").value="";
+        
+        const hybAcc = document.getElementById('hybridAccordion');
+        if(hybAcc) hybAcc.classList.remove('open', 'has-data');
+        
+        const cabAcc = document.getElementById('cablesAccordion');
+        if(cabAcc) cabAcc.classList.remove('open', 'has-data');
+        
+        const entAcc = document.getElementById('enterpriseAccordion');
+        if(entAcc) entAcc.classList.remove('open', 'has-data');
+        
+        saveDataAndCalculate(); 
+        applyLanguage(); 
     };
     
     window.onload = window.startApp;
