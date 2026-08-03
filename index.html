@@ -89,7 +89,7 @@
         .enterprise-accordion-header:hover { background-color: rgba(5, 150, 105, 0.15); }
         
         .hybrid-accordion-body, .cables-accordion-body, .enterprise-accordion-body { max-height: 0; opacity: 0; padding: 0 16px; overflow: hidden; transition: all 0.3s ease; }
-        .hybrid-accordion.open .hybrid-accordion-body, .cables-accordion.open .cables-accordion-body, .enterprise-accordion.open .enterprise-accordion-body { max-height: 800px; opacity: 1; padding: 0 16px 20px 16px; overflow: visible; }
+        .hybrid-accordion.open .hybrid-accordion-body, .cables-accordion.open .cables-accordion-body, .enterprise-accordion.open .enterprise-accordion-body { max-height: 1200px; opacity: 1; padding: 0 16px 20px 16px; overflow: visible; }
         
         .hybrid-icon, .cables-icon, .enterprise-icon { transition: transform 0.3s ease; font-size: 12px; }
         .hybrid-accordion.open .hybrid-icon, .cables-accordion.open .cables-icon, .enterprise-accordion.open .enterprise-icon { transform: rotate(180deg); }
@@ -572,6 +572,24 @@
                                 <div class="hybrid-hint" data-i18n="enterpriseHint">مخصصة للمشاريع التجارية، المصانع، والمباني الكبيرة لتحديد حجم المنظومة فوراً:</div>
                                 
                                 <div class="grid-inputs">
+                                    <!-- نمط الاستهلاك -->
+                                    <div class="input-group" style="grid-column: span 2;">
+                                        <label data-i18n="entLoadProfileLbl">نمط الاستهلاك اليومي:</label>
+                                        <div class="custom-select-wrapper">
+                                            <div class="custom-select-display" onclick="toggleDropdown('loadProfileDropdown')">
+                                                <span id="loadProfileDisplay" data-i18n="prof50">50% نهاراً / 50% ليلاً (افتراضي)</span>
+                                                <span>▼</span>
+                                            </div>
+                                            <div class="custom-select-options" id="loadProfileDropdown">
+                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '50/50', 'prof50', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof50">50% نهاراً / 50% ليلاً (افتراضي)</div>
+                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '70/30', 'prof70', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof70">70% نهاراً / 30% ليلاً (مشاريع وتجاري)</div>
+                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '100/0', 'prof100', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof100">100% نهاراً / 0% ليلاً (تشغيل نهاري فقط)</div>
+                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '30/70', 'prof30', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof30">30% نهاراً / 70% ليلاً (إنارة شوارع/مراقبة)</div>
+                                            </div>
+                                            <input type="hidden" id="entLoadProfile" value="50/50">
+                                        </div>
+                                    </div>
+
                                     <div class="input-group">
                                         <label data-i18n="systemTypeLabel">نوع النظام الكهربائي:</label>
                                         <div class="custom-select-wrapper">
@@ -660,6 +678,15 @@
                                     <div class="enterprise-detail-block" id="resEntPhaseRow" style="display: none;">
                                         <div class="enterprise-detail-label" data-i18n="entPhaseLbl">القدرة لكل طور (Phase):</div>
                                         <div class="enterprise-detail-val value-blue" id="resEntPhaseVal" dir="ltr">-</div>
+                                    </div>
+
+                                    <div class="enterprise-detail-block" id="resEntBattCableRow" style="display: none;">
+                                        <div class="enterprise-detail-label" data-i18n="entBattCableLbl">كابل وقاطع البطارية الرئيسي:</div>
+                                        <div class="enterprise-detail-val value-amber" id="resEntBattCableVal" dir="ltr">-</div>
+                                    </div>
+                                    <div class="enterprise-detail-block" id="resEntPvCableRow" style="display: none;">
+                                        <div class="enterprise-detail-label" data-i18n="entPvCableLbl">كابل وقاطع النازل من الألواح:</div>
+                                        <div class="enterprise-detail-val value-green" id="resEntPvCableVal" dir="ltr">-</div>
                                     </div>
                                     
                                     <div id="ent-warning-container"></div>
@@ -810,6 +837,15 @@ if ('serviceWorker' in navigator) {
             entDailyLoadLabel: "الاستهلاك اليومي المطلوب (kWh):",
             entKwhPh: "مثال: 50 كيلوواط",
             
+            entLoadProfileLbl: "نمط الاستهلاك اليومي:",
+            prof50: "50% نهاراً / 50% ليلاً (افتراضي)",
+            prof70: "70% نهاراً / 30% ليلاً (مشاريع وتجاري)",
+            prof100: "100% نهاراً / 0% ليلاً (تشغيل نهاري فقط)",
+            prof30: "30% نهاراً / 70% ليلاً (إنارة شوارع/مراقبة)",
+            entBattCableLbl: "كابل وقاطع البطارية الرئيسي:",
+            entPvCableLbl: "كابل وقاطع النازل من الألواح:",
+            bufferNoteAr: "(سعة طوارئ واستقرار)",
+            
             entCardTitle: "🏭 هيكلية المنظومة التجارية والهندسية:",
             entSysTypeLbl: "معمارية النظام:",
             entInvertersLbl: "توزيع العواكس بالتوازي:",
@@ -888,6 +924,15 @@ if ('serviceWorker' in navigator) {
             entDailyLoadLabel: "Required Daily Load (kWh):",
             entKwhPh: "e.g., 50 kWh",
             
+            entLoadProfileLbl: "Daily Load Profile:",
+            prof50: "50% Day / 50% Night (Default)",
+            prof70: "70% Day / 30% Night (Commercial)",
+            prof100: "100% Day / 0% Night (Daytime only)",
+            prof30: "30% Day / 70% Night (Streetlights/CCTV)",
+            entBattCableLbl: "Main Battery Cable & Breaker:",
+            entPvCableLbl: "Main PV String Cable & Breaker:",
+            bufferNoteAr: "(Stability Buffer)",
+
             entCardTitle: "🏭 Commercial & Engineering Architecture:",
             entSysTypeLbl: "System Architecture:",
             entInvertersLbl: "Inverter Parallel Setup:",
@@ -1063,6 +1108,16 @@ if ('serviceWorker' in navigator) {
         if(document.getElementById("clientNameInput")) document.getElementById("clientNameInput").placeholder = t.clientNamePh;
         if(document.getElementById("enterpriseDailyKwh")) document.getElementById("enterpriseDailyKwh").placeholder = t.entKwhPh;
         
+        const entProfEl = document.getElementById('entLoadProfile');
+        const entProf = entProfEl ? entProfEl.value : "50/50";
+        if(document.getElementById('loadProfileDisplay')) {
+            let txt = t.prof50;
+            if(entProf === "70/30") txt = t.prof70;
+            else if(entProf === "100/0") txt = t.prof100;
+            else if(entProf === "30/70") txt = t.prof30;
+            document.getElementById('loadProfileDisplay').innerText = txt;
+        }
+        
         const printStyle = document.getElementById('dynamic-print-style');
         if(printStyle) {
             if (window.currentLang === 'en') {
@@ -1156,8 +1211,8 @@ if ('serviceWorker' in navigator) {
         try {
             try { const data = localStorage.getItem("solar_appliances_data_v11"); appliances = data ? JSON.parse(data) : []; } catch(e) { appliances = []; }
             
-            const ids = ["systemVoltage","panelWatts","sunHours","dodValue", "gridDayHours", "gridNightHours", "acChargeCurrent", "enterpriseSystemType", "enterpriseDailyKwh"];
-            const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_dod_value", "solar_grid_day_hours", "solar_grid_night_hours", "solar_ac_amps", "solar_ent_sys_type", "solar_ent_daily_kwh"];
+            const ids = ["systemVoltage","panelWatts","sunHours","dodValue", "gridDayHours", "gridNightHours", "acChargeCurrent", "enterpriseSystemType", "enterpriseDailyKwh", "entLoadProfile"];
+            const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_dod_value", "solar_grid_day_hours", "solar_grid_night_hours", "solar_ac_amps", "solar_ent_sys_type", "solar_ent_daily_kwh", "solar_ent_profile"];
             
             ids.forEach((id, i) => { 
                 const el = document.getElementById(id);
@@ -1167,6 +1222,9 @@ if ('serviceWorker' in navigator) {
             
             const entSysEl = document.getElementById("enterpriseSystemType");
             if(entSysEl && !entSysEl.value) entSysEl.value = "single";
+
+            const entProfEl = document.getElementById("entLoadProfile");
+            if(entProfEl && !entProfEl.value) entProfEl.value = "50/50";
 
             const bDistEl = document.getElementById("battDistance");
             if(bDistEl && localStorage.getItem("solar_batt_dist")) bDistEl.value = localStorage.getItem("solar_batt_dist");
@@ -1365,6 +1423,8 @@ if ('serviceWorker' in navigator) {
         
         if(document.getElementById("enterpriseSystemType")) localStorage.setItem("solar_ent_sys_type", document.getElementById("enterpriseSystemType").value || "single");
         if(document.getElementById("enterpriseDailyKwh")) localStorage.setItem("solar_ent_daily_kwh", document.getElementById("enterpriseDailyKwh").value);
+        if(document.getElementById("entLoadProfile")) localStorage.setItem("solar_ent_profile", document.getElementById("entLoadProfile").value);
+        
         const entAcc = document.getElementById("enterpriseAccordion");
         if(entAcc) localStorage.setItem("solar_ent_opened", entAcc.classList.contains("open") ? "true" : "false");
         
@@ -1410,6 +1470,34 @@ if ('serviceWorker' in navigator) {
         calculateResults();
     };
 
+    function getCableSizeFromAmps(amps) {
+        if (amps <= 50) return "25";
+        if (amps <= 100) return "35";
+        if (amps <= 150) return "50";
+        if (amps <= 200) return "70";
+        if (amps <= 250) return "95";
+        if (amps <= 300) return "120";
+        if (amps <= 400) return "150";
+        return "Busbars / 2x120"; 
+    }
+    
+    function getPVCableSizeFromAmps(amps) {
+        if (amps <= 20) return "4";
+        if (amps <= 30) return "6";
+        if (amps <= 50) return "10";
+        if (amps <= 75) return "16";
+        if (amps <= 100) return "25";
+        return "Combiner Box";
+    }
+    
+    function getStandardBreakerSize(amps) {
+        const standardBreakers = [16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 300, 400, 500, 630];
+        for (let size of standardBreakers) {
+            if (size >= amps) return size;
+        }
+        return Math.ceil(amps); 
+    }
+
     window.calculateResults = function() {
         const t = dict[window.currentLang];
         const sysVoltEl = document.getElementById("systemVoltage");
@@ -1434,6 +1522,7 @@ if ('serviceWorker' in navigator) {
         const entKwhEl = document.getElementById("enterpriseDailyKwh");
         const entSysType = entSysTypeEl ? (entSysTypeEl.value || "single") : "single";
         const entDailyKwh = entKwhEl ? (parseFloat(entKwhEl.value) || 0) : 0;
+        const entProfile = document.getElementById("entLoadProfile") ? document.getElementById("entLoadProfile").value : "50/50";
 
         const bDistEl = document.getElementById("battDistance");
         const aDistEl = document.getElementById("acDistance");
@@ -1447,11 +1536,28 @@ if ('serviceWorker' in navigator) {
         
         if (entDailyKwh > 0) {
             let totalLoad = entDailyKwh * 1000;
-            nightLoadWh = totalLoad * 0.5;
-            dayLoadWh = totalLoad - nightLoadWh;
-            let entPeakLoad = totalLoad / 5;
-            maxContinuous = entPeakLoad;
-            syncSurge = maxContinuous;
+            let nightRatio = 0.5, dayRatio = 0.5;
+            
+            if (entProfile === "70/30") { dayRatio = 0.7; nightRatio = 0.3; }
+            else if (entProfile === "100/0") { dayRatio = 1.0; nightRatio = 0.0; }
+            else if (entProfile === "30/70") { dayRatio = 0.3; nightRatio = 0.7; }
+            
+            dayLoadWh = totalLoad * dayRatio;
+            nightLoadWh = totalLoad * nightRatio;
+
+            let peakActiveLoad = 0;
+            if (entProfile === "50/50") {
+                peakActiveLoad = totalLoad / 20; 
+            } else {
+                let dayOperatingHours = (entProfile === "100/0") ? Math.max(8, sunHours) : 12;
+                let nightOperatingHours = 12;
+                let dayLoadPerHour = dayRatio > 0 ? (dayLoadWh / dayOperatingHours) : 0;
+                let nightLoadPerHour = nightRatio > 0 ? (nightLoadWh / nightOperatingHours) : 0;
+                peakActiveLoad = Math.max(dayLoadPerHour, nightLoadPerHour);
+            }
+
+            maxContinuous = peakActiveLoad;
+            syncSurge = maxContinuous * 1.5; 
         } else {
             appliances.forEach(app => {
                 const w = parseFloat(app.watts)||0, count = parseFloat(app.count)||0, dH = parseFloat(app.dayHours)||0, nH = parseFloat(app.nightHours)||0, duty = parseFloat(app.duty)||0;
@@ -1498,18 +1604,25 @@ if ('serviceWorker' in navigator) {
         const eNightTotal = nightLoadWh * SYSTEM_LOSS_FACTOR;
         const eTotal = eDayTotal + eNightTotal;
 
-        // 1. حساب الطاقة المطلوبة للبطارية (سعة التخزين الحقيقية)
+        let invRequired = Math.max(maxContinuous * INVERTER_SAFETY_FACTOR, syncSurge / 1.5);
         const nightOutageWh = Math.max(0, eNightTotal - (gridDirectNightWh * SYSTEM_LOSS_FACTOR));
-        let battKwh = (nightOutageWh / dodValue) / 1000;
-        
+        let battKwh = 0;
+
         if (totalDailyWh > 0) {
-            let minBattKwh = (sysVolt === 12) ? 1.28 : 2.56; 
-            battKwh = Math.max(battKwh, minBattKwh);
+            if (nightLoadWh === 0 || (entDailyKwh > 0 && entProfile === "100/0")) {
+                let bufferKwh = (invRequired / 1000) * 1.2; 
+                battKwh = bufferKwh;
+            } else {
+                battKwh = (nightOutageWh / dodValue) / 1000;
+                if (nightLoadWh > 0) {
+                    let minBattKwh = (sysVolt === 12) ? 1.28 : 2.56; 
+                    battKwh = Math.max(battKwh, minBattKwh);
+                }
+            }
         }
 
-        // 2. حساب الطاقة المطلوبة من الألواح الشمسية (الشحن والنهار)
         const totalGridChargeEnergy = gridChargeDayWh + gridChargeNightWh;
-        const solarReqNightWh = Math.max(0, nightOutageWh - totalGridChargeEnergy);
+        const solarReqNightWh = Math.max(0, (battKwh * 1000 * dodValue) - totalGridChargeEnergy);
         const dayOutageWh = Math.max(0, eDayTotal - (gridDirectDayWh * SYSTEM_LOSS_FACTOR));
         
         const totalSolarWhRequired = dayOutageWh + solarReqNightWh;
@@ -1517,11 +1630,31 @@ if ('serviceWorker' in navigator) {
         const panelsCount = panelWatts > 0 ? Math.ceil(reqPv / panelWatts) : 0;
         const totalPanelPower = panelsCount * panelWatts;
         
-        let invRequired = Math.max(syncSurge, maxContinuous) * INVERTER_SAFETY_FACTOR;
-        let marketInv = (sysVolt === 12) ? [1000, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 2500, 3000, 4000, 5000] : [5000, 6000, 8000, 10000, 12000, 15000, 20000, 25000, 30000, 40000, 50000];
+        let marketInv;
+        if (entDailyKwh > 0) {
+            if (entSysType === 'three48') {
+                marketInv = [10000, 12000, 16000, 20000]; 
+            } else if (entSysType === 'hv') {
+                marketInv = [25000, 30000, 40000, 50000, 60000, 80000, 120000]; 
+            } else {
+                marketInv = [5000, 6000, 8000, 10000, 11000, 12000, 16000]; 
+            }
+        } else {
+            marketInv = (sysVolt === 12) ? [1000, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 2500, 3000, 4000, 5000] : [5000, 6000, 8000, 10000, 11000, 12000, 16000, 20000];
+        }
+
         let finalInv = marketInv.find(size => size >= invRequired) || marketInv[marketInv.length - 1];
         
-        if (sysVolt === 48 && finalInv < 5000) finalInv = 5000;
+        if (entDailyKwh > 0) {
+            if (entSysType === "three48") {
+                finalInv = Math.max(10000, finalInv); 
+            } else if (entSysType === "hv") {
+                finalInv = Math.max(25000, finalInv); 
+            } else {
+                finalInv = Math.max(5000, finalInv);  
+            }
+        }
+
         if (invRequired > marketInv[marketInv.length - 1]) {
              finalInv = Math.ceil(invRequired / 1000) * 1000; 
         }
@@ -1534,7 +1667,8 @@ if ('serviceWorker' in navigator) {
         
         if (entDailyKwh > 0 && entSysType === "hv") {
             let totalLoadKw = finalInv / 1000;
-            let numberOfUnits = Math.ceil(totalLoadKw / 500);
+            let maxUnitKwForCalc = 120;
+            let numberOfUnits = Math.ceil(totalLoadKw / maxUnitKwForCalc);
             let racksPerUnit = Math.ceil(totalRacks / numberOfUnits);
             
             let racksInSeries = Math.min(14, Math.max(1, racksPerUnit));
@@ -1550,9 +1684,11 @@ if ('serviceWorker' in navigator) {
             mpptDisplay += `<div style="width:100%; font-size:11.5px; color:#ef4444; font-weight:normal; margin-top:2px; direction: rtl;">(${t.mpptAlert1} ${Math.ceil(mpptCurrent/limit).toLocaleString("en-US")} ${t.mpptAlert2} ${limit}A ${t.mpptAlert3})</div>`;
         }
         
+        let batteryBufferNote = (nightLoadWh === 0) ? `<br><span style="font-size:11px; color:#94a3b8; display:inline-block; margin-top:2px;">${t.bufferNoteAr}</span>` : "";
+
         if(document.getElementById("resTotalEnergy")) document.getElementById("resTotalEnergy").innerHTML = `${fmt2(eTotal)} ${t.wh}${t.dayUnit}`;
         if(document.getElementById("resBatteryAh")) document.getElementById("resBatteryAh").innerHTML = `${fmt2(battAh)} Ah ${entSysType === "hv" && entDailyKwh > 0 ? '<span style="font-size:11px; color:#94a3b8;">(High Voltage)</span>' : ''}`;
-        if(document.getElementById("resBatteryKwh")) document.getElementById("resBatteryKwh").innerHTML = `${fmt2(battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0)} ${t.wh} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${battKwh.toFixed(2)} kWh)</span>`;
+        if(document.getElementById("resBatteryKwh")) document.getElementById("resBatteryKwh").innerHTML = `${fmt2(battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0)} ${t.wh} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${battKwh.toFixed(2)} kWh)</span>${batteryBufferNote}`;
         
         let pnlText = getArabicPanelsString(panelsCount);
         if(document.getElementById("resPanelsCount")) document.getElementById("resPanelsCount").innerHTML = `${panelsCount.toLocaleString("en-US")} ${pnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${fmt2(totalPanelPower)} ${t.wWord})</span>`;
@@ -1580,13 +1716,20 @@ if ('serviceWorker' in navigator) {
                 let invertersTxt = "";
                 let totalLoadKw = finalInv / 1000; 
 
-                let maxStandardUnitKw = 500; 
-                let numberOfUnits = Math.ceil(totalLoadKw / maxStandardUnitKw);
+                // تحديد سقف القدرة للوحدة الواحدة بناءً على نوع النظام
+                let maxUnitKw = 16; // سقف أحادي الطور
+                if (entSysType === "three48") {
+                    maxUnitKw = 20; // سقف ثلاثي الأطوار
+                } else if (entSysType === "hv") {
+                    maxUnitKw = 120; // سقف الجهد العالي
+                }
+
+                let numberOfUnits = Math.ceil(totalLoadKw / maxUnitKw);
                 let unitSizeKw = (totalLoadKw / numberOfUnits).toFixed(1);
 
                 if (entSysType === "three48") {
                     archTitle = "48V 3-Phase System";
-                    if (totalLoadKw > maxStandardUnitKw) {
+                    if (totalLoadKw > maxUnitKw) {
                         invertersTxt = `${numberOfUnits} Units × ${Number(unitSizeKw).toLocaleString("en-US")} kW Modular Units`;
                     } else {
                         let unitKw = (totalLoadKw / 3).toFixed(1);
@@ -1598,7 +1741,7 @@ if ('serviceWorker' in navigator) {
                 } 
                 else if (entSysType === "hv") {
                     archTitle = "160V-800V High Voltage HV";
-                    if (totalLoadKw > maxStandardUnitKw) {
+                    if (totalLoadKw > maxUnitKw) {
                         invertersTxt = `${numberOfUnits} Units × ${Number(unitSizeKw).toLocaleString("en-US")} kW HV Central Units`;
                     } else {
                         invertersTxt = `1 × ${Number(totalLoadKw.toFixed(1)).toLocaleString("en-US")} kW HV Unit`;
@@ -1624,7 +1767,7 @@ if ('serviceWorker' in navigator) {
                 } 
                 else if (entSysType === "single") {
                     archTitle = "Single-Phase System";
-                    if (totalLoadKw > maxStandardUnitKw) {
+                    if (totalLoadKw > maxUnitKw) {
                         invertersTxt = `${numberOfUnits} Units × ${Number(unitSizeKw).toLocaleString("en-US")} kW Parallel Units`;
                     } else {
                         invertersTxt = `1 × ${Number(totalLoadKw.toFixed(1)).toLocaleString("en-US")} kW Single-Phase`;
@@ -1654,6 +1797,41 @@ if ('serviceWorker' in navigator) {
                         let racksPerBank = Math.ceil(totalRacks / parallelBanks);
                         document.getElementById("resEntBattVal").innerHTML = `${totalRacks} Racks (~${battKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Racks/Bank @ 48V)</span>`;
                     }
+                } else if (document.getElementById("resEntBattVal")) {
+                    document.getElementById("resEntBattVal").innerHTML = `-`;
+                }
+
+                let bAmpsCalc = effectiveSysVolt > 0 ? (finalInv / effectiveSysVolt) * climateFactor : 0;
+                let bAmpsMax = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0);
+                
+                let battCableSize = getCableSizeFromAmps(bAmpsMax);
+                let battBreaker = getStandardBreakerSize(bAmpsMax);
+
+                let estimatedVoc = panelWatts > 450 ? 50 : 41;
+                let estimatedIsc = panelWatts > 450 ? 14 : 11; 
+                let maxMpptVolt = entSysType === "hv" ? 800 : (effectiveSysVolt === 48 ? 145 : 100);
+                let panelsPerString = Math.max(1, Math.floor((maxMpptVolt * 0.85) / estimatedVoc));
+                let parallelStrings = Math.ceil(panelsCount / panelsPerString);
+                let pvMaxAmps = estimatedIsc * parallelStrings * climateFactor;
+
+                let pvCableSize = getPVCableSizeFromAmps(pvMaxAmps);
+                let pvBreaker = getStandardBreakerSize(pvMaxAmps);
+                let needsFuses = parallelStrings >= 3;
+                let fuseSize = Math.ceil(estimatedIsc * 1.56);
+
+                if (battKwh === 0 && entSysType === "single") {
+                    if(document.getElementById("resEntBattCableRow")) document.getElementById("resEntBattCableRow").style.display = "none";
+                } else {
+                    if(document.getElementById("resEntBattCableRow")) {
+                        document.getElementById("resEntBattCableRow").style.display = "flex";
+                        document.getElementById("resEntBattCableVal").innerHTML = `${battCableSize} ${battCableSize.includes('Busbars') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Breaker: ${battBreaker}A DC</span>`;
+                    }
+                }
+
+                if(document.getElementById("resEntPvCableRow")) {
+                    document.getElementById("resEntPvCableRow").style.display = "flex";
+                    let fuseTxt = needsFuses ? ` <br><span style="font-size:11px; color:#f59e0b; margin-top:2px; display:inline-block;">+ String Fuses: ${fuseSize}A</span>` : '';
+                    document.getElementById("resEntPvCableVal").innerHTML = `${pvCableSize} ${pvCableSize.includes('Box') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Main Breaker: ${pvBreaker}A DC</span>${fuseTxt}`;
                 }
 
                 if (mpptCurrent > 300 && entSysType !== "hv") {
@@ -1684,17 +1862,39 @@ if ('serviceWorker' in navigator) {
                 let bAmpsCalc = (finalInv / sysVolt) * climateFactor;
                 let maxBattAmps = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0);
 
-                let battCable = battDist <= 2 ? 35 : (battDist <= 5 ? 50 : 70); 
-                let battBreaker = [100, 125, 150, 200, 250, 300].find(b => b >= maxBattAmps) || 250;
-                if (sysVolt === 48 && finalInv >= 5000) battBreaker = [200, 250].find(b => b >= maxBattAmps) || 250;
-                
+                let requiredCable = 25;
+                if (maxBattAmps > 300) requiredCable = 150;
+                else if (maxBattAmps > 200) requiredCable = 95;
+                else if (maxBattAmps > 150) requiredCable = 70;
+                else if (maxBattAmps > 100) requiredCable = 50;
+                else if (maxBattAmps > 50) requiredCable = 35;
+
+                let battCableCalc = (battDist >= 3) ? (requiredCable * 1.5) : requiredCable;
+                let marketCables = [25, 35, 50, 70, 95, 120, 150];
+                let battCable = marketCables.find(c => c >= battCableCalc) || "مزدوج (Parallel)";
+
+                let battBreaker = [63, 100, 125, 150, 200, 250, 300, 400].find(b => b >= maxBattAmps) || Math.ceil(maxBattAmps);
+
                 let estimatedImp = panelWatts > 0 ? (panelWatts / 36) : 13;
-                let pAmpsCalc = (entSysType === "hv") ? (panelWatts / 400) * climateFactor : estimatedImp * climateFactor; 
-                let pvBreaker = (entSysType === "hv") ? 16 : ([16, 20, 25, 32, 40].find(b => b >= pAmpsCalc) || 20);
-                let pvCableTxt = (entSysType === "hv") ? "4 mm² Solar PV" : "6 mm² (MC4)";
+                let estimatedVoc = panelWatts > 0 ? (panelWatts > 450 ? 50 : 41) : 41;
+                let maxMpptVolt = sysVolt === 12 ? 100 : (sysVolt === 24 ? 145 : (entSysType === "hv" ? 800 : 450));
+                let panelsPerString = Math.max(1, Math.floor((maxMpptVolt * 0.85) / estimatedVoc));
+                let parallelStrings = Math.ceil(panelsCount / panelsPerString);
+
+                let totalPvAmps = parallelStrings * estimatedImp * climateFactor;
+                let pvBreaker = (entSysType === "hv") ? 16 : ([16, 20, 25, 32, 40, 50, 63, 80, 100].find(b => b >= totalPvAmps) || 125);
+
+                let pvCableTxt = "4 mm²";
+                if (entSysType !== "hv") {
+                    if (totalPvAmps > 60) pvCableTxt = "25 mm²";
+                    else if (totalPvAmps > 40) pvCableTxt = "16 mm²";
+                    else if (totalPvAmps > 25) pvCableTxt = "10 mm²";
+                    else if (totalPvAmps > 15) pvCableTxt = "6 mm²";
+                } else {
+                    pvCableTxt = "4 mm² Solar PV"; 
+                }
 
                 let aAmpsCalc = (entSysType === "three48") ? (finalInv / (380 * 1.732)) * climateFactor : (finalInv / 220) * climateFactor;
-                
                 let acCable = "10 mm²";
                 if (aAmpsCalc <= 32) {
                     acCable = "6 mm²";
@@ -1713,7 +1913,7 @@ if ('serviceWorker' in navigator) {
                 let acMarketBreakers = [32, 45, 63, 80, 100, 125, 160, 200, 250, 300];
                 let acBreaker = acMarketBreakers.find(b => b >= aAmpsCalc) || 300;
                 
-                if(document.getElementById("resBattCable")) document.getElementById("resBattCable").innerHTML = `<span style="font-weight:bold;">${battCable} mm²</span> &nbsp;|&nbsp; <span style="font-weight:bold;">${battBreaker}A</span>`;
+                if(document.getElementById("resBattCable")) document.getElementById("resBattCable").innerHTML = `<span style="font-weight:bold;">${battCable} ${battCable !== "مزدوج (Parallel)" ? "mm²" : ""}</span> &nbsp;|&nbsp; <span style="font-weight:bold;">${battBreaker}A</span>`;
                 if(document.getElementById("resPvCable")) document.getElementById("resPvCable").innerHTML = `<span style="font-weight:bold;">${pvCableTxt}</span> &nbsp;|&nbsp; <span style="font-weight:bold;">${pvBreaker}A DC</span>`;
                 if(document.getElementById("resAcCable")) document.getElementById("resAcCable").innerHTML = `<span style="font-weight:bold;">${acCable}</span> &nbsp;|&nbsp; <span style="font-weight:bold;">${acBreaker}A</span>`;
             } else {
@@ -1723,7 +1923,6 @@ if ('serviceWorker' in navigator) {
         }
     };
 
-    // Custom Modal Functions
     window.openResetModal = function() {
         const modal = document.getElementById('customModal');
         const t = dict[window.currentLang];
@@ -1772,6 +1971,9 @@ if ('serviceWorker' in navigator) {
         if(document.getElementById("enterpriseSystemType")) document.getElementById("enterpriseSystemType").value="single";
         if(document.getElementById("sysTypeDisplay")) document.getElementById("sysTypeDisplay").innerText = dict[window.currentLang].singlePhaseOpt;
         if(document.getElementById("enterpriseDailyKwh")) document.getElementById("enterpriseDailyKwh").value="";
+        
+        if(document.getElementById("entLoadProfile")) document.getElementById("entLoadProfile").value="50/50";
+        if(document.getElementById("loadProfileDisplay")) document.getElementById("loadProfileDisplay").innerText = dict[window.currentLang].prof50;
         
         if(document.getElementById("battDistance")) document.getElementById("battDistance").value="";
         if(document.getElementById("acDistance")) document.getElementById("acDistance").value="";
