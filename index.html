@@ -255,6 +255,7 @@
             .ent-mode-msg { display: none !important; }
             .grid-inputs { display: block !important; text-align: start !important; }
             .input-group { display: inline-block !important; width: 48% !important; margin-bottom: 8px !important; vertical-align: top !important; text-align: start !important; color: #000000 !important; }
+            .input-group[style*="span 2"] { width: 100% !important; }
             .input-group label { display: block !important; font-size: 11pt !important; color: #334155 !important; font-weight: bold; margin-bottom: 2px !important; text-align: start !important; }
             
             .results-container { 
@@ -507,11 +508,8 @@
                                         <label data-i18n="gridNightHoursLabel">ساعات الشحن ليلاً (بطارية):</label>
                                         <input type="number" id="gridNightHours" placeholder="0" min="0" max="24" step="0.5" lang="en">
                                     </div>
-                                </div>
-                                
-                                <div class="grid-inputs full-width-print" style="grid-template-columns: 1fr; margin-top: 12px;">
-                                    <div class="input-group" style="max-width: 220px; margin: 0 auto; width: 100%;">
-                                        <label data-i18n="acAmpsLabel" style="text-align: center; width: 100%;">تيار شاحن الشبكة (Amps):</label>
+                                    <div class="input-group" style="grid-column: span 2;">
+                                        <label data-i18n="acAmpsLabel">تيار شاحن الشبكة (Amps):</label>
                                         <input type="number" id="acChargeCurrent" placeholder="30" min="0" max="200" step="1" lang="en">
                                     </div>
                                 </div>
@@ -572,24 +570,6 @@
                                 <div class="hybrid-hint" data-i18n="enterpriseHint">مخصصة للمشاريع التجارية، المصانع، والمباني الكبيرة لتحديد حجم المنظومة فوراً:</div>
                                 
                                 <div class="grid-inputs">
-                                    <!-- نمط الاستهلاك -->
-                                    <div class="input-group" style="grid-column: span 2;">
-                                        <label data-i18n="entLoadProfileLbl">نمط الاستهلاك اليومي:</label>
-                                        <div class="custom-select-wrapper">
-                                            <div class="custom-select-display" onclick="toggleDropdown('loadProfileDropdown')">
-                                                <span id="loadProfileDisplay" data-i18n="prof50">50% نهاراً / 50% ليلاً (افتراضي)</span>
-                                                <span>▼</span>
-                                            </div>
-                                            <div class="custom-select-options" id="loadProfileDropdown">
-                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '50/50', 'prof50', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof50">50% نهاراً / 50% ليلاً (افتراضي)</div>
-                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '70/30', 'prof70', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof70">70% نهاراً / 30% ليلاً (مشاريع وتجاري)</div>
-                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '100/0', 'prof100', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof100">100% نهاراً / 0% ليلاً (تشغيل نهاري فقط)</div>
-                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '30/70', 'prof30', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof30">30% نهاراً / 70% ليلاً (إنارة شوارع/مراقبة)</div>
-                                            </div>
-                                            <input type="hidden" id="entLoadProfile" value="50/50">
-                                        </div>
-                                    </div>
-
                                     <div class="input-group">
                                         <label data-i18n="systemTypeLabel">نوع النظام الكهربائي:</label>
                                         <div class="custom-select-wrapper">
@@ -609,6 +589,24 @@
                                     <div class="input-group">
                                         <label data-i18n="entDailyLoadLabel">الاستهلاك اليومي المطلوب (kWh):</label>
                                         <input type="number" id="enterpriseDailyKwh" min="0" step="any" lang="en">
+                                    </div>
+
+                                    <!-- نمط الاستهلاك -->
+                                    <div class="input-group" style="grid-column: span 2;">
+                                        <label data-i18n="entLoadProfileLbl">نمط الاستهلاك اليومي:</label>
+                                        <div class="custom-select-wrapper">
+                                            <div class="custom-select-display" onclick="toggleDropdown('loadProfileDropdown')">
+                                                <span id="loadProfileDisplay" data-i18n="prof50">50% نهاراً / 50% ليلاً (افتراضي)</span>
+                                                <span>▼</span>
+                                            </div>
+                                            <div class="custom-select-options" id="loadProfileDropdown">
+                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '50/50', 'prof50', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof50">50% نهاراً / 50% ليلاً (افتراضي)</div>
+                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '70/30', 'prof70', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof70">70% نهاراً / 30% ليلاً (مشاريع وتجاري)</div>
+                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '100/0', 'prof100', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof100">100% نهاراً / 0% ليلاً (تشغيل نهاري فقط)</div>
+                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '30/70', 'prof30', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof30">30% نهاراً / 70% ليلاً (إنارة شوارع/مراقبة)</div>
+                                            </div>
+                                            <input type="hidden" id="entLoadProfile" value="50/50">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1167,6 +1165,7 @@ if ('serviceWorker' in navigator) {
     };
 
     window.prepareAndPrint = function() {
+        updateAccordionStates();
         const engInput = document.getElementById("engineerNameInput");
         const cliInput = document.getElementById("clientNameInput");
         const engVal = engInput ? engInput.value : "";
@@ -1275,6 +1274,7 @@ if ('serviceWorker' in navigator) {
             console.error("Initialization error:", e);
         }
         
+        updateAccordionStates();
         applyLanguage();
         window.updateVisitorCount();
     };
@@ -1400,6 +1400,41 @@ if ('serviceWorker' in navigator) {
             whEl.innerHTML = `${t.totalCons} <span class="value-green"><span dir="ltr" style="display:inline-block;">${fmt2(whVal)}</span> ${t.wh}</span>`;
         }
     };
+
+    window.updateAccordionStates = function() {
+        const gDayEl = document.getElementById("gridDayHours");
+        const gNightEl = document.getElementById("gridNightHours");
+        const acAmpsEl = document.getElementById("acChargeCurrent");
+        const gDay = gDayEl ? (parseFloat(gDayEl.value) || 0) : 0;
+        const gNight = gNightEl ? (parseFloat(gNightEl.value) || 0) : 0;
+        const gAmps = acAmpsEl ? (parseFloat(acAmpsEl.value) || 0) : 0;
+        
+        const hybAcc = document.getElementById("hybridAccordion");
+        if(hybAcc) {
+            if(gDay > 0 || gNight > 0 || gAmps > 0) hybAcc.classList.add("has-data");
+            else hybAcc.classList.remove("has-data");
+        }
+
+        const bDistEl = document.getElementById("battDistance");
+        const aDistEl = document.getElementById("acDistance");
+        const bDist = bDistEl ? (parseFloat(bDistEl.value) || 0) : 0;
+        const aDist = aDistEl ? (parseFloat(aDistEl.value) || 0) : 0;
+        const entKwhElCheck = document.getElementById("enterpriseDailyKwh");
+        const entKwh = entKwhElCheck ? (parseFloat(entKwhElCheck.value) || 0) : 0;
+        
+        const cabAcc = document.getElementById("cablesAccordion");
+        if(cabAcc) {
+            if(entKwh === 0 && (bDist > 0 || aDist > 0)) cabAcc.classList.add("has-data");
+            else cabAcc.classList.remove("has-data");
+        }
+
+        const entSysEl = document.getElementById("enterpriseSystemType");
+        const entAccordion = document.getElementById("enterpriseAccordion");
+        if(entAccordion) {
+            if(entKwh > 0 || (entSysEl && entSysEl.value !== "single")) entAccordion.classList.add("has-data");
+            else entAccordion.classList.remove("has-data");
+        }
+    };
     
     window.saveDataAndCalculate = function() {
         const entKwhEl = document.getElementById("enterpriseDailyKwh");
@@ -1434,39 +1469,7 @@ if ('serviceWorker' in navigator) {
         }
         if(document.getElementById("climateFactor")) localStorage.setItem("solar_climate", document.getElementById("climateFactor").value);
 
-        const gDayEl = document.getElementById("gridDayHours");
-        const gNightEl = document.getElementById("gridNightHours");
-        const acAmpsEl = document.getElementById("acChargeCurrent");
-        
-        const gDay = gDayEl ? (parseFloat(gDayEl.value) || 0) : 0;
-        const gNight = gNightEl ? (parseFloat(gNightEl.value) || 0) : 0;
-        const gAmps = acAmpsEl ? (parseFloat(acAmpsEl.value) || 0) : 0;
-        
-        const hybAcc = document.getElementById("hybridAccordion");
-        if(hybAcc) {
-            if(gDay > 0 || gNight > 0 || gAmps > 0) hybAcc.classList.add("has-data");
-            else hybAcc.classList.remove("has-data");
-        }
-
-        const bDistEl = document.getElementById("battDistance");
-        const aDistEl = document.getElementById("acDistance");
-        const bDist = bDistEl ? (parseFloat(bDistEl.value) || 0) : 0;
-        const aDist = aDistEl ? (parseFloat(aDistEl.value) || 0) : 0;
-        
-        const cabAcc = document.getElementById("cablesAccordion");
-        if(cabAcc) {
-            if(entDailyVal === 0 && (bDist > 0 || aDist > 0)) cabAcc.classList.add("has-data");
-            else cabAcc.classList.remove("has-data");
-        }
-
-        const entKwhElCheck = document.getElementById("enterpriseDailyKwh");
-        const entKwh = entKwhElCheck ? (parseFloat(entKwhElCheck.value) || 0) : 0;
-        const entAccordion = document.getElementById("enterpriseAccordion");
-        if(entAccordion) {
-            if(entKwh > 0) entAccordion.classList.add("has-data");
-            else entAccordion.classList.remove("has-data");
-        }
-        
+        updateAccordionStates();
         calculateResults();
     };
 
