@@ -437,6 +437,16 @@
         .modal-btn-confirm:hover {
             background-color: #b91c1c;
         }
+
+        .modal-btn-ok {
+            background-color: #059669;
+            color: white;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+
+        .modal-btn-ok:hover {
+            background-color: #047857;
+        }
     </style>
 </head>
 <body>
@@ -817,12 +827,13 @@
 <!-- Custom Modal HTML -->
 <div class="modal-overlay" id="customModal">
     <div class="modal-container">
-        <div class="modal-icon">⚠️</div>
+        <div class="modal-icon" id="modalIcon">⚠️</div>
         <div class="modal-title" id="modalTitle">تأكيد مسح البيانات</div>
         <div class="modal-message" id="modalMessage">هل أنت متأكد من مسح جميع الأجهزة والبيانات المدخلة؟ لا يمكن التراجع عن هذه الخطوة.</div>
         <div class="modal-buttons">
             <button class="modal-btn modal-btn-cancel" onclick="closeModal()" id="modalCancelBtn">إلغاء</button>
             <button class="modal-btn modal-btn-confirm" onclick="confirmResetAction()" id="modalConfirmBtn">نعم، امسح البيانات</button>
+            <button class="modal-btn modal-btn-ok" style="display: none;" onclick="closeModal()" id="modalOkBtn">موافق</button>
         </div>
     </div>
 </div>
@@ -837,7 +848,7 @@ if ('serviceWorker' in navigator) {
 !function(){
     'use strict';
     
-    // XSS Sanitization Function (DOM Caching Fix 1)
+    // XSS Sanitization Function
     window.escapeHTML = function(str) {
         if (!str) return '';
         return str.toString().replace(/[&<>'"]/g, function(tag) {
@@ -950,7 +961,8 @@ if ('serviceWorker' in navigator) {
             prepBy: "إعداد:", dateTxt: "التاريخ:", exportPdfBtn: "📄 تصدير التقرير PDF",
             engNamePh: "مثال: م. أحمد أو مؤسسة الأفق", clientNamePh: "أدخل اسم العميل أو المشروع",
             reportFooterText: "تم إنشاء هذا التقرير آلياً بواسطة حاسبة الطاقة الشمسية الذكية",
-            visitorCountText: "عدد زيارات الحاسبة: ", visitorCountOffline: "غير متصل", visitorCountError: "غير متاح"
+            visitorCountText: "عدد زيارات الحاسبة: ", visitorCountOffline: "غير متصل", visitorCountError: "غير متاح",
+            hoursAlertTitle: "تنبيه إدخال غير صالح", hoursAlertMsg: "مجموع ساعات العمل خلال اليوم لا يمكن أن يتجاوز 24 ساعة. يرجى إدخال ساعات فعلية صحيحة.", okBtn: "موافق"
         },
         en: {
             appTitle: "Smart Solar Calculator", appSubtitle: "Professional Integrated Edition",
@@ -1034,7 +1046,8 @@ if ('serviceWorker' in navigator) {
             prepBy: "Prepared by:", dateTxt: "Date:", exportPdfBtn: "📄 Export PDF Report",
             engNamePh: "e.g., Eng. John or Skyline Co.", clientNamePh: "Enter client or project name",
             reportFooterText: "Report generated automatically by Smart Solar Calculator",
-            visitorCountText: "Calculator Visits: ", visitorCountOffline: "Offline", visitorCountError: "Unavailable"
+            visitorCountText: "Calculator Visits: ", visitorCountOffline: "Offline", visitorCountError: "Unavailable",
+            hoursAlertTitle: "Invalid Input Alert", hoursAlertMsg: "Total daily operating hours cannot exceed 24. Please enter valid hours.", okBtn: "OK"
         }
     };
 
@@ -1302,11 +1315,38 @@ if ('serviceWorker' in navigator) {
                 const el = document.getElementById(id);
                 if(el) {
                     el.addEventListener("input", function() {
+                        if (id === 'enterpriseHoursDay' || id === 'enterpriseHoursNight') {
+                            const dInput = document.getElementById("enterpriseHoursDay");
+                            const nInput = document.getElementById("enterpriseHoursNight");
+                            let dVal = parseFloat(dInput.value) || 0;
+                            let nVal = parseFloat(nInput.value) || 0;
+                            
+                            if (dVal + nVal > 24) {
+                                window.openAlertModal(dict[window.currentLang].hoursAlertTitle, dict[window.currentLang].hoursAlertMsg);
+                                if (id === 'enterpriseHoursDay') {
+                                    dVal = Math.max(0, 24 - nVal);
+                                    dInput.value = dVal;
+                                } else {
+                                    nVal = Math.max(0, 24 - dVal);
+                                    nInput.value = nVal;
+                                }
+                            }
+                            if(dInput) dInput.max = Math.max(0, 24 - nVal);
+                            if(nInput) nInput.max = Math.max(0, 24 - dVal);
+                        }
                         saveDataAndCalculate();
                         renderAppliances();
                     });
                 }
             });
+
+            const initDInput = document.getElementById("enterpriseHoursDay");
+            const initNInput = document.getElementById("enterpriseHoursNight");
+            if(initDInput && initNInput) {
+                initDInput.max = Math.max(0, 24 - (parseFloat(initNInput.value)||0));
+                initNInput.max = Math.max(0, 24 - (parseFloat(initDInput.value)||0));
+            }
+
         } catch(e) {
             console.error("Initialization error:", e);
         }
@@ -1392,8 +1432,8 @@ if ('serviceWorker' in navigator) {
                         </div>
                     </div>
 
-                    <div class="input-group"><label>${t.dayH}</label><input type="number" lang="en" value="${app.dayHours||0}" min="0" max="24" step="any" oninput="updateApplianceProperty(${i},'dayHours',this.value)"></div>
-                    <div class="input-group"><label>${t.nightH}</label><input type="number" lang="en" value="${app.nightHours||0}" min="0" max="24" step="any" oninput="updateApplianceProperty(${i},'nightHours',this.value)"></div>
+                    <div class="input-group"><label>${t.dayH}</label><input id="dayH_${i}" type="number" lang="en" value="${app.dayHours||0}" min="0" max="${Math.max(0, 24 - (parseFloat(app.nightHours)||0))}" step="any" oninput="updateApplianceProperty(${i},'dayHours',this.value)"></div>
+                    <div class="input-group"><label>${t.nightH}</label><input id="nightH_${i}" type="number" lang="en" value="${app.nightHours||0}" min="0" max="${Math.max(0, 24 - (parseFloat(app.dayHours)||0))}" step="any" oninput="updateApplianceProperty(${i},'nightHours',this.value)"></div>
                 </div>
                 <div class="item-summary">
                     <div class="summary-sync-text" id="summary-surge-${i}" style="${(app.sync && app.surgeWatts) ? 'display:block;' : 'display:none;'}">${app.sync && app.surgeWatts ? `${t.surgeText} <span class="value-amber"><span dir="ltr" style="display:inline-block;">${fmt2(app.surgeWatts * (app.count||1))}</span> ${t.wWord}</span>` : ""}</div>
@@ -1419,6 +1459,29 @@ if ('serviceWorker' in navigator) {
     
     window.updateApplianceProperty = function(i,p,v) { 
         appliances[i][p] = (p==="sync"||p==="name"||p==="surgeWatts") ? v : (v===""?"":parseFloat(v)); 
+        
+        if (p === 'dayHours' || p === 'nightHours') {
+            let dVal = parseFloat(appliances[i].dayHours) || 0;
+            let nVal = parseFloat(appliances[i].nightHours) || 0;
+            
+            if (dVal + nVal > 24) {
+                window.openAlertModal(dict[window.currentLang].hoursAlertTitle, dict[window.currentLang].hoursAlertMsg);
+                if (p === 'dayHours') {
+                    appliances[i].dayHours = Math.max(0, 24 - nVal);
+                    let dInput = document.getElementById(`dayH_${i}`);
+                    if(dInput) dInput.value = appliances[i].dayHours;
+                } else {
+                    appliances[i].nightHours = Math.max(0, 24 - dVal);
+                    let nInput = document.getElementById(`nightH_${i}`);
+                    if(nInput) nInput.value = appliances[i].nightHours;
+                }
+            }
+            let dInput = document.getElementById(`dayH_${i}`);
+            let nInput = document.getElementById(`nightH_${i}`);
+            if (dInput) dInput.max = Math.max(0, 24 - (parseFloat(appliances[i].nightHours)||0));
+            if (nInput) nInput.max = Math.max(0, 24 - (parseFloat(appliances[i].dayHours)||0));
+        }
+
         saveDataAndCalculate(); 
         const app = appliances[i], t = dict[window.currentLang];
         const surgeEl = document.getElementById('summary-surge-' + i), whEl = document.getElementById('summary-wh-' + i);
@@ -1939,7 +2002,7 @@ if ('serviceWorker' in navigator) {
                                 <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
                                     This setup exceeds <strong>1000 Amps</strong> for a 48V system, creating extreme thermal risks! Parallel connection for this capacity is prohibited. <strong>Immediate upgrade to High Voltage (HV) is mandatory.</strong>
                                 </div>
-                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Large Systems (HV) ➔</div>
+                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollTo Large Systems (HV) ➔</div>
                             </div>`;
                         
                         if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
@@ -2205,8 +2268,27 @@ if ('serviceWorker' in navigator) {
         }
     };
 
+    window.openAlertModal = function(title, message) {
+        document.getElementById('modalIcon').innerText = '⏱️';
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalMessage').innerText = message;
+        document.getElementById('modalCancelBtn').style.display = 'none';
+        document.getElementById('modalConfirmBtn').style.display = 'none';
+        
+        const okBtn = document.getElementById('modalOkBtn');
+        okBtn.style.display = 'block';
+        okBtn.innerText = dict[window.currentLang].okBtn;
+        
+        document.getElementById('customModal').classList.add('active');
+    };
+
     window.openResetModal = function() {
         const modal = document.getElementById('customModal');
+        
+        document.getElementById('modalIcon').innerText = '⚠️';
+        document.getElementById('modalCancelBtn').style.display = 'block';
+        document.getElementById('modalConfirmBtn').style.display = 'block';
+        document.getElementById('modalOkBtn').style.display = 'none';
         
         if (window.currentLang === 'en') {
             document.getElementById('modalTitle').innerText = 'Confirm Data Reset';
