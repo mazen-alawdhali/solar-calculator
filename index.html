@@ -778,7 +778,7 @@
                               <path d="M60 10 L110 25 C110 80 60 135 60 140 C60 135 10 80 10 25 Z" fill="url(#goldFill)" stroke="url(#goldGradient)" stroke-width="3" stroke-linejoin="round"/>
                               <circle cx="60" cy="34" r="7" fill="url(#goldGradient)" />
                               <path d="M60 18 L60 23 M46 25 L50 29 M74 25 L70 29 M38 34 L44 34 M82 34 L76 34 M46 43 L50 39 M74 43 L70 39" stroke="url(#goldGradient)" stroke-width="2.5" stroke-linecap="round" />
-                              <text x="60" y="70" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="900" fill="url(#goldGradient)" text-anchor="middle" letter-spacing="1">V9 PRO</text>
+                              <text x="60" y="70" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="900" fill="url(#goldGradient)" text-anchor="middle" letter-spacing="1">V9 PRO MAX</text>
                               <path d="M26 88 L46 92 L42 112 L22 108 Z" fill="none" stroke="url(#goldGradient)" stroke-width="1.5" stroke-linejoin="round"/>
                               <path d="M33 89 L29 109 M40 91 L36 111 M24 95 L44 99 M23 101 L43 105" stroke="url(#goldGradient)" stroke-width="1"/>
                               <path d="M94 88 L74 92 L78 112 L98 108 Z" fill="none" stroke="url(#goldGradient)" stroke-width="1.5" stroke-linejoin="round"/>
@@ -837,6 +837,15 @@ if ('serviceWorker' in navigator) {
 !function(){
     'use strict';
     
+    // XSS Sanitization Function (DOM Caching Fix 1)
+    window.escapeHTML = function(str) {
+        if (!str) return '';
+        return str.toString().replace(/[&<>'"]/g, function(tag) {
+            const charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+            return charsToReplace[tag] || tag;
+        });
+    };
+
     var _0xdomain=["solar-pro-calculator.netlify.app","localhost","127.0.0.1","mazen-alawdhali.github.io","solar-pro-calculator.vercel.app","solar-calculator-pro.vercel.app","mazen-alawdhali.vercel.app"];
     var _0xhost=window.location.hostname;
     var _0xpreview=_0xhost.indexOf("--solar-pro-calculator.netlify.app")!==-1||_0xhost.indexOf("agent-")!==-1;
@@ -877,6 +886,7 @@ if ('serviceWorker' in navigator) {
             three48Opt: "ثلاثي الأطوار 48فولت (48V 3-Phase)",
             hvOpt: "جهد عالي 160V-800V (High Voltage HV)",
             entDailyKwhLabel: "إجمالي الاستهلاك اليومي (kWh):",
+            entDailyKwhPh: "مثال 50 كيلو واط",
             entHoursDayLabel: "عدد الساعات نهاراً:",
             entHoursNightLabel: "عدد الساعات ليلاً:",
             
@@ -960,6 +970,7 @@ if ('serviceWorker' in navigator) {
             three48Opt: "48V 3-Phase",
             hvOpt: "High Voltage (160V-800V)",
             entDailyKwhLabel: "Total Daily Consumption (kWh):",
+            entDailyKwhPh: "e.g., 50 kWh",
             entHoursDayLabel: "Daytime Operating Hours:",
             entHoursNightLabel: "Nighttime Operating Hours:",
             
@@ -1141,6 +1152,7 @@ if ('serviceWorker' in navigator) {
 
         if(document.getElementById("engineerNameInput")) document.getElementById("engineerNameInput").placeholder = t.engNamePh;
         if(document.getElementById("clientNameInput")) document.getElementById("clientNameInput").placeholder = t.clientNamePh;
+        if(document.getElementById("enterpriseDailyKwh")) document.getElementById("enterpriseDailyKwh").placeholder = t.entDailyKwhPh;
         
         const printStyle = document.getElementById('dynamic-print-style');
         if(printStyle) {
@@ -1313,19 +1325,15 @@ if ('serviceWorker' in navigator) {
         const aDistEl = document.getElementById("acDistance");
         const appliancesSectionWrapper = document.getElementById("appliancesSectionWrapper");
 
+        // Non-Destructive Flow Fix
         if (entDailyVal > 0) {
             if(appliancesSectionWrapper) appliancesSectionWrapper.style.display = "block"; 
             if(document.getElementById("ent-override-msg")) document.getElementById("ent-override-msg").style.display = "block";
             if(document.getElementById("appliancesList")) document.getElementById("appliancesList").style.display = "none";
             if(document.getElementById("add-device-btn")) document.getElementById("add-device-btn").style.display = "none";
             if(document.getElementById("deviceCounter")) document.getElementById("deviceCounter").style.display = "none";
-            
             if(entCablesMsg) entCablesMsg.style.display = "block";
-            if(bDistEl) bDistEl.value = "";
-            if(aDistEl) aDistEl.value = "";
-            localStorage.setItem("solar_batt_dist", "");
-            localStorage.setItem("solar_ac_dist", "");
-
+            
             calculateResults();
             return;
         } else {
@@ -1358,7 +1366,7 @@ if ('serviceWorker' in navigator) {
             
             const html = `<div class="appliance-item">
                 <div class="appliance-header">
-                    <input type="text" class="device-name-input" placeholder="${t.devNamePh}" value="${app.name||''}" oninput="updateApplianceProperty(${i},'name',this.value)">
+                    <input type="text" class="device-name-input" placeholder="${t.devNamePh}" value="${window.escapeHTML(app.name)||''}" oninput="updateApplianceProperty(${i},'name',this.value)">
                     <div class="controls-wrapper">
                         <button class="btn-delete" onclick="deleteDevice(${i})">${t.delBtn}</button>
                         <label class="checkbox-container"><input type="checkbox" ${app.sync?'checked':''} onchange="updateApplianceProperty(${i},'sync',this.checked)"> ${t.syncCb}</label>
@@ -1465,13 +1473,6 @@ if ('serviceWorker' in navigator) {
         const entDailyEl = document.getElementById("enterpriseDailyKwh");
         const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
 
-        if (entDailyVal > 0) {
-            if(document.getElementById("battDistance")) document.getElementById("battDistance").value = "";
-            if(document.getElementById("acDistance")) document.getElementById("acDistance").value = "";
-            localStorage.setItem("solar_batt_dist", "");
-            localStorage.setItem("solar_ac_dist", "");
-        }
-
         localStorage.setItem("solar_appliances_data_v11", JSON.stringify(appliances));
         if(document.getElementById("systemVoltage")) localStorage.setItem("solar_system_voltage", document.getElementById("systemVoltage").value);
         if(document.getElementById("panelWatts")) localStorage.setItem("solar_panel_watts", document.getElementById("panelWatts").value);
@@ -1490,10 +1491,9 @@ if ('serviceWorker' in navigator) {
         const entAcc = document.getElementById("enterpriseAccordion");
         if(entAcc) localStorage.setItem("solar_ent_opened", entAcc.classList.contains("open") ? "true" : "false");
         
-        if(entDailyVal === 0) {
-            if(document.getElementById("battDistance")) localStorage.setItem("solar_batt_dist", document.getElementById("battDistance").value);
-            if(document.getElementById("acDistance")) localStorage.setItem("solar_ac_dist", document.getElementById("acDistance").value);
-        }
+        // Non-Destructive Flow Fix
+        if(document.getElementById("battDistance")) localStorage.setItem("solar_batt_dist", document.getElementById("battDistance").value);
+        if(document.getElementById("acDistance")) localStorage.setItem("solar_ac_dist", document.getElementById("acDistance").value);
         if(document.getElementById("climateFactor")) localStorage.setItem("solar_climate", document.getElementById("climateFactor").value);
 
         updateAccordionStates();
@@ -1569,6 +1569,20 @@ if ('serviceWorker' in navigator) {
         const battDistance = (entDailyKwh > 0) ? 0 : (bDistEl ? (parseFloat(bDistEl.value) || 0) : 0);
         const acDistance = (entDailyKwh > 0) ? 0 : (aDistEl ? (parseFloat(aDistEl.value) || 0) : 0);
         const climateFactor = climEl ? (parseFloat(climEl.value) || 1.25) : 1.25;
+        
+        // DOM Caching Fix 3
+        const resTotalEnergyEl = document.getElementById("resTotalEnergy");
+        const resBatteryAhEl = document.getElementById("resBatteryAh");
+        const resBatteryKwhEl = document.getElementById("resBatteryKwh");
+        const resPanelsCountEl = document.getElementById("resPanelsCount");
+        const resMpptCurrentEl = document.getElementById("resMpptCurrent");
+        const inverterResultRowEl = document.getElementById("inverterResultRow");
+        const resInverterWattsEl = document.getElementById("resInverterWatts");
+        const resCapWarningSlotEl = document.getElementById("residential-cap-warning-slot");
+        
+        const enterpriseWrapperEl = document.getElementById("enterpriseResultsWrapper");
+        const alertContainerEl = document.getElementById("ent-warning-container");
+        const cablesWrapperEl = document.getElementById("cablesResultsWrapper");
         
         let dayLoadWh = 0, nightLoadWh = 0, syncSurge = 0, maxContinuous = 0;
         
@@ -1712,24 +1726,20 @@ if ('serviceWorker' in navigator) {
         
         let batteryBufferNote = (nightLoadWh === 0) ? `<br><span style="font-size:11px; color:#94a3b8; display:inline-block; margin-top:2px;">${t.bufferNoteAr}</span>` : "";
 
-        if(document.getElementById("resTotalEnergy")) document.getElementById("resTotalEnergy").innerHTML = `${fmt2(eTotal)} ${t.wh}${t.dayUnit}`;
-        if(document.getElementById("resBatteryAh")) document.getElementById("resBatteryAh").innerHTML = `${fmt2(battAh)} Ah ${entSysType === "hv" && entDailyKwh > 0 ? '<span style="font-size:11px; color:#94a3b8;">(High Voltage)</span>' : ''}`;
+        if(resTotalEnergyEl) resTotalEnergyEl.innerHTML = `${fmt2(eTotal)} ${t.wh}${t.dayUnit}`;
+        if(resBatteryAhEl) resBatteryAhEl.innerHTML = `${fmt2(battAh)} Ah ${entSysType === "hv" && entDailyKwh > 0 ? '<span style="font-size:11px; color:#94a3b8;">(High Voltage)</span>' : ''}`;
         
-        if(document.getElementById("resBatteryKwh")) {
+        if(resBatteryKwhEl) {
             const unitWordAr = window.currentLang === 'ar' ? 'وحدة' : 'Units';
-            document.getElementById("resBatteryKwh").innerHTML = `${fmt2(battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0)} ${t.wh} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${battKwh.toFixed(2)} kWh - ${totalRacks} ${unitWordAr})</span>${batteryBufferNote}`;
+            resBatteryKwhEl.innerHTML = `${fmt2(battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0)} ${t.wh} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${battKwh.toFixed(2)} kWh - ${totalRacks} ${unitWordAr})</span>${batteryBufferNote}`;
         }
         
         let pnlText = getArabicPanelsString(panelsCount);
-        if(document.getElementById("resPanelsCount")) document.getElementById("resPanelsCount").innerHTML = `${panelsCount.toLocaleString("en-US")} ${pnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${fmt2(totalPanelPower)} ${t.wWord})</span>`;
+        if(resPanelsCountEl) resPanelsCountEl.innerHTML = `${panelsCount.toLocaleString("en-US")} ${pnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${fmt2(totalPanelPower)} ${t.wWord})</span>`;
         
-        if(document.getElementById("resMpptCurrent")) document.getElementById("resMpptCurrent").innerHTML = mpptDisplay;
-        
-        const inverterResultRow = document.getElementById("inverterResultRow");
+        if(resMpptCurrentEl) resMpptCurrentEl.innerHTML = mpptDisplay;
 
-        if(document.getElementById("resInverterWatts")) {
-            const resCapWarningSlot = document.getElementById("residential-cap-warning-slot");
-            
+        if(resInverterWattsEl) {
             if (totalDailyWh > 0) {
                 if (entDailyKwh === 0 && sysVolt === 48) {
                     const standardUnits = [5000, 6000, 8000, 10000, 12000, 16000];
@@ -1767,12 +1777,12 @@ if ('serviceWorker' in navigator) {
 
                     // Check max parallel limit for 48V (16 units max practical limit)
                     if (bestCount > 16 && sysVolt === 48) {
-                        if (inverterResultRow) {
-                            inverterResultRow.classList.remove("orange-alert-row");
-                            inverterResultRow.style.border = "1px solid #ef4444";
-                            inverterResultRow.style.background = "rgba(239, 68, 68, 0.05)";
+                        if (inverterResultRowEl) {
+                            inverterResultRowEl.classList.remove("orange-alert-row");
+                            inverterResultRowEl.style.border = "1px solid #ef4444";
+                            inverterResultRowEl.style.background = "rgba(239, 68, 68, 0.05)";
                         }
-                        document.getElementById("resInverterWatts").innerHTML = `
+                        resInverterWattsEl.innerHTML = `
                             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ltr; padding: 4px 0;">
                                 <span class="stdSize" style="margin:0; background-color: rgba(239, 68, 68, 0.15); color: #ffffff; border: 1px solid #ef4444;">LIMIT EXCEEDED</span>
                                 <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
@@ -1794,31 +1804,31 @@ if ('serviceWorker' in navigator) {
                                 </div>
                                 <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Commercial Mode ➔</div>
                             </div>`;
-                        if (resCapWarningSlot) resCapWarningSlot.innerHTML = enLang ? limitAlertEn : limitAlertAr;
+                        if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = enLang ? limitAlertEn : limitAlertAr;
                         return;
                     }
 
                     if (invRequired <= 30000) {
-                        if (inverterResultRow) {
-                            inverterResultRow.classList.remove("orange-alert-row");
-                            inverterResultRow.style.border = "";
-                            inverterResultRow.style.background = "";
+                        if (inverterResultRowEl) {
+                            inverterResultRowEl.classList.remove("orange-alert-row");
+                            inverterResultRowEl.style.border = "";
+                            inverterResultRowEl.style.background = "";
                         }
 
                         if (bestCount === 1) {
-                            document.getElementById("resInverterWatts").innerHTML = `
+                            resInverterWattsEl.innerHTML = `
                                 <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
                                     <span class="stdSize" style="margin:0; background-color: #10b981; color: #ffffff;">${t.stdSize}</span>
                                     <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
                                 </div>`;
-                            if (resCapWarningSlot) resCapWarningSlot.innerHTML = "";
+                            if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
                         } else {
                             const parallelTxt = enLang ? "Parallel Setup" : "توصيل بالتوازي";
                             const distTxt = enLang ? "Parallel Distribution:" : "التوزيع بالتوازي:";
                             
                             const badgeBorder = "#10b981";
                             
-                            document.getElementById("resInverterWatts").innerHTML = `
+                            resInverterWattsEl.innerHTML = `
                                 <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
                                     <span class="stdSize" style="margin:0; background-color: rgba(16, 185, 129, 0.15); color: #ffffff; border: 1px solid #10b981;">${parallelTxt}</span>
                                     <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
@@ -1837,7 +1847,7 @@ if ('serviceWorker' in navigator) {
                                  const cond1 = enLang ? "Exact match of devices (same brand, model, and firmware version)." : "تطابق الأجهزة (نفس الشركة، نفس الموديل، ونفس إصدار الفرموير Firmware).";
                                  const cond2 = enLang ? "Equal lengths and cross-sections for battery and AC cables to ensure balanced voltage and resistance." : "تساوي أطوال ومقاطع كابلات البطاريات والكهرباء لضمان توازن الجهود والمقاومات.";
 
-                                 resCapWarningSlot.innerHTML = `
+                                 resCapWarningSlotEl.innerHTML = `
                                  <div style="margin-top: 16px; margin-bottom: 0px; background: rgba(15, 23, 42, 0.4); border: 1px solid #059669; border-radius: 12px; padding: 14px;">
                                      <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 10px; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; text-align: start; display:flex; align-items:center; gap:6px;">💡 ${alertTitle}</div>
                                      <div style="color: #e2e8f0; font-size: 13.5px; line-height: 1.7; text-align: start; margin-bottom: 12px;">
@@ -1854,15 +1864,15 @@ if ('serviceWorker' in navigator) {
                                      </div>
                                  </div>`;
                             } else {
-                                 if (resCapWarningSlot) resCapWarningSlot.innerHTML = "";
+                                 if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
                             }
                         }
 
                     } else if (invRequired > 30000 && invRequired <= 48000) {
-                        if (inverterResultRow) {
-                            inverterResultRow.classList.add("orange-alert-row");
-                            inverterResultRow.style.border = "";
-                            inverterResultRow.style.background = "";
+                        if (inverterResultRowEl) {
+                            inverterResultRowEl.classList.add("orange-alert-row");
+                            inverterResultRowEl.style.border = "";
+                            inverterResultRowEl.style.background = "";
                         }
 
                         const parallelTxt = enLang ? "Parallel Setup" : "توصيل بالتوازي";
@@ -1870,7 +1880,7 @@ if ('serviceWorker' in navigator) {
                         
                         const badgeBorder = "#f59e0b";
                         
-                        document.getElementById("resInverterWatts").innerHTML = `
+                        resInverterWattsEl.innerHTML = `
                             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
                                 <span class="stdSize" style="margin:0; background-color: rgba(245, 158, 11, 0.15); color: #ffffff; border: 1px solid #f59e0b;">${parallelTxt}</span>
                                 <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
@@ -1899,17 +1909,17 @@ if ('serviceWorker' in navigator) {
                                 <div style="margin-top: 12px; font-size: 13.5px; font-weight: 700; color: #10b981; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Commercial Mode ➔</div>
                             </div>`;
                             
-                        if (resCapWarningSlot) resCapWarningSlot.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
+                        if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
 
                     } else if (invRequired > 48000) {
-                        if (inverterResultRow) {
-                            inverterResultRow.classList.remove("orange-alert-row");
-                            inverterResultRow.style.border = "1px solid #ef4444";
-                            inverterResultRow.style.background = "rgba(239, 68, 68, 0.05)";
+                        if (inverterResultRowEl) {
+                            inverterResultRowEl.classList.remove("orange-alert-row");
+                            inverterResultRowEl.style.border = "1px solid #ef4444";
+                            inverterResultRowEl.style.background = "rgba(239, 68, 68, 0.05)";
                         }
 
                         const dangerTxt = enLang ? "DANGER" : "خطر";
-                        document.getElementById("resInverterWatts").innerHTML = `
+                        resInverterWattsEl.innerHTML = `
                             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
                                 <span class="stdSize" style="margin:0; background-color: rgba(239, 68, 68, 0.15); color: #ffffff; border: 1px solid #ef4444;">${dangerTxt}</span>
                                 <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${reqWattsInt.toLocaleString("en-US")} W</span>
@@ -1932,42 +1942,51 @@ if ('serviceWorker' in navigator) {
                                 <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Large Systems (HV) ➔</div>
                             </div>`;
                         
-                        if (resCapWarningSlot) resCapWarningSlot.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
+                        if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
                     }
 
                 } else {
-                    if (inverterResultRow) {
-                        inverterResultRow.classList.remove("orange-alert-row");
-                        inverterResultRow.style.border = "";
-                        inverterResultRow.style.background = "";
+                    if (inverterResultRowEl) {
+                        inverterResultRowEl.classList.remove("orange-alert-row");
+                        inverterResultRowEl.style.border = "";
+                        inverterResultRowEl.style.background = "";
                     }
                     
-                    document.getElementById("resInverterWatts").innerHTML = isOverloaded ? 
+                    resInverterWattsEl.innerHTML = isOverloaded ? 
                         `<div class="engineering-alert" style="direction: ${window.currentLang === 'ar' ? 'rtl' : 'ltr'};">⚠️ ${t.invAlert1}<br>${t.invAlert2} (${sysVolt}${t.invAlert3}<br>${t.invAlert4} <strong>${Math.max(5000, marketInv.find(s => s >= invRequired) || invRequired).toLocaleString("en-US")} ${t.invAlert5}</strong>، ${t.invAlert6}</div>` :
                         `<div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${window.currentLang === 'ar' ? 'rtl' : 'ltr'}; padding: 4px 0;">
                             <span class="stdSize" style="margin:0; background-color: rgba(16, 185, 129, 0.15); color: #ffffff; border: 1px solid #10b981;">${t.stdSize}</span>
                             <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${finalInv.toLocaleString("en-US")} W</span> 
                         </div>`;
-                    if(resCapWarningSlot) resCapWarningSlot.innerHTML = "";
+                    if(resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
                 }
             } else {
-                if (inverterResultRow) {
-                    inverterResultRow.classList.remove("orange-alert-row");
-                    inverterResultRow.style.border = "";
-                    inverterResultRow.style.background = "";
+                if (inverterResultRowEl) {
+                    inverterResultRowEl.classList.remove("orange-alert-row");
+                    inverterResultRowEl.style.border = "";
+                    inverterResultRowEl.style.background = "";
                 }
-                document.getElementById("resInverterWatts").innerHTML = `0 ${t.wWord}`;
-                if(resCapWarningSlot) resCapWarningSlot.innerHTML = "";
+                resInverterWattsEl.innerHTML = `0 ${t.wWord}`;
+                if(resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
             }
         }
-
-        const enterpriseWrapper = document.getElementById("enterpriseResultsWrapper");
-        const alertContainer = document.getElementById("ent-warning-container");
         
-        if (enterpriseWrapper && alertContainer) {
+        if (enterpriseWrapperEl && alertContainerEl) {
             if (entDailyKwh > 0 && totalDailyWh > 0) {
-                enterpriseWrapper.style.display = "block";
+                enterpriseWrapperEl.style.display = "block";
                 
+                const resEntSysArchEl = document.getElementById("resEntSysArch");
+                const resEntInvertersEl = document.getElementById("resEntInverters");
+                const resEntPhaseRowEl = document.getElementById("resEntPhaseRow");
+                const resEntPhaseValEl = document.getElementById("resEntPhaseVal");
+                const resEntHvRowEl = document.getElementById("resEntHvRow");
+                const resEntHvValEl = document.getElementById("resEntHvVal");
+                const resEntBattValEl = document.getElementById("resEntBattVal");
+                const resEntBattCableRowEl = document.getElementById("resEntBattCableRow");
+                const resEntBattCableValEl = document.getElementById("resEntBattCableVal");
+                const resEntPvCableRowEl = document.getElementById("resEntPvCableRow");
+                const resEntPvCableValEl = document.getElementById("resEntPvCableVal");
+
                 let archTitle = "";
                 let invertersTxt = "";
                 let totalLoadKw = finalInv / 1000; 
@@ -1992,9 +2011,9 @@ if ('serviceWorker' in navigator) {
                     } else {
                         invertersTxt = `1 × ${unitSizeKw} kW 3-Phase Inverter`;
                     }
-                    if(document.getElementById("resEntPhaseRow")) document.getElementById("resEntPhaseRow").style.display = "flex";
-                    if(document.getElementById("resEntPhaseVal")) document.getElementById("resEntPhaseVal").innerHTML = `${(totalLoadKw / 3).toFixed(1)} kW / Phase`;
-                    if(document.getElementById("resEntHvRow")) document.getElementById("resEntHvRow").style.display = "none";
+                    if(resEntPhaseRowEl) resEntPhaseRowEl.style.display = "flex";
+                    if(resEntPhaseValEl) resEntPhaseValEl.innerHTML = `${(totalLoadKw / 3).toFixed(1)} kW / Phase`;
+                    if(resEntHvRowEl) resEntHvRowEl.style.display = "none";
                 } 
                 else if (entSysType === "hv") {
                     archTitle = "160V-800V High Voltage HV";
@@ -2003,10 +2022,10 @@ if ('serviceWorker' in navigator) {
                     } else {
                         invertersTxt = `1 × ${unitSizeKw} kW HV Unit`;
                     }
-                    if(document.getElementById("resEntPhaseRow")) document.getElementById("resEntPhaseRow").style.display = "none";
-                    if(document.getElementById("resEntHvRow")) document.getElementById("resEntHvRow").style.display = "flex";
+                    if(resEntPhaseRowEl) resEntPhaseRowEl.style.display = "none";
+                    if(resEntHvRowEl) resEntHvRowEl.style.display = "flex";
                     
-                    if (panelsCount > 0 && document.getElementById("resEntHvVal")) {
+                    if (panelsCount > 0 && resEntHvValEl) {
                         let estimatedVoc = 41.5; 
                         if (panelWatts >= 600) {
                             estimatedVoc = 49.5;
@@ -2019,7 +2038,7 @@ if ('serviceWorker' in navigator) {
                         let totalStrings = Math.ceil(panelsCount / panelsPerString);
                         let stringVoc = panelsPerString * estimatedVoc;
 
-                        document.getElementById("resEntHvVal").innerHTML = `${totalStrings.toLocaleString("en-US")} Strings × ${panelsPerString} Panels<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(Max Voc ≈ ${Math.round(stringVoc)}V DC per String)</span>`;
+                        resEntHvValEl.innerHTML = `${totalStrings.toLocaleString("en-US")} Strings × ${panelsPerString} Panels<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(Max Voc ≈ ${Math.round(stringVoc)}V DC per String)</span>`;
                     }
                 } 
                 else if (entSysType === "single") {
@@ -2029,14 +2048,14 @@ if ('serviceWorker' in navigator) {
                     } else {
                         invertersTxt = `1 × ${unitSizeKw} kW Single-Phase`;
                     }
-                    if(document.getElementById("resEntPhaseRow")) document.getElementById("resEntPhaseRow").style.display = "none";
-                    if(document.getElementById("resEntHvRow")) document.getElementById("resEntHvRow").style.display = "none";
+                    if(resEntPhaseRowEl) resEntPhaseRowEl.style.display = "none";
+                    if(resEntHvRowEl) resEntHvRowEl.style.display = "none";
                 }
 
-                if(document.getElementById("resEntSysArch")) document.getElementById("resEntSysArch").innerHTML = archTitle;
-                if(document.getElementById("resEntInverters")) document.getElementById("resEntInverters").innerHTML = invertersTxt;
+                if(resEntSysArchEl) resEntSysArchEl.innerHTML = archTitle;
+                if(resEntInvertersEl) resEntInvertersEl.innerHTML = invertersTxt;
 
-                if (battKwh > 0 && document.getElementById("resEntBattVal")) {
+                if (battKwh > 0 && resEntBattValEl) {
                     if (entSysType === "hv") {
                         let racksPerUnit = Math.ceil(totalRacks / numberOfUnits);
                         let racksInSeries = Math.min(14, Math.max(1, racksPerUnit));
@@ -2047,24 +2066,24 @@ if ('serviceWorker' in navigator) {
                             ? `[${numberOfUnits} Inverters: ~${clustersPerUnit} Parallel Clusters/Unit, ${racksInSeries} Units in Series/Cluster ≈ ${Math.round(clusterVoltage)}V DC]`
                             : `[${clustersPerUnit} Parallel Clusters, ${racksInSeries} Units in Series/Cluster ≈ ${Math.round(clusterVoltage)}V DC]`;
                             
-                        document.getElementById("resEntBattVal").innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">${distributionTxt}</span>`;
+                        resEntBattValEl.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">${distributionTxt}</span>`;
                     } else {
                         let maxRacksPerBank = 8;
                         let parallelBanks = Math.ceil(totalRacks / maxRacksPerBank);
                         let racksPerBank = Math.ceil(totalRacks / parallelBanks);
-                        document.getElementById("resEntBattVal").innerHTML = `${totalRacks} Units (${batteryModuleLabel}) (~${battKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Units/Bank @ 48V)</span>`;
+                        resEntBattValEl.innerHTML = `${totalRacks} Units (${batteryModuleLabel}) (~${battKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Units/Bank @ 48V)</span>`;
                     }
-                } else if (document.getElementById("resEntBattVal")) {
-                    document.getElementById("resEntBattVal").innerHTML = `-`;
+                } else if (resEntBattValEl) {
+                    resEntBattValEl.innerHTML = `-`;
                 }
 
                 let bAmpsCalc = effectiveSysVolt > 0 ? (finalInv / effectiveSysVolt) * climateFactor : 0;
-                let bAmpsMax = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0);
+                let bAmpsMax = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0, mpptCurrent * climateFactor);
                 
                 let battCableSize = getCableSizeFromAmps(bAmpsMax);
                 let battBreaker = getStandardBreakerSize(bAmpsMax);
 
-                let estimatedImp = panelWatts > 450 ? 14 : 11; 
+                let estimatedImp = panelWatts > 0 ? (panelWatts / 36) : 13; 
                 let maxMpptVolt = entSysType === "hv" ? 800 : (effectiveSysVolt === 48 ? 145 : 100);
                 let estimatedVoc = panelWatts > 450 ? 50 : 41; 
                 let panelsPerString = Math.max(1, Math.floor((maxMpptVolt * 0.85) / estimatedVoc));
@@ -2077,40 +2096,42 @@ if ('serviceWorker' in navigator) {
                 let fuseSize = Math.ceil(estimatedImp * 1.56);
 
                 if (battKwh === 0 && entSysType === "single") {
-                    if(document.getElementById("resEntBattCableRow")) document.getElementById("resEntBattCableRow").style.display = "none";
+                    if(resEntBattCableRowEl) resEntBattCableRowEl.style.display = "none";
                 } else {
-                    if(document.getElementById("resEntBattCableRow")) {
-                        document.getElementById("resEntBattCableRow").style.display = "flex";
-                        document.getElementById("resEntBattCableVal").innerHTML = `${battCableSize} ${battCableSize.includes('Busbars') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Breaker: ${battBreaker}A DC</span>`;
+                    if(resEntBattCableRowEl) {
+                        resEntBattCableRowEl.style.display = "flex";
+                        resEntBattCableValEl.innerHTML = `${battCableSize} ${battCableSize.includes('Busbars') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Breaker: ${battBreaker}A DC</span>`;
                     }
                 }
 
-                if(document.getElementById("resEntPvCableRow")) {
-                    document.getElementById("resEntPvCableRow").style.display = "flex";
+                if(resEntPvCableRowEl) {
+                    resEntPvCableRowEl.style.display = "flex";
                     let fuseTxt = needsFuses ? ` <br><span style="font-size:11px; color:#f59e0b; margin-top:2px; display:inline-block;">+ String Fuses: ${fuseSize}A</span>` : '';
-                    document.getElementById("resEntPvCableVal").innerHTML = `${pvCableSize} ${pvCableSize.includes('Box') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Main Breaker: ${pvBreaker}A DC</span>${fuseTxt}`;
+                    resEntPvCableValEl.innerHTML = `${pvCableSize} ${pvCableSize.includes('Box') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Main Breaker: ${pvBreaker}A DC</span>${fuseTxt}`;
                 }
 
                 if (mpptCurrent > 300 && entSysType !== "hv") {
-                    alertContainer.innerHTML = `<div class="engineering-alert" style="margin-top: 12px; font-size: 12.5px; direction: rtl;">${t.hvWarning}</div>`;
+                    alertContainerEl.innerHTML = `<div class="engineering-alert" style="margin-top: 12px; font-size: 12.5px; direction: rtl;">${t.hvWarning}</div>`;
                 } else {
-                    alertContainer.innerHTML = "";
+                    alertContainerEl.innerHTML = "";
                 }
 
             } else {
-                enterpriseWrapper.style.display = "none";
-                alertContainer.innerHTML = "";
+                enterpriseWrapperEl.style.display = "none";
+                alertContainerEl.innerHTML = "";
             }
         }
-
-        const cablesWrapper = document.getElementById("cablesResultsWrapper");
         
-        if (cablesWrapper) {
+        if (cablesWrapperEl) {
             if ((battDistance > 0 || acDistance > 0) && totalDailyWh > 0 && entDailyKwh === 0) {
-                cablesWrapper.style.display = "block";
+                cablesWrapperEl.style.display = "block";
                 
+                const resBattCableEl = document.getElementById("resBattCable");
+                const resPvCableEl = document.getElementById("resPvCable");
+                const resAcCableEl = document.getElementById("resAcCable");
+
                 let bAmpsCalc = (finalInv / sysVolt) * climateFactor;
-                let maxBattAmps = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0);
+                let maxBattAmps = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0, mpptCurrent * climateFactor);
 
                 let requiredCable = 25;
                 if (maxBattAmps > 300) requiredCable = 150;
@@ -2166,9 +2187,9 @@ if ('serviceWorker' in navigator) {
                 let battCableFormatted = battCableVal === "Parallel" ? `Parallel` : `<span dir="ltr">${battCableVal} mm²</span>`;
                 let acCableFormatted = aAmpsCalc > 160 ? `50 mm² or Parallel` : `<span dir="ltr">${acCableVal} mm²</span>`;
 
-                if(document.getElementById("resBattCable")) document.getElementById("resBattCable").innerHTML = `${battCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${battBreaker}A</span>`;
-                if(document.getElementById("resPvCable")) document.getElementById("resPvCable").innerHTML = `<span dir="ltr" style="font-weight:bold;">${pvCableTxt}</span> &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${pvBreaker}A DC</span>`;
-                if(document.getElementById("resAcCable")) document.getElementById("resAcCable").innerHTML = `${acCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${acBreaker}A</span>`;
+                if(resBattCableEl) resBattCableEl.innerHTML = `${battCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${battBreaker}A</span>`;
+                if(resPvCableEl) resPvCableEl.innerHTML = `<span dir="ltr" style="font-weight:bold;">${pvCableTxt}</span> &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${pvBreaker}A DC</span>`;
+                if(resAcCableEl) resAcCableEl.innerHTML = `${acCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${acBreaker}A</span>`;
                 
                 const disclaimerBox = document.getElementById("cableDisclaimerBox");
                 if (disclaimerBox) {
@@ -2179,7 +2200,7 @@ if ('serviceWorker' in navigator) {
                     }
                 }
             } else {
-                cablesWrapper.style.display = "none";
+                cablesWrapperEl.style.display = "none";
             }
         }
     };
