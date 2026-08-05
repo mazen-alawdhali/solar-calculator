@@ -82,8 +82,8 @@
         
         .hybrid-accordion.open, .cables-accordion.open, .enterprise-accordion.open { overflow: visible; }
         
-        .hybrid-accordion-header, .cables-accordion-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #38bdf8; font-weight: 700; font-size: 13.5px; user-select: none; }
-        .enterprise-accordion-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #10b981; font-weight: 700; font-size: 13.5px; user-select: none; }
+        .hybrid-accordion-header, .cables-accordion-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #ffffff; font-weight: 700; font-size: 13.5px; user-select: none; }
+        .enterprise-accordion-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #ffffff; font-weight: 700; font-size: 13.5px; user-select: none; }
         
         .hybrid-accordion-header:hover, .cables-accordion-header:hover { background-color: rgba(14, 165, 233, 0.1); }
         .enterprise-accordion-header:hover { background-color: rgba(5, 150, 105, 0.15); }
@@ -117,7 +117,16 @@
         
         .ent-mode-msg { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #34d399; font-size: 13px; font-weight: 600; text-align: center; padding: 16px; border-radius: 12px; margin-bottom: 16px; line-height: 1.6; }
         
-        .results-container { background-color: #0f172a; border: 1px solid #065f46; border-radius: 16px; padding: 12px; }
+        .results-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-start; 
+            gap: 6px; 
+            padding: 12px; 
+            background-color: #0f172a; 
+            border: 1px solid #065f46; 
+            border-radius: 16px; 
+        }
         .result-row { 
             display: flex; 
             flex-direction: column; 
@@ -128,8 +137,15 @@
             background: rgba(15, 23, 42, 0.4); 
             border: 1px solid rgba(16, 185, 129, 0.2); 
             border-radius: 10px; 
+            width: 100%;
         }
         .result-row:last-child { border-bottom: none; margin-bottom: 0; }
+        
+        .result-row.orange-alert-row {
+            border: 1px solid rgba(245, 158, 11, 0.3) !important;
+            background: rgba(245, 158, 11, 0.05) !important;
+        }
+
         .result-label { font-size: 13px; color: #94a3b8; font-weight: 600; text-align: start; width: 100%; }
         .result-value { 
             font-weight: 700; 
@@ -150,9 +166,9 @@
         .value-blue { color: #38bdf8; }
         .value-emerald { color: #34d399; }
 
-        .enterprise-results-card { background: rgba(5, 150, 105, 0.08); border: 1px solid #059669; border-radius: 12px; padding: 12px; margin: 10px 0 0 0; }
-        .enterprise-card-title { font-size: 13px; font-weight: 700; color: #10b981; margin-bottom: 10px; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; text-align: start; }
-        .enterprise-detail-block { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; background: rgba(15, 23, 42, 0.4); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(52, 211, 153, 0.15); }
+        .enterprise-results-card { background: rgba(5, 150, 105, 0.08); border: 1px solid #059669; border-radius: 12px; padding: 12px; margin: 10px 0 0 0; width: 100%; }
+        .enterprise-card-title { font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 12px; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 8px; text-align: start; }
+        .enterprise-detail-block { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; background: rgba(15, 23, 42, 0.4); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(52, 211, 153, 0.15); width: 100%; }
         .enterprise-detail-block:last-child { margin-bottom: 0; }
         .enterprise-detail-label { font-size: 12px; color: #94a3b8; font-weight: 600; text-align: start; }
         
@@ -162,10 +178,11 @@
             text-align: left !important; 
             direction: ltr !important; 
             unicode-bidi: embed; 
+            width: 100%;
         }
 
-        .cables-results-card { background: rgba(245, 158, 11, 0.08); border: 1px solid #f59e0b; border-radius: 12px; padding: 12px; margin: 14px 0 0 0; }
-        .cables-card-title { font-size: 13px; font-weight: 700; color: #f59e0b; margin-bottom: 10px; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 6px; text-align: start; }
+        .cables-results-card { background: rgba(245, 158, 11, 0.08); border: 1px solid #f59e0b; border-radius: 12px; padding: 12px; margin: 14px 0 0 0; width: 100%; }
+        .cables-card-title { font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 10px; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 6px; text-align: start; }
         
         .cables-results-card .result-row { 
             border: 1px solid rgba(245, 158, 11, 0.2); 
@@ -173,13 +190,24 @@
             padding: 10px 12px; 
             border-radius: 8px; 
             margin-bottom: 8px; 
+            width: 100%;
         }
         .cables-results-card .result-row:last-of-type { margin-bottom: 0; border-bottom: 1px solid rgba(245, 158, 11, 0.2); }
-        .cables-results-card .cable-disclaimer { border-top: 1px dashed rgba(245, 158, 11, 0.3); color: #fcd34d; margin: 10px 0 0 0; padding-top: 10px; line-height: 1.5; font-size: 11.5px; text-align: justify; direction: rtl; }
+        
+        .cables-results-card .cable-disclaimer { 
+            border-top: 1px dashed rgba(245, 158, 11, 0.3); 
+            color: #fcd34d; 
+            margin: 10px 0 0 0; 
+            padding-top: 10px; 
+            line-height: 1.5; 
+            font-size: 11.5px; 
+        }
+        html[dir="rtl"] .cables-results-card .cable-disclaimer { text-align: start; direction: rtl; }
+        html[dir="ltr"] .cables-results-card .cable-disclaimer { text-align: left; direction: ltr; word-spacing: normal; letter-spacing: normal; }
 
-        .stdSize { background-color: #10b981; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; font-size: 11px; white-space: nowrap; display: inline-block; direction: rtl; }
+        .stdSize { background-color: #f59e0b; color: #ffffff; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 12px; white-space: nowrap; display: inline-block; direction: rtl; }
 
-        .engineering-alert { background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 14px 12px; margin-top: 16px; text-align: start; color: #ffffff; font-size: 13px; font-weight: 600; line-height: 1.7; box-shadow: 0 4px 6px rgba(0,0,0,0.15); width: 100%; direction: rtl; }
+        .engineering-alert { background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 14px 12px; margin-top: 12px; text-align: start; color: #ffffff; font-size: 13px; font-weight: 600; line-height: 1.7; box-shadow: 0 4px 6px rgba(0,0,0,0.15); width: 100%; direction: rtl; }
         .engineering-alert strong { color: #ffeb3b; }
 
         .solar-footer { background-color: #0f172a; text-align: center; padding: 24px 16px; margin-top: 24px; border-top: 1px solid #334155; }
@@ -270,7 +298,7 @@
                 color: #000000 !important; 
             }
             
-            .result-row { display: flex !important; flex-direction: column !important; align-items: flex-start !important; border: 1px solid #cbd5e1 !important; background: #fff !important; border-radius: 8px !important; padding: 8px 10px !important; margin-bottom: 8px !important; box-shadow: none !important; color: #000000 !important; page-break-inside: avoid !important; break-inside: avoid !important; }
+            .result-row { display: flex !important; flex-direction: column !important; align-items: flex-start !important; border: 1px solid #cbd5e1 !important; background: #fff !important; border-radius: 8px !important; padding: 8px 10px !important; margin-bottom: 8px !important; box-shadow: none !important; color: #000000 !important; page-break-inside: avoid !important; break-inside: avoid !important; width: 100% !important; }
             .result-row:last-child { margin-bottom: 0 !important; }
             .result-label { color: #334155 !important; font-size: 11pt !important; font-weight: bold !important; margin-bottom: 3px !important; text-align: start !important; width: 100% !important; }
             .result-value { justify-content: flex-start !important; text-align: left !important; color: #000000 !important; font-size: 13pt !important; direction: ltr !important; width: 100% !important; }
@@ -279,16 +307,16 @@
             #enterpriseResultsWrapper { display: none !important; }
             #enterpriseResultsWrapper[style*="display: block"] { display: block !important; page-break-inside: avoid !important; break-inside: avoid !important; }
             
-            .enterprise-results-card { background: #f0fdf4 !important; border: 1px solid #059669 !important; margin-top: 8px !important; padding: 8px !important; color: #000000 !important; display: block !important; page-break-inside: avoid !important; break-inside: avoid !important; }
-            .enterprise-card-title { color: #059669 !important; font-size: 12pt !important; page-break-after: avoid !important; break-after: avoid !important; }
+            .enterprise-results-card { background: #f0fdf4 !important; border: 1px solid #059669 !important; margin-top: 8px !important; padding: 8px !important; color: #000000 !important; display: block !important; page-break-inside: avoid !important; break-inside: avoid !important; width: 100% !important; }
+            .enterprise-card-title { color: #ffffff !important; font-size: 12pt !important; page-break-after: avoid !important; break-after: avoid !important; }
             
-            .enterprise-detail-block { padding: 6px 8px !important; margin-bottom: 6px !important; background: #ffffff !important; border-color: #cbd5e1 !important; color: #000000 !important; page-break-inside: avoid !important; break-inside: avoid !important; }
+            .enterprise-detail-block { padding: 6px 8px !important; margin-bottom: 6px !important; background: #ffffff !important; border-color: #cbd5e1 !important; color: #000000 !important; page-break-inside: avoid !important; break-inside: avoid !important; width: 100% !important; }
             
             .enterprise-detail-label { font-size: 10.5pt !important; color: #334155 !important; }
-            .enterprise-detail-val { font-size: 12pt !important; color: #000000 !important; }
+            .enterprise-detail-val { font-size: 12pt !important; color: #000000 !important; width: 100% !important; }
             
-            .cables-results-card { background: transparent !important; border: 1px solid #cbd5e1 !important; margin-top: 10px !important; color: #000000 !important; page-break-inside: avoid !important; break-inside: avoid !important; }
-            .cables-card-title { color: #334155 !important; border-bottom-color: #cbd5e1 !important; }
+            .cables-results-card { background: transparent !important; border: 1px solid #cbd5e1 !important; margin-top: 10px !important; color: #000000 !important; page-break-inside: avoid !important; break-inside: avoid !important; width: 100% !important; }
+            .cables-card-title { color: #ffffff !important; border-bottom-color: #cbd5e1 !important; }
             .cables-results-card .cable-disclaimer { color: #475569 !important; border-top-color: #cbd5e1 !important; }
             
             .stdSize { background-color: transparent !important; color: #000000 !important; font-weight: bold !important; font-size: 12pt !important; border: 1px solid #000 !important; padding: 2px 6px !important; border-radius: 4px !important; }
@@ -299,8 +327,8 @@
 
             .hybrid-accordion, .cables-accordion, .enterprise-accordion { border: 1px dashed #38bdf8 !important; background: #f0f9ff !important; margin-top: 12px !important; overflow: visible !important; color: #000000 !important; page-break-inside: avoid !important; break-inside: avoid !important; }
             .enterprise-accordion { border-color: #059669 !important; background: #f0fdf4 !important; color: #000000 !important; }
-            .hybrid-accordion-header, .cables-accordion-header, .enterprise-accordion-header { color: #0284c7 !important; padding: 8px 10px !important; border-bottom: 1px solid #bae6fd !important; font-size: 12pt !important; page-break-after: avoid !important; break-after: avoid !important; }
-            .enterprise-accordion-header { color: #059669 !important; border-bottom-color: #bbf7d0 !important; }
+            .hybrid-accordion-header, .cables-accordion-header, .enterprise-accordion-header { color: #ffffff !important; padding: 8px 10px !important; border-bottom: 1px solid #bae6fd !important; font-size: 12pt !important; page-break-after: avoid !important; break-after: avoid !important; }
+            .enterprise-accordion-header { color: #ffffff !important; border-bottom-color: #bbf7d0 !important; }
             .hybrid-icon, .cables-icon, .enterprise-icon { display: none !important; }
             .hybrid-accordion-body, .cables-accordion-body, .enterprise-accordion-body { max-height: none !important; opacity: 1 !important; display: block !important; padding: 8px 12px 12px 12px !important; overflow: visible !important; color: #000000 !important; }
             
@@ -467,12 +495,28 @@
                                 <label data-i18n="panelWattsLabel">قدرة اللوح المستهدف (W):</label>
                                 <input type="number" id="panelWatts" placeholder="450" min="10" lang="en">
                             </div>
+
                             <div class="input-group">
                                 <label data-i18n="sunHoursLabel">ساعات ذروة الشمس:</label>
                                 <input type="number" id="sunHours" placeholder="6" min="1" max="15" step="0.5" lang="en">
                             </div>
 
                             <div class="input-group">
+                                <label data-i18n="panelClimateLabel">مناخ الألواح (للكفاءة):</label>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select-display" onclick="toggleDropdown('panelClimateDropdown')">
+                                        <span id="panelClimateDisplay" data-i18n="pClimateMod">مناخ معتدل (كفاءة 100%)</span>
+                                        <span>▼</span>
+                                    </div>
+                                    <div class="custom-select-options" id="panelClimateDropdown">
+                                        <div class="custom-option" onclick="selectGlobalOption('panelClimateFactor', '1.0', 'pClimateMod', 'panelClimateDisplay', 'panelClimateDropdown')" data-i18n="pClimateMod">مناخ معتدل (كفاءة 100%)</div>
+                                        <div class="custom-option" onclick="selectGlobalOption('panelClimateFactor', '0.85', 'pClimateHot', 'panelClimateDisplay', 'panelClimateDropdown')" data-i18n="pClimateHot">مناخ حار جداً (كفاءة 85%)</div>
+                                    </div>
+                                    <input type="hidden" id="panelClimateFactor" value="1.0">
+                                </div>
+                            </div>
+
+                            <div class="input-group" style="grid-column: span 2;">
                                 <label data-i18n="dodLabel">نسبة حماية البطارية:</label>
                                 <div class="custom-select-wrapper">
                                     <div class="custom-select-display" onclick="toggleDropdown('dodDropdown')">
@@ -541,15 +585,15 @@
                                     </div>
                                     
                                     <div class="input-group" style="grid-column: span 2;">
-                                        <label data-i18n="climateLabel">طبيعة المناخ (للأمان):</label>
+                                        <label data-i18n="climateLabel">مناخ الكابلات (للأمان):</label>
                                         <div class="custom-select-wrapper">
                                             <div class="custom-select-display" onclick="toggleDropdown('climateDropdown')">
-                                                <span id="climateDisplay" data-i18n="climateMod">معتدل (أمان 1.25)</span>
+                                                <span id="climateDisplay" data-i18n="climateMod">مناخ معتدل (أمان 1.25)</span>
                                                 <span>▼</span>
                                             </div>
                                             <div class="custom-select-options" id="climateDropdown">
-                                                <div class="custom-option" onclick="selectGlobalOption('climateFactor', '1.25', 'climateMod', 'climateDisplay', 'climateDropdown')" data-i18n="climateMod">معتدل (أمان 1.25)</div>
-                                                <div class="custom-option" onclick="selectGlobalOption('climateFactor', '1.50', 'climateHot', 'climateDisplay', 'climateDropdown')" data-i18n="climateHot">حار جداً (أمان 1.50)</div>
+                                                <div class="custom-option" onclick="selectGlobalOption('climateFactor', '1.25', 'climateMod', 'climateDisplay', 'climateDropdown')" data-i18n="climateMod">مناخ معتدل (أمان 1.25)</div>
+                                                <div class="custom-option" onclick="selectGlobalOption('climateFactor', '1.50', 'climateHot', 'climateDisplay', 'climateDropdown')" data-i18n="climateHot">مناخ حار جداً (أمان 1.50)</div>
                                             </div>
                                             <input type="hidden" id="climateFactor" value="1.25">
                                         </div>
@@ -587,26 +631,18 @@
                                     </div>
 
                                     <div class="input-group">
-                                        <label data-i18n="entDailyLoadLabel">الاستهلاك اليومي المطلوب (kWh):</label>
-                                        <input type="number" id="enterpriseDailyKwh" min="0" step="any" lang="en">
+                                        <label data-i18n="entDailyKwhLabel">إجمالي الاستهلاك اليومي (kWh):</label>
+                                        <input type="number" id="enterpriseDailyKwh" min="0" step="any" placeholder="1000" lang="en">
                                     </div>
 
-                                    <!-- نمط الاستهلاك -->
-                                    <div class="input-group" style="grid-column: span 2;">
-                                        <label data-i18n="entLoadProfileLbl">نمط الاستهلاك اليومي:</label>
-                                        <div class="custom-select-wrapper">
-                                            <div class="custom-select-display" onclick="toggleDropdown('loadProfileDropdown')">
-                                                <span id="loadProfileDisplay" data-i18n="prof50">50% نهاراً / 50% ليلاً (افتراضي)</span>
-                                                <span>▼</span>
-                                            </div>
-                                            <div class="custom-select-options" id="loadProfileDropdown">
-                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '50/50', 'prof50', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof50">50% نهاراً / 50% ليلاً (افتراضي)</div>
-                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '70/30', 'prof70', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof70">70% نهاراً / 30% ليلاً (مشاريع وتجاري)</div>
-                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '100/0', 'prof100', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof100">100% نهاراً / 0% ليلاً (تشغيل نهاري فقط)</div>
-                                                <div class="custom-option" onclick="selectGlobalOption('entLoadProfile', '30/70', 'prof30', 'loadProfileDisplay', 'loadProfileDropdown')" data-i18n="prof30">30% نهاراً / 70% ليلاً (إنارة شوارع/مراقبة)</div>
-                                            </div>
-                                            <input type="hidden" id="entLoadProfile" value="50/50">
-                                        </div>
+                                    <div class="input-group">
+                                        <label data-i18n="entHoursDayLabel">عدد الساعات نهاراً:</label>
+                                        <input type="number" id="enterpriseHoursDay" min="0" max="24" step="0.5" placeholder="10" lang="en">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <label data-i18n="entHoursNightLabel">عدد الساعات ليلاً:</label>
+                                        <input type="number" id="enterpriseHoursNight" min="0" max="24" step="0.5" placeholder="5" lang="en">
                                     </div>
                                 </div>
                             </div>
@@ -621,7 +657,7 @@
                         </div>
                         
                         <div id="ent-override-msg" class="ent-mode-msg" style="display: none;" data-i18n="entModeActive">
-                            تم تفعيل وضع المشاريع الكبيرة (بناءً على الاستهلاك الإجمالي).<br>تم إيقاف جدول الأجهزة مؤقتاً لمنع ازدواجية الحسابات.
+                            تم تفعيل وضع المشاريع الكبيرة (بناءً على الاستهلاك الكلي اليومي وساعات التشغيل).<br>تم إيقاف جدول الأجهزة مؤقتاً لمنع ازدواجية الحسابات.
                         </div>
 
                         <div id="appliancesList" aria-live="polite"></div>
@@ -636,20 +672,25 @@
                             <div class="result-row"><div class="result-label" data-i18n="battKwh">سعة طاقة البطارية الفعلية:</div><div class="result-value value-blue" id="resBatteryKwh">0</div></div>
                             <div class="result-row"><div class="result-label" data-i18n="panelsCount">عدد الألواح الشمسية المطلوبة:</div><div class="result-value value-green" id="resPanelsCount">0</div></div>
                             <div class="result-row"><div class="result-label" data-i18n="mpptCurrent">تيار منظم الشحن الأدنى (MPPT):</div><div class="result-value value-blue" id="resMpptCurrent">0</div></div>
-                            <div class="result-row"><div class="result-label" data-i18n="invRequired">القدرة المطلوبة للإنفرتر (Inverter):</div><div class="result-value value-amber" id="resInverterWatts">0</div></div>
                             
-                            <div id="cablesResultsWrapper" style="display: none;">
+                            <!-- خانة الإنفرتر -->
+                            <div class="result-row" id="inverterResultRow">
+                                <div class="result-label" data-i18n="invRequired">القدرة المطلوبة للإنفرتر (Inverter):</div>
+                                <div class="result-value value-amber" id="resInverterWatts" style="display: block;">0</div>
+                                <div id="residential-cap-warning-slot" style="width: 100%;"></div>
+                            </div>
+                            
+                            <div id="cablesResultsWrapper" style="display: none; width: 100%;">
                                 <div class="cables-results-card">
                                     <div class="cables-card-title"><span data-i18n="cablesResTitle">مواصفات الكابلات والقواطع (هام جداً):</span></div>
-                                    <div id="industrial-warning-slot"></div>
                                     <div class="result-row"><div class="result-label" data-i18n="battCableRes">كابل وقاطع البطارية:</div><div class="result-value value-amber" id="resBattCable">0</div></div>
                                     <div class="result-row"><div class="result-label" data-i18n="pvCableRes">كابل وقاطع الألواح:</div><div class="result-value value-green" id="resPvCable">0</div></div>
                                     <div class="result-row"><div class="result-label" data-i18n="acCableRes">كابل وقاطع الأحمال (AC):</div><div class="result-value value-blue" id="resAcCable">0</div></div>
-                                    <div class="cable-disclaimer" data-i18n="cableDisclaimer">⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على كابلات نحاسية معتمدة ومطابقة للمواصفات. يرجى مراجعة الفني المختص لمراعاة ظروف ومسافات التوصيل الميدانية الفعليّة.</div>
+                                    <div class="cable-disclaimer" id="cableDisclaimerBox" data-i18n="cableDisclaimer">⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على كابلات نحاسية معتمدة ومطابقة للمواصفات. يرجى مراجعة الفني المختص لمراعاة ظروف ومسافات التوصيل الميدانية الفعليّة.</div>
                                 </div>
                             </div>
 
-                            <div id="enterpriseResultsWrapper" style="display: none;">
+                            <div id="enterpriseResultsWrapper" style="display: none; width: 100%;">
                                 <div class="enterprise-results-card">
                                     <div class="enterprise-card-title" data-i18n="entCardTitle">🏭 هيكلية المنظومة التجارية والهندسية:</div>
                                     
@@ -794,6 +835,8 @@ if ('serviceWorker' in navigator) {
 }
 
 !function(){
+    'use strict';
+    
     var _0xdomain=["solar-pro-calculator.netlify.app","localhost","127.0.0.1","mazen-alawdhali.github.io","solar-pro-calculator.vercel.app","solar-calculator-pro.vercel.app","mazen-alawdhali.vercel.app"];
     var _0xhost=window.location.hostname;
     var _0xpreview=_0xhost.indexOf("--solar-pro-calculator.netlify.app")!==-1||_0xhost.indexOf("agent-")!==-1;
@@ -821,8 +864,9 @@ if ('serviceWorker' in navigator) {
             sysSettings: "⚡ إعدادات المنظومة الهندسية:", sysVoltage: "جهد النظام (Volt):",
             volt12: "12 فولت", volt24: "24 فولت", volt48: "48 فولت",
             panelWattsLabel: "قدرة اللوح المستهدف (W):", sunHoursLabel: "ساعات ذروة الشمس:",
+            panelClimateLabel: "مناخ الألواح (للكفاءة):", pClimateMod: "مناخ معتدل (كفاءة 100%)", pClimateHot: "مناخ حار جداً (كفاءة 85%)",
             dodLabel: "نسبة حماية البطارية:", dod80: "20% أمان (DoD 80%)", dod50: "50% أمان (DoD 50%)",
-            hybridTitle: "🔌 النظام الهجين (اختياري)",
+            hybridTitle: "🔌 إعدادات النظام الهجين (اختياري)",
             hybridHint: "إذا كانت الكهرباء العمومية متوفرة، أدخل البيانات هنا لتقليل حجم المنظومة. (اتركها 0 لنظام مستقل):",
             gridDayHoursLabel: "ساعات الشحن نهاراً (ألواح):", gridNightHoursLabel: "ساعات الشحن ليلاً (بطارية):", acAmpsLabel: "تيار شاحن الشبكة (Amps):",
             
@@ -832,14 +876,10 @@ if ('serviceWorker' in navigator) {
             singlePhaseOpt: "أحادي الطور (Single-Phase)",
             three48Opt: "ثلاثي الأطوار 48فولت (48V 3-Phase)",
             hvOpt: "جهد عالي 160V-800V (High Voltage HV)",
-            entDailyLoadLabel: "الاستهلاك اليومي المطلوب (kWh):",
-            entKwhPh: "مثال: 50 كيلوواط",
+            entDailyKwhLabel: "إجمالي الاستهلاك اليومي (kWh):",
+            entHoursDayLabel: "عدد الساعات نهاراً:",
+            entHoursNightLabel: "عدد الساعات ليلاً:",
             
-            entLoadProfileLbl: "نمط الاستهلاك اليومي:",
-            prof50: "50% نهاراً / 50% ليلاً (افتراضي)",
-            prof70: "70% نهاراً / 30% ليلاً (مشاريع وتجاري)",
-            prof100: "100% نهاراً / 0% ليلاً (تشغيل نهاري فقط)",
-            prof30: "30% نهاراً / 70% ليلاً (إنارة شوارع/مراقبة)",
             entBattCableLbl: "كابل وقاطع البطارية الرئيسي:",
             entPvCableLbl: "كابل وقاطع النازل من الألواح:",
             bufferNoteAr: "(سعة طوارئ واستقرار)",
@@ -854,15 +894,14 @@ if ('serviceWorker' in navigator) {
             cablesTitle: "⚙️ إعدادات الكابلات والقواطع (اختياري)",
             cablesHint: "أدخل البيانات المطلوبة لتقدير مقاسات الكابلات والحمايات (القواطع) الموصى بها :",
             battDistLabel: "مسافة كابل البطارية (متر):", acDistLabel: "مسافة كابل الأحمال (متر):",
-            climateLabel: "طبيعة المناخ (للأمان):", climateMod: "معتدل (أمان 1.25)", climateHot: "حار جداً (أمان 1.50)",
+            climateLabel: "مناخ الكابلات (للأمان):", climateMod: "مناخ معتدل (أمان 1.25)", climateHot: "مناخ حار جداً (أمان 1.50)",
             entCablesModeActive: "تم إيقاف هذا الجدول وتصفير القيم مؤقتاً لتفعيل وضع المشاريع والمنظومات الكبيرة.",
             
             devicesList: "📋 جدول حصر أحمال الأجهزة:", addDevice: "+ إضافة جهاز جـديد",
             
-            entModeActive: "تم تفعيل وضع المشاريع الكبيرة (بناءً على الاستهلاك الإجمالي).<br>تم إيقاف جدول الأجهزة مؤقتاً لمنع ازدواجية الحسابات.",
+            entModeActive: "تم تفعيل وضع المشاريع الكبيرة (بناءً على الاستهلاك الكلي اليومي وساعات التشغيل).<br>تم إيقاف جدول الأجهزة مؤقتاً لمنع ازدواجية الحسابات.",
             hvWarning: "⚠️ تنبيه هندسي: القدرات العالية على جهود التشغيل المنخفضة (48V) تولد تيارات تشغيلية عالية ومخاطر حرارية. يُنصح بالانتقال إلى أنظمة الجهد العالي (HV) لرفع الكفاءة والأمان.",
-            industrialWarning: "⚠️ تنبيه هندسي صناعي: الإنفرترات (العواكس) التي تتجاوز 30 كيلوواط تعتبر مشاريع تجارية أو صناعية كبرى، ولا تناسبها المقاسات الأحادية الظاهرة. يتطلب الأمر استخدام كابلات نحاسية متوازية متعددة أو قضبان نحاسية (Busbars) ودراسة هبوط جهد ميدانية متخصصة.<br><br>يرجى الانتقال إلى وضع:<br><a href=\"javascript:void(0)\" onclick=\"scrollToEnterprise()\" style=\"color: #10b981; font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px;\">إعدادات المنظومات الكبيرة والمشاريع التجارية</a>",
-
+            
             resultsTitle: "📊 نتائج ومخرجات المنظومة الهندسية :",
             eTotal: "الطاقة الكلية شاملة الفقد (E_total):", battAh: "سعة بطارية الليثيوم المطلوبة:",
             battKwh: "سعة طاقة البطارية الفعلية:", panelsCount: "عدد الألواح الشمسية المطلوبة:",
@@ -908,6 +947,7 @@ if ('serviceWorker' in navigator) {
             sysSettings: "⚡ System Engineering Settings:", sysVoltage: "System Voltage (Volt):",
             volt12: "12 Volts", volt24: "24 Volts", volt48: "48 Volts",
             panelWattsLabel: "Target Panel Power (W):", sunHoursLabel: "Peak Sun Hours:",
+            panelClimateLabel: "Panel Climate (Efficiency):", pClimateMod: "Moderate Climate (100% Eff)", pClimateHot: "Very Hot Climate (85% Eff)",
             dodLabel: "Battery Protection (DoD):", dod80: "20% Safe (DoD 80%)", dod50: "50% Safe (DoD 50%)",
             hybridTitle: "🔌 Hybrid System Settings (Optional)",
             hybridHint: "If grid/gen is available, enter details to reduce required system size. (Leave 0 for Off-Grid):",
@@ -919,14 +959,10 @@ if ('serviceWorker' in navigator) {
             singlePhaseOpt: "Single-Phase",
             three48Opt: "48V 3-Phase",
             hvOpt: "High Voltage (160V-800V)",
-            entDailyLoadLabel: "Required Daily Load (kWh):",
-            entKwhPh: "e.g., 50 kWh",
+            entDailyKwhLabel: "Total Daily Consumption (kWh):",
+            entHoursDayLabel: "Daytime Operating Hours:",
+            entHoursNightLabel: "Nighttime Operating Hours:",
             
-            entLoadProfileLbl: "Daily Load Profile:",
-            prof50: "50% Day / 50% Night (Default)",
-            prof70: "70% Day / 30% Night (Commercial)",
-            prof100: "100% Day / 0% Night (Daytime only)",
-            prof30: "30% Day / 70% Night (Streetlights/CCTV)",
             entBattCableLbl: "Main Battery Cable & Breaker:",
             entPvCableLbl: "Main PV String Cable & Breaker:",
             bufferNoteAr: "(Stability Buffer)",
@@ -941,15 +977,14 @@ if ('serviceWorker' in navigator) {
             cablesTitle: "⚙️ Cables & Climate Settings (Optional)",
             cablesHint: "Enter the required data to estimate the recommended cables and protections (breakers) :",
             battDistLabel: "Battery Cable Distance (m):", acDistLabel: "AC Load Cable Distance (m):",
-            climateLabel: "Climate Factor:", climateMod: "Moderate (1.25x)", climateHot: "Very Hot (1.50x)",
+            climateLabel: "Cable Climate Factor:", climateMod: "Moderate Climate (1.25x Safe)", climateHot: "Very Hot Climate (1.50x Safe)",
             entCablesModeActive: "This table is temporarily disabled and values cleared due to Enterprise System mode activation.",
 
             devicesList: "📋 Appliances Load Schedule:", addDevice: "+ Add New Appliance",
             
-            entModeActive: "Large Scale Project mode is active (based on total consumption).<br>The appliances table is temporarily disabled to prevent double counting.",
+            entModeActive: "Large Scale Project mode is active (based on total daily consumption and operating hours).<br>The appliances table is temporarily disabled to prevent double counting.",
             hvWarning: "⚠️ Engineering Alert: High capacities on low operating voltages (48V) generate high operational currents and thermal risks. Switching to High Voltage (HV) systems is recommended to enhance efficiency and safety.",
-            industrialWarning: "⚠️ Industrial Engineering Alert: Inverters exceeding 30kW are large commercial or industrial projects, and the single sizes shown are insufficient. It requires using multiple parallel copper cables or Busbars and a specialized field voltage drop study.<br><br>Please switch to:<br><a href=\"javascript:void(0)\" onclick=\"scrollToEnterprise()\" style=\"color: #10b981; font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px;\">Large Systems & Commercial Settings</a>",
-
+            
             resultsTitle: "📊 System Engineering Results & Output :",
             eTotal: "Total Energy with Losses (E_total):", battAh: "Required Lithium Battery Capacity:",
             battKwh: "Actual Battery Energy:", panelsCount: "Required Solar Panels:",
@@ -1094,27 +1129,18 @@ if ('serviceWorker' in navigator) {
         const sysVal = document.getElementById('systemVoltage') ? document.getElementById('systemVoltage').value : "48";
         const dodVal = document.getElementById('dodValue') ? document.getElementById('dodValue').value : "0.8";
         const cliVal = document.getElementById('climateFactor') ? document.getElementById('climateFactor').value : "1.25";
+        const pCliVal = document.getElementById('panelClimateFactor') ? document.getElementById('panelClimateFactor').value : "1.0";
         const entTypeEl = document.getElementById('enterpriseSystemType');
         const entType = entTypeEl ? entTypeEl.value : "single";
 
         if(document.getElementById('sysVoltDisplay')) document.getElementById('sysVoltDisplay').innerText = sysVal == "12" ? t.volt12 : (sysVal == "24" ? t.volt24 : t.volt48);
         if(document.getElementById('dodDisplay')) document.getElementById('dodDisplay').innerText = dodVal == "0.5" ? t.dod50 : t.dod80;
+        if(document.getElementById('panelClimateDisplay')) document.getElementById('panelClimateDisplay').innerText = pCliVal == "0.85" ? t.pClimateHot : t.pClimateMod;
         if(document.getElementById('climateDisplay')) document.getElementById('climateDisplay').innerText = cliVal == "1.5" || cliVal == "1.50" ? t.climateHot : t.climateMod;
         if(document.getElementById('sysTypeDisplay')) document.getElementById('sysTypeDisplay').innerText = entType === "three48" ? t.three48Opt : (entType === "hv" ? t.hvOpt : t.singlePhaseOpt);
 
         if(document.getElementById("engineerNameInput")) document.getElementById("engineerNameInput").placeholder = t.engNamePh;
         if(document.getElementById("clientNameInput")) document.getElementById("clientNameInput").placeholder = t.clientNamePh;
-        if(document.getElementById("enterpriseDailyKwh")) document.getElementById("enterpriseDailyKwh").placeholder = t.entKwhPh;
-        
-        const entProfEl = document.getElementById('entLoadProfile');
-        const entProf = entProfEl ? entProfEl.value : "50/50";
-        if(document.getElementById('loadProfileDisplay')) {
-            let txt = t.prof50;
-            if(entProf === "70/30") txt = t.prof70;
-            else if(entProf === "100/0") txt = t.prof100;
-            else if(entProf === "30/70") txt = t.prof30;
-            document.getElementById('loadProfileDisplay').innerText = txt;
-        }
         
         const printStyle = document.getElementById('dynamic-print-style');
         if(printStyle) {
@@ -1210,8 +1236,8 @@ if ('serviceWorker' in navigator) {
         try {
             try { const data = localStorage.getItem("solar_appliances_data_v11"); appliances = data ? JSON.parse(data) : []; } catch(e) { appliances = []; }
             
-            const ids = ["systemVoltage","panelWatts","sunHours","dodValue", "gridDayHours", "gridNightHours", "acChargeCurrent", "enterpriseSystemType", "enterpriseDailyKwh", "entLoadProfile"];
-            const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_dod_value", "solar_grid_day_hours", "solar_grid_night_hours", "solar_ac_amps", "solar_ent_sys_type", "solar_ent_daily_kwh", "solar_ent_profile"];
+            const ids = ["systemVoltage","panelWatts","sunHours","panelClimateFactor","dodValue", "gridDayHours", "gridNightHours", "acChargeCurrent", "enterpriseSystemType", "enterpriseDailyKwh", "enterpriseHoursDay", "enterpriseHoursNight"];
+            const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_panel_climate","solar_dod_value", "solar_grid_day_hours", "solar_grid_night_hours", "solar_ac_amps", "solar_ent_sys_type", "solar_ent_daily_kwh", "solar_ent_hours_day", "solar_ent_hours_night"];
             
             ids.forEach((id, i) => { 
                 const el = document.getElementById(id);
@@ -1221,9 +1247,6 @@ if ('serviceWorker' in navigator) {
             
             const entSysEl = document.getElementById("enterpriseSystemType");
             if(entSysEl && !entSysEl.value) entSysEl.value = "single";
-
-            const entProfEl = document.getElementById("entLoadProfile");
-            if(entProfEl && !entProfEl.value) entProfEl.value = "50/50";
 
             const bDistEl = document.getElementById("battDistance");
             if(bDistEl && localStorage.getItem("solar_batt_dist")) bDistEl.value = localStorage.getItem("solar_batt_dist");
@@ -1246,8 +1269,8 @@ if ('serviceWorker' in navigator) {
                 if(hybAcc) hybAcc.classList.add('open');
             }
             
-            const entKwhEl = document.getElementById("enterpriseDailyKwh");
-            const entDailyVal = entKwhEl ? (parseFloat(entKwhEl.value) || 0) : 0;
+            const entDailyEl = document.getElementById("enterpriseDailyKwh");
+            const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
             if((entSysEl && entSysEl.value !== "single") || entDailyVal > 0 || localStorage.getItem("solar_ent_opened") === "true") {
                 const entAcc = document.getElementById('enterpriseAccordion');
                 if(entAcc) entAcc.classList.add('open');
@@ -1263,13 +1286,15 @@ if ('serviceWorker' in navigator) {
                 if(el) el.addEventListener("input", saveDataAndCalculate);
             });
 
-            const entKwhInput = document.getElementById("enterpriseDailyKwh");
-            if(entKwhInput) {
-                entKwhInput.addEventListener("input", function() {
-                    saveDataAndCalculate();
-                    renderAppliances();
-                });
-            }
+            ["enterpriseDailyKwh", "enterpriseHoursDay", "enterpriseHoursNight"].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.addEventListener("input", function() {
+                        saveDataAndCalculate();
+                        renderAppliances();
+                    });
+                }
+            });
         } catch(e) {
             console.error("Initialization error:", e);
         }
@@ -1280,15 +1305,15 @@ if ('serviceWorker' in navigator) {
     };
 
     window.renderAppliances = function() {
-        const entKwhEl = document.getElementById("enterpriseDailyKwh");
-        const entDailyKwh = entKwhEl ? (parseFloat(entKwhEl.value) || 0) : 0;
+        const entDailyEl = document.getElementById("enterpriseDailyKwh");
+        const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
         
         const entCablesMsg = document.getElementById("ent-cables-override-msg");
         const bDistEl = document.getElementById("battDistance");
         const aDistEl = document.getElementById("acDistance");
         const appliancesSectionWrapper = document.getElementById("appliancesSectionWrapper");
 
-        if (entDailyKwh > 0) {
+        if (entDailyVal > 0) {
             if(appliancesSectionWrapper) appliancesSectionWrapper.style.display = "block"; 
             if(document.getElementById("ent-override-msg")) document.getElementById("ent-override-msg").style.display = "block";
             if(document.getElementById("appliancesList")) document.getElementById("appliancesList").style.display = "none";
@@ -1419,26 +1444,26 @@ if ('serviceWorker' in navigator) {
         const aDistEl = document.getElementById("acDistance");
         const bDist = bDistEl ? (parseFloat(bDistEl.value) || 0) : 0;
         const aDist = aDistEl ? (parseFloat(aDistEl.value) || 0) : 0;
-        const entKwhElCheck = document.getElementById("enterpriseDailyKwh");
-        const entKwh = entKwhElCheck ? (parseFloat(entKwhElCheck.value) || 0) : 0;
+        const entDailyElCheck = document.getElementById("enterpriseDailyKwh");
+        const entDaily = entDailyElCheck ? (parseFloat(entDailyElCheck.value) || 0) : 0;
         
         const cabAcc = document.getElementById("cablesAccordion");
         if(cabAcc) {
-            if(entKwh === 0 && (bDist > 0 || aDist > 0)) cabAcc.classList.add("has-data");
+            if(entDaily === 0 && (bDist > 0 || aDist > 0)) cabAcc.classList.add("has-data");
             else cabAcc.classList.remove("has-data");
         }
 
         const entSysEl = document.getElementById("enterpriseSystemType");
         const entAccordion = document.getElementById("enterpriseAccordion");
         if(entAccordion) {
-            if(entKwh > 0 || (entSysEl && entSysEl.value !== "single")) entAccordion.classList.add("has-data");
+            if(entDaily > 0 || (entSysEl && entSysEl.value !== "single")) entAccordion.classList.add("has-data");
             else entAccordion.classList.remove("has-data");
         }
     };
     
     window.saveDataAndCalculate = function() {
-        const entKwhEl = document.getElementById("enterpriseDailyKwh");
-        const entDailyVal = entKwhEl ? (parseFloat(entKwhEl.value) || 0) : 0;
+        const entDailyEl = document.getElementById("enterpriseDailyKwh");
+        const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
 
         if (entDailyVal > 0) {
             if(document.getElementById("battDistance")) document.getElementById("battDistance").value = "";
@@ -1451,6 +1476,7 @@ if ('serviceWorker' in navigator) {
         if(document.getElementById("systemVoltage")) localStorage.setItem("solar_system_voltage", document.getElementById("systemVoltage").value);
         if(document.getElementById("panelWatts")) localStorage.setItem("solar_panel_watts", document.getElementById("panelWatts").value);
         if(document.getElementById("sunHours")) localStorage.setItem("solar_sun_hours", document.getElementById("sunHours").value);
+        if(document.getElementById("panelClimateFactor")) localStorage.setItem("solar_panel_climate", document.getElementById("panelClimateFactor").value);
         if(document.getElementById("dodValue")) localStorage.setItem("solar_dod_value", document.getElementById("dodValue").value);
         if(document.getElementById("gridDayHours")) localStorage.setItem("solar_grid_day_hours", document.getElementById("gridDayHours").value);
         if(document.getElementById("gridNightHours")) localStorage.setItem("solar_grid_night_hours", document.getElementById("gridNightHours").value);
@@ -1458,7 +1484,8 @@ if ('serviceWorker' in navigator) {
         
         if(document.getElementById("enterpriseSystemType")) localStorage.setItem("solar_ent_sys_type", document.getElementById("enterpriseSystemType").value || "single");
         if(document.getElementById("enterpriseDailyKwh")) localStorage.setItem("solar_ent_daily_kwh", document.getElementById("enterpriseDailyKwh").value);
-        if(document.getElementById("entLoadProfile")) localStorage.setItem("solar_ent_profile", document.getElementById("entLoadProfile").value);
+        if(document.getElementById("enterpriseHoursDay")) localStorage.setItem("solar_ent_hours_day", document.getElementById("enterpriseHoursDay").value);
+        if(document.getElementById("enterpriseHoursNight")) localStorage.setItem("solar_ent_hours_night", document.getElementById("enterpriseHoursNight").value);
         
         const entAcc = document.getElementById("enterpriseAccordion");
         if(entAcc) localStorage.setItem("solar_ent_opened", entAcc.classList.contains("open") ? "true" : "false");
@@ -1481,7 +1508,9 @@ if ('serviceWorker' in navigator) {
         if (amps <= 250) return "95";
         if (amps <= 300) return "120";
         if (amps <= 400) return "150";
-        return "Busbars / 2x120"; 
+        if (amps <= 600) return "2x120 (Parallel Runs)";
+        if (amps <= 800) return "2x150 or Busbars";
+        return "Copper Busbars / Multi-Bus"; 
     }
     
     function getPVCableSizeFromAmps(amps) {
@@ -1506,11 +1535,13 @@ if ('serviceWorker' in navigator) {
         const sysVoltEl = document.getElementById("systemVoltage");
         const panelWattsEl = document.getElementById("panelWatts");
         const sunHoursEl = document.getElementById("sunHours");
+        const pClimEl = document.getElementById("panelClimateFactor");
         const dodValueEl = document.getElementById("dodValue");
         
         let sysVolt = sysVoltEl ? (parseFloat(sysVoltEl.value) || 48) : 48;
         const panelWatts = panelWattsEl ? (parseFloat(panelWattsEl.value) || 450) : 450;
         const sunHours = sunHoursEl ? (parseFloat(sunHoursEl.value) || 6) : 6;
+        const panelClimateFactor = pClimEl ? (parseFloat(pClimEl.value) || 1.0) : 1.0;
         const dodValue = dodValueEl ? (parseFloat(dodValueEl.value) || 0.8) : 0.8;
         
         const gDayEl = document.getElementById("gridDayHours");
@@ -1522,44 +1553,36 @@ if ('serviceWorker' in navigator) {
         const acChargeCurrent = acAmpsEl ? (parseFloat(acAmpsEl.value) || 0) : 0;
 
         const entSysTypeEl = document.getElementById("enterpriseSystemType");
-        const entKwhEl = document.getElementById("enterpriseDailyKwh");
+        const entDailyEl = document.getElementById("enterpriseDailyKwh");
+        const entHoursDayEl = document.getElementById("enterpriseHoursDay");
+        const entHoursNightEl = document.getElementById("enterpriseHoursNight");
+
         const entSysType = entSysTypeEl ? (entSysTypeEl.value || "single") : "single";
-        const entDailyKwh = entKwhEl ? (parseFloat(entKwhEl.value) || 0) : 0;
-        const entProfile = document.getElementById("entLoadProfile") ? document.getElementById("entLoadProfile").value : "50/50";
+        const entDailyKwh = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
+        const hoursDay = entHoursDayEl ? (parseFloat(entHoursDayEl.value) || 0) : 0;
+        const hoursNight = entHoursNightEl ? (parseFloat(entHoursNightEl.value) || 0) : 0;
 
         const bDistEl = document.getElementById("battDistance");
         const aDistEl = document.getElementById("acDistance");
         const climEl = document.getElementById("climateFactor");
         
-        const battDist = (entDailyKwh > 0) ? 0 : (bDistEl ? (parseFloat(bDistEl.value) || 0) : 0);
-        const acDist = (entDailyKwh > 0) ? 0 : (aDistEl ? (parseFloat(aDistEl.value) || 0) : 0);
+        const battDistance = (entDailyKwh > 0) ? 0 : (bDistEl ? (parseFloat(bDistEl.value) || 0) : 0);
+        const acDistance = (entDailyKwh > 0) ? 0 : (aDistEl ? (parseFloat(aDistEl.value) || 0) : 0);
         const climateFactor = climEl ? (parseFloat(climEl.value) || 1.25) : 1.25;
         
         let dayLoadWh = 0, nightLoadWh = 0, syncSurge = 0, maxContinuous = 0;
         
         if (entDailyKwh > 0) {
-            let totalLoad = entDailyKwh * 1000;
-            let nightRatio = 0.5, dayRatio = 0.5;
-            
-            if (entProfile === "70/30") { dayRatio = 0.7; nightRatio = 0.3; }
-            else if (entProfile === "100/0") { dayRatio = 1.0; nightRatio = 0.0; }
-            else if (entProfile === "30/70") { dayRatio = 0.3; nightRatio = 0.7; }
-            
-            dayLoadWh = totalLoad * dayRatio;
-            nightLoadWh = totalLoad * nightRatio;
+            let totalDailyWh = entDailyKwh * 1000;
+            let totalHours = hoursDay + hoursNight;
+            if (totalHours <= 0) totalHours = 1;
 
-            let peakActiveLoad = 0;
-            if (entProfile === "50/50") {
-                peakActiveLoad = totalLoad / 20; 
-            } else {
-                let dayOperatingHours = (entProfile === "100/0") ? Math.max(8, sunHours) : 12;
-                let nightOperatingHours = 12;
-                let dayLoadPerHour = dayRatio > 0 ? (dayLoadWh / dayOperatingHours) : 0;
-                let nightLoadPerHour = nightRatio > 0 ? (nightLoadWh / nightOperatingHours) : 0;
-                peakActiveLoad = Math.max(dayLoadPerHour, nightLoadPerHour);
-            }
+            dayLoadWh = totalDailyWh * (hoursDay / totalHours);
+            nightLoadWh = totalDailyWh * (hoursNight / totalHours);
 
-            maxContinuous = peakActiveLoad;
+            let avgPowerDay = hoursDay > 0 ? (dayLoadWh / hoursDay) : 0;
+            let avgPowerNight = hoursNight > 0 ? (nightLoadWh / hoursNight) : 0;
+            maxContinuous = Math.max(avgPowerDay, avgPowerNight);
             syncSurge = maxContinuous * 1.5; 
         } else {
             appliances.forEach(app => {
@@ -1585,8 +1608,8 @@ if ('serviceWorker' in navigator) {
                 if (nH > maxNightHours) maxNightHours = nH;
             });
         } else {
-            maxDayHours = 12;
-            maxNightHours = 12;
+            maxDayHours = hoursDay > 0 ? hoursDay : 1; 
+            maxNightHours = hoursNight > 0 ? hoursNight : 1;
         }
 
         const SYSTEM_LOSS_FACTOR = 1.3;
@@ -1612,7 +1635,7 @@ if ('serviceWorker' in navigator) {
         let battKwh = 0;
 
         if (totalDailyWh > 0) {
-            if (nightLoadWh === 0 || (entDailyKwh > 0 && entProfile === "100/0")) {
+            if (nightLoadWh === 0 || (entDailyKwh > 0 && hoursNight === 0)) {
                 let bufferKwh = (invRequired / 1000) * 1.2; 
                 battKwh = bufferKwh;
             } else {
@@ -1629,35 +1652,25 @@ if ('serviceWorker' in navigator) {
         const dayOutageWh = Math.max(0, eDayTotal - (gridDirectDayWh * SYSTEM_LOSS_FACTOR));
         
         const totalSolarWhRequired = dayOutageWh + solarReqNightWh;
-        const reqPv = sunHours > 0 ? totalSolarWhRequired / (sunHours * PANEL_PERFORMANCE_RATIO) : 0;
+        const effectivePerformanceRatio = PANEL_PERFORMANCE_RATIO * panelClimateFactor;
+        const reqPv = sunHours > 0 ? totalSolarWhRequired / (sunHours * effectivePerformanceRatio) : 0;
         const panelsCount = panelWatts > 0 ? Math.ceil(reqPv / panelWatts) : 0;
         const totalPanelPower = panelsCount * panelWatts;
         
         let marketInv;
         if (entDailyKwh > 0) {
             if (entSysType === 'three48') {
-                marketInv = [10000, 12000, 16000, 20000]; 
+                marketInv = [10000, 12000, 16000, 20000, 30000, 40000, 50000]; 
             } else if (entSysType === 'hv') {
-                marketInv = [25000, 30000, 40000, 50000, 60000, 80000, 120000]; 
+                marketInv = [25000, 30000, 40000, 50000, 60000, 80000, 100000, 120000]; 
             } else {
-                marketInv = [5000, 6000, 8000, 10000, 11000, 12000, 16000]; 
+                marketInv = [5000, 6000, 8000, 10000, 12000, 16000, 20000, 25000, 30000, 40000, 50000]; 
             }
         } else {
-            marketInv = (sysVolt === 12) ? [1000, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 2500, 3000, 4000, 5000] : [5000, 6000, 8000, 10000, 11000, 12000, 16000, 20000];
+            marketInv = (sysVolt === 12) ? [1000, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 2500, 3000, 4000, 5000] : [5000, 6000, 8000, 10000, 12000, 16000, 20000, 25000, 30000, 40000, 50000];
         }
 
         let finalInv = marketInv.find(size => size >= invRequired) || marketInv[marketInv.length - 1];
-        
-        if (entDailyKwh > 0) {
-            if (entSysType === "three48") {
-                finalInv = Math.max(10000, finalInv); 
-            } else if (entSysType === "hv") {
-                finalInv = Math.max(25000, finalInv); 
-            } else {
-                finalInv = Math.max(5000, finalInv);  
-            }
-        }
-
         if (invRequired > marketInv[marketInv.length - 1]) {
              finalInv = Math.ceil(invRequired / 1000) * 1000; 
         }
@@ -1665,7 +1678,17 @@ if ('serviceWorker' in navigator) {
         let isOverloaded = (totalDailyWh > 0 && entDailyKwh === 0) && ((sysVolt === 12 && (eTotal > 5000 || totalPanelPower > 3000 || invRequired > 3000)) || (sysVolt === 24 && (eTotal > 12000 || totalPanelPower > 5000 || invRequired > 5000)));
 
         let effectiveSysVolt = sysVolt;
-        let standardRackKwh = 5.12; 
+        
+        let standardRackKwh = 5.12;
+        let batteryModuleLabel = "5.12 kWh";
+        if (battKwh > 30) {
+            standardRackKwh = 14.33;
+            batteryModuleLabel = "14.33 kWh";
+        } else if (battKwh > 10) {
+            standardRackKwh = 10.24;
+            batteryModuleLabel = "10.24 kWh";
+        }
+
         let totalRacks = Math.ceil(battKwh / standardRackKwh);
         
         if (entDailyKwh > 0 && entSysType === "hv") {
@@ -1691,20 +1714,250 @@ if ('serviceWorker' in navigator) {
 
         if(document.getElementById("resTotalEnergy")) document.getElementById("resTotalEnergy").innerHTML = `${fmt2(eTotal)} ${t.wh}${t.dayUnit}`;
         if(document.getElementById("resBatteryAh")) document.getElementById("resBatteryAh").innerHTML = `${fmt2(battAh)} Ah ${entSysType === "hv" && entDailyKwh > 0 ? '<span style="font-size:11px; color:#94a3b8;">(High Voltage)</span>' : ''}`;
-        if(document.getElementById("resBatteryKwh")) document.getElementById("resBatteryKwh").innerHTML = `${fmt2(battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0)} ${t.wh} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${battKwh.toFixed(2)} kWh)</span>${batteryBufferNote}`;
+        
+        if(document.getElementById("resBatteryKwh")) {
+            const unitWordAr = window.currentLang === 'ar' ? 'وحدة' : 'Units';
+            document.getElementById("resBatteryKwh").innerHTML = `${fmt2(battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0)} ${t.wh} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${battKwh.toFixed(2)} kWh - ${totalRacks} ${unitWordAr})</span>${batteryBufferNote}`;
+        }
         
         let pnlText = getArabicPanelsString(panelsCount);
         if(document.getElementById("resPanelsCount")) document.getElementById("resPanelsCount").innerHTML = `${panelsCount.toLocaleString("en-US")} ${pnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${fmt2(totalPanelPower)} ${t.wWord})</span>`;
         
         if(document.getElementById("resMpptCurrent")) document.getElementById("resMpptCurrent").innerHTML = mpptDisplay;
         
+        const inverterResultRow = document.getElementById("inverterResultRow");
+
         if(document.getElementById("resInverterWatts")) {
+            const resCapWarningSlot = document.getElementById("residential-cap-warning-slot");
+            
             if (totalDailyWh > 0) {
-                document.getElementById("resInverterWatts").innerHTML = isOverloaded ? 
-                    `<div class="engineering-alert" style="direction: rtl;">⚠️ ${t.invAlert1}<br>${t.invAlert2} (${sysVolt}${t.invAlert3}<br>${t.invAlert4} <strong>${Math.max(5000, marketInv.find(s => s >= invRequired) || invRequired).toLocaleString("en-US")} ${t.invAlert5}</strong>، ${t.invAlert6}</div>` :
-                    `<div style="display:flex; justify-content:space-between; align-items:center; width:100%; flex-wrap:nowrap;"><span><span dir="ltr" style="display:inline-block;">${finalInv.toLocaleString("en-US")}</span> ${t.wWord}</span> <span class="stdSize" style="margin:0;">${t.stdSize}</span></div>`;
+                if (entDailyKwh === 0 && sysVolt === 48) {
+                    const standardUnits = [5000, 6000, 8000, 10000, 12000, 16000];
+                    let bestUnit = 16000;
+                    let bestCount = 1;
+                    let totalCapacityWatts = 0;
+                    let reqWattsInt = Math.round(invRequired);
+
+                    if (invRequired <= 16000) {
+                        bestUnit = standardUnits.find(u => u >= invRequired) || 16000;
+                        bestCount = 1;
+                        totalCapacityWatts = bestUnit;
+                    } else {
+                        let minTotalCapacity = Infinity;
+                        for (let unit of standardUnits) {
+                            let count = Math.ceil(invRequired / unit);
+                            let totalCapacity = count * unit;
+                            
+                            if (totalCapacity >= invRequired) {
+                                if (totalCapacity < minTotalCapacity) {
+                                    minTotalCapacity = totalCapacity;
+                                    bestUnit = unit;
+                                    bestCount = count;
+                                } else if (totalCapacity === minTotalCapacity && unit > bestUnit) {
+                                    bestUnit = unit;
+                                    bestCount = count;
+                                }
+                            }
+                        }
+                        totalCapacityWatts = bestCount * bestUnit;
+                    }
+
+                    const unitKw = bestUnit / 1000;
+                    const enLang = window.currentLang === 'en';
+
+                    // Check max parallel limit for 48V (16 units max practical limit)
+                    if (bestCount > 16 && sysVolt === 48) {
+                        if (inverterResultRow) {
+                            inverterResultRow.classList.remove("orange-alert-row");
+                            inverterResultRow.style.border = "1px solid #ef4444";
+                            inverterResultRow.style.background = "rgba(239, 68, 68, 0.05)";
+                        }
+                        document.getElementById("resInverterWatts").innerHTML = `
+                            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ltr; padding: 4px 0;">
+                                <span class="stdSize" style="margin:0; background-color: rgba(239, 68, 68, 0.15); color: #ffffff; border: 1px solid #ef4444;">LIMIT EXCEEDED</span>
+                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
+                            </div>`;
+                        
+                        const limitAlertAr = `
+                            <div class="engineering-alert" style="direction: rtl; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
+                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 تجاوز الحد الأقصى للتوازي (Max 16 Units):</div>
+                                <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
+                                    عدد الوحدات المطلوبة بالتوازي (${bestCount} وحدات) يتجاوز الحد الأقصى المسموح به عملياً وبروتوكولياً في أنظمة الـ 48 فولت (16 وحدة كحد أقصى). <strong>يجب الانتقال فوراً لنظام ثلاثي الأطوار (3-Phase) أو الجهد العالي (HV).</strong>
+                                </div>
+                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">الانتقال لإعدادات المشاريع الكبيرة ➔</div>
+                            </div>`;
+                        const limitAlertEn = `
+                            <div class="engineering-alert" style="direction: ltr; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
+                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 Parallel Units Limit Exceeded (Max 16):</div>
+                                <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
+                                    Required parallel units (${bestCount} units) exceed the maximum practical limit for 48V systems (16 units max). <strong>Immediate upgrade to 3-Phase or High Voltage (HV) is mandatory.</strong>
+                                </div>
+                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Commercial Mode ➔</div>
+                            </div>`;
+                        if (resCapWarningSlot) resCapWarningSlot.innerHTML = enLang ? limitAlertEn : limitAlertAr;
+                        return;
+                    }
+
+                    if (invRequired <= 30000) {
+                        if (inverterResultRow) {
+                            inverterResultRow.classList.remove("orange-alert-row");
+                            inverterResultRow.style.border = "";
+                            inverterResultRow.style.background = "";
+                        }
+
+                        if (bestCount === 1) {
+                            document.getElementById("resInverterWatts").innerHTML = `
+                                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
+                                    <span class="stdSize" style="margin:0; background-color: #10b981; color: #ffffff;">${t.stdSize}</span>
+                                    <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
+                                </div>`;
+                            if (resCapWarningSlot) resCapWarningSlot.innerHTML = "";
+                        } else {
+                            const parallelTxt = enLang ? "Parallel Setup" : "توصيل بالتوازي";
+                            const distTxt = enLang ? "Parallel Distribution:" : "التوزيع بالتوازي:";
+                            
+                            const badgeBorder = "#10b981";
+                            
+                            document.getElementById("resInverterWatts").innerHTML = `
+                                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
+                                    <span class="stdSize" style="margin:0; background-color: rgba(16, 185, 129, 0.15); color: #ffffff; border: 1px solid #10b981;">${parallelTxt}</span>
+                                    <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
+                                </div>
+                                <div style="width: 100%; margin-top: 12px; font-size: 13px; color: #94a3b8; text-align: ${enLang ? 'left' : 'right'};" dir="${enLang ? 'ltr' : 'rtl'}">${distTxt}</div>
+                                <div style="width: 100%; margin-top: 6px; display: flex; justify-content: center;">
+                                    <div style="background-color: transparent; color: #ffffff; border: 1.5px solid ${badgeBorder}; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 15px; text-align: center; width: 100%; max-width: 320px;" dir="ltr">
+                                        ${unitKw} kW × ${bestCount}
+                                    </div>
+                                </div>`;
+                            
+                            if (invRequired > 16000) {
+                                 const alertTitle = enLang ? "Engineering Alert:" : "تنبيه هندسي:";
+                                 const alertMsg1 = enLang ? "Required capacity exceeded the single inverter limit for 48V (capped at 16kW)." : "تجاوزت القدرة المطلوبة الحد الأقصى للإنفرتر المنفرد في نظام 48 فولت (المحدد بـ 16 كيلوواط).";
+                                 const condTitle = enLang ? "Mandatory Conditions for Parallel Setup:" : "الشروط الإجبارية للربط بالتوازي:";
+                                 const cond1 = enLang ? "Exact match of devices (same brand, model, and firmware version)." : "تطابق الأجهزة (نفس الشركة، نفس الموديل، ونفس إصدار الفرموير Firmware).";
+                                 const cond2 = enLang ? "Equal lengths and cross-sections for battery and AC cables to ensure balanced voltage and resistance." : "تساوي أطوال ومقاطع كابلات البطاريات والكهرباء لضمان توازن الجهود والمقاومات.";
+
+                                 resCapWarningSlot.innerHTML = `
+                                 <div style="margin-top: 16px; margin-bottom: 0px; background: rgba(15, 23, 42, 0.4); border: 1px solid #059669; border-radius: 12px; padding: 14px;">
+                                     <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 10px; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; text-align: start; display:flex; align-items:center; gap:6px;">💡 ${alertTitle}</div>
+                                     <div style="color: #e2e8f0; font-size: 13.5px; line-height: 1.7; text-align: start; margin-bottom: 12px;">
+                                         ${alertMsg1}
+                                     </div>
+                                     <div style="color: #38bdf8; font-size: 13px; font-weight: 700; text-align: start; margin-bottom: 6px;">
+                                         ${condTitle}
+                                     </div>
+                                     <div style="color: #cbd5e1; font-size: 13px; line-height: 1.7; text-align: start;">
+                                         <ul style="margin-top: 0; margin-bottom: 0; padding-inline-start: 22px;">
+                                             <li style="margin-bottom: 6px;">${cond1}</li>
+                                             <li>${cond2}</li>
+                                         </ul>
+                                     </div>
+                                 </div>`;
+                            } else {
+                                 if (resCapWarningSlot) resCapWarningSlot.innerHTML = "";
+                            }
+                        }
+
+                    } else if (invRequired > 30000 && invRequired <= 48000) {
+                        if (inverterResultRow) {
+                            inverterResultRow.classList.add("orange-alert-row");
+                            inverterResultRow.style.border = "";
+                            inverterResultRow.style.background = "";
+                        }
+
+                        const parallelTxt = enLang ? "Parallel Setup" : "توصيل بالتوازي";
+                        const distTxt = enLang ? "Parallel Distribution:" : "التوزيع بالتوازي:";
+                        
+                        const badgeBorder = "#f59e0b";
+                        
+                        document.getElementById("resInverterWatts").innerHTML = `
+                            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
+                                <span class="stdSize" style="margin:0; background-color: rgba(245, 158, 11, 0.15); color: #ffffff; border: 1px solid #f59e0b;">${parallelTxt}</span>
+                                <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
+                            </div>
+                            <div style="width: 100%; margin-top: 12px; font-size: 13px; color: #94a3b8; text-align: ${enLang ? 'left' : 'right'};" dir="${enLang ? 'ltr' : 'rtl'}">${distTxt}</div>
+                            <div style="width: 100%; margin-top: 6px; display: flex; justify-content: center;">
+                                <div style="background-color: transparent; color: #ffffff; border: 1.5px solid ${badgeBorder}; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 15px; text-align: center; width: 100%; max-width: 320px;" dir="ltr">
+                                    ${unitKw} kW × ${bestCount}
+                                </div>
+                            </div>`;
+                            
+                        const alertHtmlAr = `
+                            <div style="margin-top: 16px; margin-bottom: 0px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 12px;">
+                                <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 8px; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 6px; text-align: start; display:flex; align-items:center; gap:6px;">💡 تنبيه هندسي حرج:</div>
+                                <div style="color: #cbd5e1; font-size: 13.5px; line-height: 1.7; text-align: start;">
+                                    المنظومة دخلت النطاق الحرج. لتقليل الأحمال على خطوط الـ AC، يُنصح بشدة الانتقال إلى نظام <strong>ثلاثي الأطوار (3-Phase 48V)</strong>.
+                                </div>
+                                <div style="margin-top: 12px; font-size: 13.5px; font-weight: 700; color: #10b981; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">الانتقال لوضع المشاريع التجارية ➔</div>
+                            </div>`;
+                        const alertHtmlEn = `
+                            <div style="margin-top: 16px; margin-bottom: 0px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 12px;">
+                                <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 8px; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 6px; text-align: start; display:flex; align-items:center; gap:6px;">💡 Critical Engineering Alert:</div>
+                                <div style="color: #cbd5e1; font-size: 13.5px; line-height: 1.7; text-align: start;">
+                                    System is in a critical range. To reduce AC line loads, it is highly recommended to upgrade to a <strong>3-Phase (48V)</strong> system.
+                                </div>
+                                <div style="margin-top: 12px; font-size: 13.5px; font-weight: 700; color: #10b981; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Commercial Mode ➔</div>
+                            </div>`;
+                            
+                        if (resCapWarningSlot) resCapWarningSlot.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
+
+                    } else if (invRequired > 48000) {
+                        if (inverterResultRow) {
+                            inverterResultRow.classList.remove("orange-alert-row");
+                            inverterResultRow.style.border = "1px solid #ef4444";
+                            inverterResultRow.style.background = "rgba(239, 68, 68, 0.05)";
+                        }
+
+                        const dangerTxt = enLang ? "DANGER" : "خطر";
+                        document.getElementById("resInverterWatts").innerHTML = `
+                            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
+                                <span class="stdSize" style="margin:0; background-color: rgba(239, 68, 68, 0.15); color: #ffffff; border: 1px solid #ef4444;">${dangerTxt}</span>
+                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${reqWattsInt.toLocaleString("en-US")} W</span>
+                            </div>`;
+                            
+                        const alertHtmlAr = `
+                            <div class="engineering-alert" style="direction: rtl; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
+                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 إيقاف هندسي تام (Hard Stop):</div>
+                                <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
+                                    هذا النظام يتجاوز حاجز <strong>1000 أمبير</strong> لنظام 48 فولت، مما يشكل خطراً حرارياً بالغاً! يمنع الربط بالتوازي لهذه القدرة. <strong>يجب الانتقال فوراً إلى نظام الجهد العالي (High Voltage HV).</strong>
+                                </div>
+                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">الانتقال لإعدادات المنظومات الكبيرة (HV) ➔</div>
+                            </div>`;
+                        const alertHtmlEn = `
+                            <div class="engineering-alert" style="direction: ltr; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
+                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 Engineering Hard Stop:</div>
+                                <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
+                                    This setup exceeds <strong>1000 Amps</strong> for a 48V system, creating extreme thermal risks! Parallel connection for this capacity is prohibited. <strong>Immediate upgrade to High Voltage (HV) is mandatory.</strong>
+                                </div>
+                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Large Systems (HV) ➔</div>
+                            </div>`;
+                        
+                        if (resCapWarningSlot) resCapWarningSlot.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
+                    }
+
+                } else {
+                    if (inverterResultRow) {
+                        inverterResultRow.classList.remove("orange-alert-row");
+                        inverterResultRow.style.border = "";
+                        inverterResultRow.style.background = "";
+                    }
+                    
+                    document.getElementById("resInverterWatts").innerHTML = isOverloaded ? 
+                        `<div class="engineering-alert" style="direction: ${window.currentLang === 'ar' ? 'rtl' : 'ltr'};">⚠️ ${t.invAlert1}<br>${t.invAlert2} (${sysVolt}${t.invAlert3}<br>${t.invAlert4} <strong>${Math.max(5000, marketInv.find(s => s >= invRequired) || invRequired).toLocaleString("en-US")} ${t.invAlert5}</strong>، ${t.invAlert6}</div>` :
+                        `<div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${window.currentLang === 'ar' ? 'rtl' : 'ltr'}; padding: 4px 0;">
+                            <span class="stdSize" style="margin:0; background-color: rgba(16, 185, 129, 0.15); color: #ffffff; border: 1px solid #10b981;">${t.stdSize}</span>
+                            <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${finalInv.toLocaleString("en-US")} W</span> 
+                        </div>`;
+                    if(resCapWarningSlot) resCapWarningSlot.innerHTML = "";
+                }
             } else {
+                if (inverterResultRow) {
+                    inverterResultRow.classList.remove("orange-alert-row");
+                    inverterResultRow.style.border = "";
+                    inverterResultRow.style.background = "";
+                }
                 document.getElementById("resInverterWatts").innerHTML = `0 ${t.wWord}`;
+                if(resCapWarningSlot) resCapWarningSlot.innerHTML = "";
             }
         }
 
@@ -1719,24 +1972,25 @@ if ('serviceWorker' in navigator) {
                 let invertersTxt = "";
                 let totalLoadKw = finalInv / 1000; 
 
-                // تحديد سقف القدرة للوحدة الواحدة بناءً على نوع النظام
-                let maxUnitKw = 16; // سقف أحادي الطور
+                let maxUnitKw = 16; 
                 if (entSysType === "three48") {
-                    maxUnitKw = 20; // سقف ثلاثي الأطوار
+                    maxUnitKw = 30; 
                 } else if (entSysType === "hv") {
-                    maxUnitKw = 120; // سقف الجهد العالي
+                    maxUnitKw = 120; 
                 }
 
                 let numberOfUnits = Math.ceil(totalLoadKw / maxUnitKw);
-                let unitSizeKw = (totalLoadKw / numberOfUnits).toFixed(1);
+                
+                let standardCommercialUnits = [30, 40, 50, 60, 75, 80, 90, 100, 110, 120, 150];
+                let rawUnitKw = totalLoadKw / numberOfUnits;
+                let unitSizeKw = standardCommercialUnits.find(u => u >= rawUnitKw) || Math.ceil(rawUnitKw);
 
                 if (entSysType === "three48") {
                     archTitle = "48V 3-Phase System";
-                    if (totalLoadKw > maxUnitKw) {
-                        invertersTxt = `${numberOfUnits} Units × ${Number(unitSizeKw).toLocaleString("en-US")} kW Modular Units`;
+                    if (totalLoadKw > maxUnitKw || numberOfUnits > 1) {
+                        invertersTxt = `${numberOfUnits} Units × ${unitSizeKw} kW 3-Phase (Parallel Units)`;
                     } else {
-                        let unitKw = (totalLoadKw / 3).toFixed(1);
-                        invertersTxt = `3 × ${unitKw} kW (1 Inverter per Phase)`;
+                        invertersTxt = `1 × ${unitSizeKw} kW 3-Phase Inverter`;
                     }
                     if(document.getElementById("resEntPhaseRow")) document.getElementById("resEntPhaseRow").style.display = "flex";
                     if(document.getElementById("resEntPhaseVal")) document.getElementById("resEntPhaseVal").innerHTML = `${(totalLoadKw / 3).toFixed(1)} kW / Phase`;
@@ -1744,10 +1998,10 @@ if ('serviceWorker' in navigator) {
                 } 
                 else if (entSysType === "hv") {
                     archTitle = "160V-800V High Voltage HV";
-                    if (totalLoadKw > maxUnitKw) {
-                        invertersTxt = `${numberOfUnits} Units × ${Number(unitSizeKw).toLocaleString("en-US")} kW HV Central Units`;
+                    if (totalLoadKw > maxUnitKw || numberOfUnits > 1) {
+                        invertersTxt = `${numberOfUnits} Units × ${unitSizeKw} kW HV Central Units`;
                     } else {
-                        invertersTxt = `1 × ${Number(totalLoadKw.toFixed(1)).toLocaleString("en-US")} kW HV Unit`;
+                        invertersTxt = `1 × ${unitSizeKw} kW HV Unit`;
                     }
                     if(document.getElementById("resEntPhaseRow")) document.getElementById("resEntPhaseRow").style.display = "none";
                     if(document.getElementById("resEntHvRow")) document.getElementById("resEntHvRow").style.display = "flex";
@@ -1770,10 +2024,10 @@ if ('serviceWorker' in navigator) {
                 } 
                 else if (entSysType === "single") {
                     archTitle = "Single-Phase System";
-                    if (totalLoadKw > maxUnitKw) {
-                        invertersTxt = `${numberOfUnits} Units × ${Number(unitSizeKw).toLocaleString("en-US")} kW Parallel Units`;
+                    if (totalLoadKw > maxUnitKw || numberOfUnits > 1) {
+                        invertersTxt = `${numberOfUnits} Units × ${unitSizeKw} kW Parallel Units`;
                     } else {
-                        invertersTxt = `1 × ${Number(totalLoadKw.toFixed(1)).toLocaleString("en-US")} kW Single-Phase`;
+                        invertersTxt = `1 × ${unitSizeKw} kW Single-Phase`;
                     }
                     if(document.getElementById("resEntPhaseRow")) document.getElementById("resEntPhaseRow").style.display = "none";
                     if(document.getElementById("resEntHvRow")) document.getElementById("resEntHvRow").style.display = "none";
@@ -1790,15 +2044,15 @@ if ('serviceWorker' in navigator) {
                         let clusterVoltage = racksInSeries * 51.2;
                         
                         let distributionTxt = numberOfUnits > 1 
-                            ? `[${numberOfUnits} Inverters: ~${clustersPerUnit} Parallel Clusters/Unit, ${racksInSeries} Racks in Series/Cluster ≈ ${Math.round(clusterVoltage)}V DC]`
-                            : `[${clustersPerUnit} Parallel Clusters, ${racksInSeries} Racks in Series/Cluster ≈ ${Math.round(clusterVoltage)}V DC]`;
+                            ? `[${numberOfUnits} Inverters: ~${clustersPerUnit} Parallel Clusters/Unit, ${racksInSeries} Units in Series/Cluster ≈ ${Math.round(clusterVoltage)}V DC]`
+                            : `[${clustersPerUnit} Parallel Clusters, ${racksInSeries} Units in Series/Cluster ≈ ${Math.round(clusterVoltage)}V DC]`;
                             
-                        document.getElementById("resEntBattVal").innerHTML = `${totalRacks.toLocaleString("en-US")} Racks (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">${distributionTxt}</span>`;
+                        document.getElementById("resEntBattVal").innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">${distributionTxt}</span>`;
                     } else {
                         let maxRacksPerBank = 8;
                         let parallelBanks = Math.ceil(totalRacks / maxRacksPerBank);
                         let racksPerBank = Math.ceil(totalRacks / parallelBanks);
-                        document.getElementById("resEntBattVal").innerHTML = `${totalRacks} Racks (~${battKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Racks/Bank @ 48V)</span>`;
+                        document.getElementById("resEntBattVal").innerHTML = `${totalRacks} Units (${batteryModuleLabel}) (~${battKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Units/Bank @ 48V)</span>`;
                     }
                 } else if (document.getElementById("resEntBattVal")) {
                     document.getElementById("resEntBattVal").innerHTML = `-`;
@@ -1810,17 +2064,17 @@ if ('serviceWorker' in navigator) {
                 let battCableSize = getCableSizeFromAmps(bAmpsMax);
                 let battBreaker = getStandardBreakerSize(bAmpsMax);
 
-                let estimatedVoc = panelWatts > 450 ? 50 : 41;
-                let estimatedIsc = panelWatts > 450 ? 14 : 11; 
+                let estimatedImp = panelWatts > 450 ? 14 : 11; 
                 let maxMpptVolt = entSysType === "hv" ? 800 : (effectiveSysVolt === 48 ? 145 : 100);
+                let estimatedVoc = panelWatts > 450 ? 50 : 41; 
                 let panelsPerString = Math.max(1, Math.floor((maxMpptVolt * 0.85) / estimatedVoc));
                 let parallelStrings = Math.ceil(panelsCount / panelsPerString);
-                let pvMaxAmps = estimatedIsc * parallelStrings * climateFactor;
+                let pvMaxAmps = estimatedImp * parallelStrings * climateFactor;
 
                 let pvCableSize = getPVCableSizeFromAmps(pvMaxAmps);
                 let pvBreaker = getStandardBreakerSize(pvMaxAmps);
                 let needsFuses = parallelStrings >= 3;
-                let fuseSize = Math.ceil(estimatedIsc * 1.56);
+                let fuseSize = Math.ceil(estimatedImp * 1.56);
 
                 if (battKwh === 0 && entSysType === "single") {
                     if(document.getElementById("resEntBattCableRow")) document.getElementById("resEntBattCableRow").style.display = "none";
@@ -1850,18 +2104,11 @@ if ('serviceWorker' in navigator) {
         }
 
         const cablesWrapper = document.getElementById("cablesResultsWrapper");
-        const industrialSlot = document.getElementById("industrial-warning-slot");
         
         if (cablesWrapper) {
-            if ((battDist > 0 || acDist > 0) && totalDailyWh > 0 && entDailyKwh === 0) {
+            if ((battDistance > 0 || acDistance > 0) && totalDailyWh > 0 && entDailyKwh === 0) {
                 cablesWrapper.style.display = "block";
                 
-                let isIndustrialScale = finalInv > 30000;
-                if (industrialSlot) {
-                    industrialSlot.innerHTML = isIndustrialScale ? 
-                        `<div style="background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 10px; padding: 12px; margin-bottom: 12px; color: #ffffff; font-size: 12px; text-align: start; line-height: 1.7; direction: rtl;">${t.industrialWarning}</div>` : '';
-                }
-
                 let bAmpsCalc = (finalInv / sysVolt) * climateFactor;
                 let maxBattAmps = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0);
 
@@ -1872,9 +2119,9 @@ if ('serviceWorker' in navigator) {
                 else if (maxBattAmps > 100) requiredCable = 50;
                 else if (maxBattAmps > 50) requiredCable = 35;
 
-                let battCableCalc = (battDist >= 3) ? (requiredCable * 1.5) : requiredCable;
+                let battCableCalc = (battDistance >= 3) ? (requiredCable * 1.5) : requiredCable;
                 let marketCables = [25, 35, 50, 70, 95, 120, 150];
-                let battCable = marketCables.find(c => c >= battCableCalc) || "مزدوج (Parallel)";
+                let battCableVal = marketCables.find(c => c >= battCableCalc) || "Parallel";
 
                 let battBreaker = [63, 100, 125, 150, 200, 250, 300, 400].find(b => b >= maxBattAmps) || Math.ceil(maxBattAmps);
 
@@ -1898,37 +2145,47 @@ if ('serviceWorker' in navigator) {
                 }
 
                 let aAmpsCalc = (entSysType === "three48") ? (finalInv / (380 * 1.732)) * climateFactor : (finalInv / 220) * climateFactor;
-                let acCable = "10 mm²";
+                let acCableVal = "10";
                 if (aAmpsCalc <= 32) {
-                    acCable = "6 mm²";
+                    acCableVal = "6";
                 } else if (aAmpsCalc <= 50) {
-                    acCable = "10 mm²";
+                    acCableVal = "10";
                 } else if (aAmpsCalc <= 80) {
-                    acCable = "16 mm²";
+                    acCableVal = "16";
                 } else if (aAmpsCalc <= 120) {
-                    acCable = "25 mm²";
+                    acCableVal = "25";
                 } else if (aAmpsCalc <= 160) {
-                    acCable = "35 mm²";
+                    acCableVal = "35";
                 } else {
-                    acCable = "50 mm² أو كابلات مزدوجة (Parallel)";
+                    acCableVal = "50";
                 }
 
                 let acMarketBreakers = [32, 45, 63, 80, 100, 125, 160, 200, 250, 300];
                 let acBreaker = acMarketBreakers.find(b => b >= aAmpsCalc) || 300;
                 
-                if(document.getElementById("resBattCable")) document.getElementById("resBattCable").innerHTML = `<span style="font-weight:bold;">${battCable} ${battCable !== "مزدوج (Parallel)" ? "mm²" : ""}</span> &nbsp;|&nbsp; <span style="font-weight:bold;">${battBreaker}A</span>`;
-                if(document.getElementById("resPvCable")) document.getElementById("resPvCable").innerHTML = `<span style="font-weight:bold;">${pvCableTxt}</span> &nbsp;|&nbsp; <span style="font-weight:bold;">${pvBreaker}A DC</span>`;
-                if(document.getElementById("resAcCable")) document.getElementById("resAcCable").innerHTML = `<span style="font-weight:bold;">${acCable}</span> &nbsp;|&nbsp; <span style="font-weight:bold;">${acBreaker}A</span>`;
+                let battCableFormatted = battCableVal === "Parallel" ? `Parallel` : `<span dir="ltr">${battCableVal} mm²</span>`;
+                let acCableFormatted = aAmpsCalc > 160 ? `50 mm² or Parallel` : `<span dir="ltr">${acCableVal} mm²</span>`;
+
+                if(document.getElementById("resBattCable")) document.getElementById("resBattCable").innerHTML = `${battCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${battBreaker}A</span>`;
+                if(document.getElementById("resPvCable")) document.getElementById("resPvCable").innerHTML = `<span dir="ltr" style="font-weight:bold;">${pvCableTxt}</span> &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${pvBreaker}A DC</span>`;
+                if(document.getElementById("resAcCable")) document.getElementById("resAcCable").innerHTML = `${acCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${acBreaker}A</span>`;
+                
+                const disclaimerBox = document.getElementById("cableDisclaimerBox");
+                if (disclaimerBox) {
+                    if (window.currentLang === 'en') {
+                        disclaimerBox.innerHTML = '⚠️ Engineering Disclaimer: Suggested sizes rely on certified pure copper cables. Please consult a qualified technician to verify field installation conditions.';
+                    } else {
+                        disclaimerBox.innerHTML = '⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على كابلات نحاسية معتمدة ومطابقة للمواصفات. يرجى مراجعة الفني المختص لمراعاة ظروف ومسافات التوصيل الميدانية الفعليّة.';
+                    }
+                }
             } else {
                 cablesWrapper.style.display = "none";
-                if(industrialSlot) industrialSlot.innerHTML = "";
             }
         }
     };
 
     window.openResetModal = function() {
         const modal = document.getElementById('customModal');
-        const t = dict[window.currentLang];
         
         if (window.currentLang === 'en') {
             document.getElementById('modalTitle').innerText = 'Confirm Data Reset';
@@ -1965,6 +2222,7 @@ if ('serviceWorker' in navigator) {
         if(document.getElementById("systemVoltage")) document.getElementById("systemVoltage").value="48"; 
         if(document.getElementById("panelWatts")) document.getElementById("panelWatts").value="450"; 
         if(document.getElementById("sunHours")) document.getElementById("sunHours").value="6"; 
+        if(document.getElementById("panelClimateFactor")) document.getElementById("panelClimateFactor").value="1.0"; 
         if(document.getElementById("dodValue")) document.getElementById("dodValue").value="0.8"; 
         
         if(document.getElementById("gridDayHours")) document.getElementById("gridDayHours").value="";
@@ -1974,9 +2232,8 @@ if ('serviceWorker' in navigator) {
         if(document.getElementById("enterpriseSystemType")) document.getElementById("enterpriseSystemType").value="single";
         if(document.getElementById("sysTypeDisplay")) document.getElementById("sysTypeDisplay").innerText = dict[window.currentLang].singlePhaseOpt;
         if(document.getElementById("enterpriseDailyKwh")) document.getElementById("enterpriseDailyKwh").value="";
-        
-        if(document.getElementById("entLoadProfile")) document.getElementById("entLoadProfile").value="50/50";
-        if(document.getElementById("loadProfileDisplay")) document.getElementById("loadProfileDisplay").innerText = dict[window.currentLang].prof50;
+        if(document.getElementById("enterpriseHoursDay")) document.getElementById("enterpriseHoursDay").value="";
+        if(document.getElementById("enterpriseHoursNight")) document.getElementById("enterpriseHoursNight").value="";
         
         if(document.getElementById("battDistance")) document.getElementById("battDistance").value="";
         if(document.getElementById("acDistance")) document.getElementById("acDistance").value="";
