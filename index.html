@@ -945,7 +945,7 @@ if ('serviceWorker' in navigator) {
             totalCons: "الاستهلاك الكلي:", wh: "واط.ساعة",
             emptyMsg: "لا توجد أجهزة مضافة حالياً. اضغط على '+ إضافة جهاز جـديد' للبدء.",
             totalCountTxt: "العدد الإجمالي:",
-            dayUnit: " / يوم", pnlWord: "ألواح", wWord: "واط", ampWord: "أمبير",
+            dayUnit: " يومياً", pnlWord: "ألواح", wWord: "واط", ampWord: "أمبير",
             stdSize: "حجم قياسي", surgeText: "إقلاع:",
             mpptAlert1: "يتطلب كحد أدنى منظمات شحن عدد",
             mpptAlert2: "بقدرة",
@@ -1365,7 +1365,6 @@ if ('serviceWorker' in navigator) {
         const aDistEl = document.getElementById("acDistance");
         const appliancesSectionWrapper = document.getElementById("appliancesSectionWrapper");
 
-        // Non-Destructive Flow Fix
         if (entDailyVal > 0) {
             if(appliancesSectionWrapper) appliancesSectionWrapper.style.display = "block"; 
             if(document.getElementById("ent-override-msg")) document.getElementById("ent-override-msg").style.display = "block";
@@ -1554,7 +1553,6 @@ if ('serviceWorker' in navigator) {
         const entAcc = document.getElementById("enterpriseAccordion");
         if(entAcc) localStorage.setItem("solar_ent_opened", entAcc.classList.contains("open") ? "true" : "false");
         
-        // Non-Destructive Flow Fix
         if(document.getElementById("battDistance")) localStorage.setItem("solar_batt_dist", document.getElementById("battDistance").value);
         if(document.getElementById("acDistance")) localStorage.setItem("solar_ac_dist", document.getElementById("acDistance").value);
         if(document.getElementById("climateFactor")) localStorage.setItem("solar_climate", document.getElementById("climateFactor").value);
@@ -1594,6 +1592,25 @@ if ('serviceWorker' in navigator) {
     }
 
     window.calculateResults = function() {
+        // --- خوارزميات التدرج التلقائي (Auto-Scaling Formats) ---
+        const formatW = (val, isPeak = false) => {
+            const p = isPeak ? 'p' : '';
+            if (val >= 1000000) return `${(val / 1000000).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MW${p}`;
+            if (val >= 1000) return `${(val / 1000).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kW${p}`;
+            return `${val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} W${p}`;
+        };
+
+        const formatWh = (val) => {
+            if (val >= 1000000) {
+                const mwhVal = (val / 1000000).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                const kwhVal = (val / 1000).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                return `${mwhVal} MWh <span style="color:#64748b; font-size: 13px; font-weight: normal; direction: ltr; display: inline-block;">(${kwhVal} kWh)</span>`;
+            }
+            if (val >= 1000) return `${(val / 1000).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kWh`;
+            return `${val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Wh`;
+        };
+        // ---------------------------------------------------------
+
         const t = dict[window.currentLang];
         const sysVoltEl = document.getElementById("systemVoltage");
         const panelWattsEl = document.getElementById("panelWatts");
@@ -1633,7 +1650,6 @@ if ('serviceWorker' in navigator) {
         const acDistance = (entDailyKwh > 0) ? 0 : (aDistEl ? (parseFloat(aDistEl.value) || 0) : 0);
         const climateFactor = climEl ? (parseFloat(climEl.value) || 1.25) : 1.25;
         
-        // DOM Caching Fix 3
         const resTotalEnergyEl = document.getElementById("resTotalEnergy");
         const resBatteryAhEl = document.getElementById("resBatteryAh");
         const resBatteryKwhEl = document.getElementById("resBatteryKwh");
@@ -1755,28 +1771,41 @@ if ('serviceWorker' in navigator) {
         let isOverloaded = (totalDailyWh > 0 && entDailyKwh === 0) && ((sysVolt === 12 && (eTotal > 5000 || totalPanelPower > 3000 || invRequired > 3000)) || (sysVolt === 24 && (eTotal > 12000 || totalPanelPower > 5000 || invRequired > 5000)));
 
         let effectiveSysVolt = sysVolt;
-        
         let standardRackKwh = 5.12;
-        let batteryModuleLabel = "5.12 kWh";
-        if (battKwh > 30) {
-            standardRackKwh = 14.33;
-            batteryModuleLabel = "14.33 kWh";
-        } else if (battKwh > 10) {
-            standardRackKwh = 10.24;
-            batteryModuleLabel = "10.24 kWh";
+        let batteryModuleLabel = "5.12 kWh (51.2V 100Ah)";
+        let packVoltage = 51.2;
+        let isContainer = false;
+
+        if (entSysType === "hv" && entDailyKwh > 0) {
+            if (battKwh > 220) {
+                standardRackKwh = 230.00; batteryModuleLabel = "230 kWh Pack (768V 314Ah Liquid Cooling)"; packVoltage = 768; isContainer = true;
+            } else if (battKwh > 150) {
+                standardRackKwh = 215.00; batteryModuleLabel = "215 kWh Pack (768V 280Ah Liquid Cooling)"; packVoltage = 768; isContainer = true;
+            } else if (battKwh > 75) {
+                standardRackKwh = 100.00; batteryModuleLabel = "100 kWh Cabinet (614.4V)"; packVoltage = 614.4; isContainer = true;
+            } else if (battKwh > 40) {
+                standardRackKwh = 50.00; batteryModuleLabel = "50 kWh Cabinet (512V)"; packVoltage = 512; isContainer = true;
+            } else if (battKwh > 25) {
+                standardRackKwh = 30.72; batteryModuleLabel = "30.72 kWh Stackable (614.4V)"; packVoltage = 614.4; isContainer = false;
+            } else if (battKwh > 18) {
+                standardRackKwh = 20.48; batteryModuleLabel = "20.48 kWh Stackable (409.6V)"; packVoltage = 409.6; isContainer = false;
+            } else if (battKwh > 12) {
+                standardRackKwh = 15.36; batteryModuleLabel = "15.36 kWh Stackable (307.2V)"; packVoltage = 307.2; isContainer = false;
+            } else {
+                standardRackKwh = 10.24; batteryModuleLabel = "10.24 kWh Stackable (204.8V)"; packVoltage = 204.8; isContainer = false;
+            }
+            effectiveSysVolt = packVoltage; 
+        } else {
+            packVoltage = 51.2;
+            if (battKwh > 28) { standardRackKwh = 20.48; batteryModuleLabel = "20.48 kWh (51.2V 400Ah)"; }
+            else if (battKwh > 18) { standardRackKwh = 15.36; batteryModuleLabel = "15.36 kWh (51.2V 300Ah)"; }
+            else if (battKwh > 12) { standardRackKwh = 14.33; batteryModuleLabel = "14.33 kWh (51.2V 280Ah)"; }
+            else if (battKwh > 7.5) { standardRackKwh = 10.24; batteryModuleLabel = "10.24 kWh (51.2V 200Ah)"; }
+            else if (battKwh > 3.5) { standardRackKwh = 5.12; batteryModuleLabel = "5.12 kWh (51.2V 100Ah)"; }
+            else { standardRackKwh = 2.56; batteryModuleLabel = "2.56 kWh (51.2V 50Ah)"; }
         }
 
         let totalRacks = Math.ceil(battKwh / standardRackKwh);
-        
-        if (entDailyKwh > 0 && entSysType === "hv") {
-            let totalLoadKw = finalInv / 1000;
-            let maxUnitKwForCalc = 120;
-            let numberOfUnits = Math.ceil(totalLoadKw / maxUnitKwForCalc);
-            let racksPerUnit = Math.ceil(totalRacks / numberOfUnits);
-            
-            let racksInSeries = Math.min(14, Math.max(1, racksPerUnit));
-            effectiveSysVolt = racksInSeries * 51.2;
-        }
 
         const battAh = effectiveSysVolt > 0 ? (battKwh * 1000) / effectiveSysVolt : 0;
         const mpptCurrent = effectiveSysVolt > 0 ? totalPanelPower / effectiveSysVolt : 0;
@@ -1789,19 +1818,25 @@ if ('serviceWorker' in navigator) {
         
         let batteryBufferNote = (nightLoadWh === 0) ? `<br><span style="font-size:11px; color:#94a3b8; display:inline-block; margin-top:2px;">${t.bufferNoteAr}</span>` : "";
 
-        if(resTotalEnergyEl) resTotalEnergyEl.innerHTML = `${fmt2(eTotal)} ${t.wh}${t.dayUnit}`;
+        // --- تطبيق التنسيق الجديد على الطاقة الكلية ---
+        if(resTotalEnergyEl) resTotalEnergyEl.innerHTML = `<span dir="ltr" style="display:inline-block;">${formatWh(eTotal)}</span>${t.dayUnit}`;
+        
         if(resBatteryAhEl) resBatteryAhEl.innerHTML = `${fmt2(battAh)} Ah ${entSysType === "hv" && entDailyKwh > 0 ? '<span style="font-size:11px; color:#94a3b8;">(High Voltage)</span>' : ''}`;
         
+        // --- تطبيق التنسيق الجديد على سعة البطارية الفعلية ---
         if(resBatteryKwhEl) {
             const unitWordAr = window.currentLang === 'ar' ? 'وحدة' : 'Units';
-            resBatteryKwhEl.innerHTML = `${fmt2(battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0)} ${t.wh} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${battKwh.toFixed(2)} kWh - ${totalRacks} ${unitWordAr})</span>${batteryBufferNote}`;
+            let actualBattWh = battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0;
+            resBatteryKwhEl.innerHTML = `<span dir="ltr" style="display:inline-block;">${formatWh(actualBattWh)}</span> <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${totalRacks} ${unitWordAr})</span>${batteryBufferNote}`;
         }
         
+        // --- تطبيق التنسيق الجديد على إجمالي قدرة الألواح ---
         let pnlText = getArabicPanelsString(panelsCount);
-        if(resPanelsCountEl) resPanelsCountEl.innerHTML = `${panelsCount.toLocaleString("en-US")} ${pnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${fmt2(totalPanelPower)} ${t.wWord})</span>`;
+        if(resPanelsCountEl) resPanelsCountEl.innerHTML = `${panelsCount.toLocaleString("en-US")} ${pnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal; direction: ltr; display: inline-block;">(${formatW(totalPanelPower, true)})</span>`;
         
         if(resMpptCurrentEl) resMpptCurrentEl.innerHTML = mpptDisplay;
 
+        // --- تطبيق التنسيق الجديد على قيم الإنفرتر (Inverter Watts) ---
         if(resInverterWattsEl) {
             if (totalDailyWh > 0) {
                 if (entDailyKwh === 0 && sysVolt === 48) {
@@ -1838,7 +1873,6 @@ if ('serviceWorker' in navigator) {
                     const unitKw = bestUnit / 1000;
                     const enLang = window.currentLang === 'en';
 
-                    // Check max parallel limit for 48V (16 units max practical limit)
                     if (bestCount > 16 && sysVolt === 48) {
                         if (inverterResultRowEl) {
                             inverterResultRowEl.classList.remove("orange-alert-row");
@@ -1848,7 +1882,7 @@ if ('serviceWorker' in navigator) {
                         resInverterWattsEl.innerHTML = `
                             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ltr; padding: 4px 0;">
                                 <span class="stdSize" style="margin:0; background-color: rgba(239, 68, 68, 0.15); color: #ffffff; border: 1px solid #ef4444;">LIMIT EXCEEDED</span>
-                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
+                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${formatW(totalCapacityWatts)}</span>
                             </div>`;
                         
                         const limitAlertAr = `
@@ -1882,19 +1916,18 @@ if ('serviceWorker' in navigator) {
                             resInverterWattsEl.innerHTML = `
                                 <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
                                     <span class="stdSize" style="margin:0; background-color: #10b981; color: #ffffff;">${t.stdSize}</span>
-                                    <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
+                                    <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${formatW(totalCapacityWatts)}</span>
                                 </div>`;
                             if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
                         } else {
                             const parallelTxt = enLang ? "Parallel Setup" : "توصيل بالتوازي";
                             const distTxt = enLang ? "Parallel Distribution:" : "التوزيع بالتوازي:";
-                            
                             const badgeBorder = "#10b981";
                             
                             resInverterWattsEl.innerHTML = `
                                 <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
                                     <span class="stdSize" style="margin:0; background-color: rgba(16, 185, 129, 0.15); color: #ffffff; border: 1px solid #10b981;">${parallelTxt}</span>
-                                    <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
+                                    <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${formatW(totalCapacityWatts)}</span>
                                 </div>
                                 <div style="width: 100%; margin-top: 12px; font-size: 13px; color: #94a3b8; text-align: ${enLang ? 'left' : 'right'};" dir="${enLang ? 'ltr' : 'rtl'}">${distTxt}</div>
                                 <div style="width: 100%; margin-top: 6px; display: flex; justify-content: center;">
@@ -1940,13 +1973,12 @@ if ('serviceWorker' in navigator) {
 
                         const parallelTxt = enLang ? "Parallel Setup" : "توصيل بالتوازي";
                         const distTxt = enLang ? "Parallel Distribution:" : "التوزيع بالتوازي:";
-                        
                         const badgeBorder = "#f59e0b";
                         
                         resInverterWattsEl.innerHTML = `
                             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
                                 <span class="stdSize" style="margin:0; background-color: rgba(245, 158, 11, 0.15); color: #ffffff; border: 1px solid #f59e0b;">${parallelTxt}</span>
-                                <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${totalCapacityWatts.toLocaleString("en-US")} W</span>
+                                <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${formatW(totalCapacityWatts)}</span>
                             </div>
                             <div style="width: 100%; margin-top: 12px; font-size: 13px; color: #94a3b8; text-align: ${enLang ? 'left' : 'right'};" dir="${enLang ? 'ltr' : 'rtl'}">${distTxt}</div>
                             <div style="width: 100%; margin-top: 6px; display: flex; justify-content: center;">
@@ -1985,7 +2017,7 @@ if ('serviceWorker' in navigator) {
                         resInverterWattsEl.innerHTML = `
                             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
                                 <span class="stdSize" style="margin:0; background-color: rgba(239, 68, 68, 0.15); color: #ffffff; border: 1px solid #ef4444;">${dangerTxt}</span>
-                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${reqWattsInt.toLocaleString("en-US")} W</span>
+                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${formatW(reqWattsInt)}</span>
                             </div>`;
                             
                         const alertHtmlAr = `
@@ -2002,9 +2034,8 @@ if ('serviceWorker' in navigator) {
                                 <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
                                     This setup exceeds <strong>1000 Amps</strong> for a 48V system, creating extreme thermal risks! Parallel connection for this capacity is prohibited. <strong>Immediate upgrade to High Voltage (HV) is mandatory.</strong>
                                 </div>
-                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollTo Large Systems (HV) ➔</div>
+                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Commercial Mode ➔</div>
                             </div>`;
-                        
                         if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
                     }
 
@@ -2015,11 +2046,12 @@ if ('serviceWorker' in navigator) {
                         inverterResultRowEl.style.background = "";
                     }
                     
+                    let resolvedInverterCapacity = Math.max(5000, marketInv.find(s => s >= invRequired) || invRequired);
                     resInverterWattsEl.innerHTML = isOverloaded ? 
-                        `<div class="engineering-alert" style="direction: ${window.currentLang === 'ar' ? 'rtl' : 'ltr'};">⚠️ ${t.invAlert1}<br>${t.invAlert2} (${sysVolt}${t.invAlert3}<br>${t.invAlert4} <strong>${Math.max(5000, marketInv.find(s => s >= invRequired) || invRequired).toLocaleString("en-US")} ${t.invAlert5}</strong>، ${t.invAlert6}</div>` :
+                        `<div class="engineering-alert" style="direction: ${window.currentLang === 'ar' ? 'rtl' : 'ltr'};">⚠️ ${t.invAlert1}<br>${t.invAlert2} (${sysVolt}${t.invAlert3}<br>${t.invAlert4} <strong dir="ltr" style="display:inline-block;">${formatW(resolvedInverterCapacity)}</strong>، ${t.invAlert6}</div>` :
                         `<div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${window.currentLang === 'ar' ? 'rtl' : 'ltr'}; padding: 4px 0;">
                             <span class="stdSize" style="margin:0; background-color: rgba(16, 185, 129, 0.15); color: #ffffff; border: 1px solid #10b981;">${t.stdSize}</span>
-                            <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${finalInv.toLocaleString("en-US")} W</span> 
+                            <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${formatW(finalInv)}</span> 
                         </div>`;
                     if(resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
                 }
@@ -2029,7 +2061,7 @@ if ('serviceWorker' in navigator) {
                     inverterResultRowEl.style.border = "";
                     inverterResultRowEl.style.background = "";
                 }
-                resInverterWattsEl.innerHTML = `0 ${t.wWord}`;
+                resInverterWattsEl.innerHTML = `<span dir="ltr">0 W</span>`;
                 if(resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
             }
         }
@@ -2120,16 +2152,11 @@ if ('serviceWorker' in navigator) {
 
                 if (battKwh > 0 && resEntBattValEl) {
                     if (entSysType === "hv") {
-                        let racksPerUnit = Math.ceil(totalRacks / numberOfUnits);
-                        let racksInSeries = Math.min(14, Math.max(1, racksPerUnit));
-                        let clustersPerUnit = Math.ceil(racksPerUnit / racksInSeries);
-                        let clusterVoltage = racksInSeries * 51.2;
-                        
-                        let distributionTxt = numberOfUnits > 1 
-                            ? `[${numberOfUnits} Inverters: ~${clustersPerUnit} Parallel Clusters/Unit, ${racksInSeries} Units in Series/Cluster ≈ ${Math.round(clusterVoltage)}V DC]`
-                            : `[${clustersPerUnit} Parallel Clusters, ${racksInSeries} Units in Series/Cluster ≈ ${Math.round(clusterVoltage)}V DC]`;
-                            
-                        resEntBattValEl.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">${distributionTxt}</span>`;
+                        if (isContainer) {
+                            resEntBattValEl.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Containerized ESS: Built-in BMS & Cooling, Parallel Connection @ ${packVoltage}V DC]</span>`;
+                        } else {
+                            resEntBattValEl.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Modular HV Stacks: Parallel Connection @ ${packVoltage}V DC]</span>`;
+                        }
                     } else {
                         let maxRacksPerBank = 8;
                         let parallelBanks = Math.ceil(totalRacks / maxRacksPerBank);
@@ -2145,6 +2172,15 @@ if ('serviceWorker' in navigator) {
                 
                 let battCableSize = getCableSizeFromAmps(bAmpsMax);
                 let battBreaker = getStandardBreakerSize(bAmpsMax);
+                let battBreakerDisplay = `${battBreaker}A DC`;
+
+                let maxStandardBreaker = 630;
+                if (bAmpsMax > 1000) {
+                    let numberOfParallelPaths = Math.ceil(bAmpsMax / maxStandardBreaker);
+                    let breakerPerPath = getStandardBreakerSize(bAmpsMax / numberOfParallelPaths);
+                    battBreakerDisplay = `Busbars + (${numberOfParallelPaths} × ${breakerPerPath}A)`;
+                    battCableSize = `Copper Busbars (Rated > ${Math.ceil(bAmpsMax * 1.2)}A)`;
+                }
 
                 let estimatedImp = panelWatts > 0 ? (panelWatts / 36) : 13; 
                 let maxMpptVolt = entSysType === "hv" ? 800 : (effectiveSysVolt === 48 ? 145 : 100);
@@ -2155,22 +2191,30 @@ if ('serviceWorker' in navigator) {
 
                 let pvCableSize = getPVCableSizeFromAmps(pvMaxAmps);
                 let pvBreaker = getStandardBreakerSize(pvMaxAmps);
+                let pvBreakerDisplay = `${pvBreaker}A DC`;
                 let needsFuses = parallelStrings >= 3;
                 let fuseSize = Math.ceil(estimatedImp * 1.56);
+
+                if (pvMaxAmps > 1000) {
+                    let numberOfParallelPaths = Math.ceil(pvMaxAmps / maxStandardBreaker);
+                    let breakerPerPath = getStandardBreakerSize(pvMaxAmps / numberOfParallelPaths);
+                    pvBreakerDisplay = `Combiner Net + (${numberOfParallelPaths} × ${breakerPerPath}A)`;
+                    pvCableSize = `Multi-String Busbars / Trunk`;
+                }
 
                 if (battKwh === 0 && entSysType === "single") {
                     if(resEntBattCableRowEl) resEntBattCableRowEl.style.display = "none";
                 } else {
                     if(resEntBattCableRowEl) {
                         resEntBattCableRowEl.style.display = "flex";
-                        resEntBattCableValEl.innerHTML = `${battCableSize} ${battCableSize.includes('Busbars') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Breaker: ${battBreaker}A DC</span>`;
+                        resEntBattCableValEl.innerHTML = `${battCableSize} ${battCableSize.includes('Busbars') || battCableSize.includes('Parallel') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Protection: ${battBreakerDisplay}</span>`;
                     }
                 }
 
                 if(resEntPvCableRowEl) {
                     resEntPvCableRowEl.style.display = "flex";
                     let fuseTxt = needsFuses ? ` <br><span style="font-size:11px; color:#f59e0b; margin-top:2px; display:inline-block;">+ String Fuses: ${fuseSize}A</span>` : '';
-                    resEntPvCableValEl.innerHTML = `${pvCableSize} ${pvCableSize.includes('Box') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Main Breaker: ${pvBreaker}A DC</span>${fuseTxt}`;
+                    resEntPvCableValEl.innerHTML = `${pvCableSize} ${pvCableSize.includes('Busbars') || pvCableSize.includes('Trunk') || pvCableSize.includes('Combiner') || pvCableSize.includes('Box') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Main Prot.: ${pvBreakerDisplay}</span>${fuseTxt}`;
                 }
 
                 if (mpptCurrent > 300 && entSysType !== "hv") {
