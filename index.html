@@ -141,11 +141,6 @@
         }
         .result-row:last-child { border-bottom: none; margin-bottom: 0; }
         
-        .result-row.orange-alert-row {
-            border: 1px solid rgba(245, 158, 11, 0.3) !important;
-            background: rgba(245, 158, 11, 0.05) !important;
-        }
-
         .result-label { font-size: 13px; color: #94a3b8; font-weight: 600; text-align: start; width: 100%; }
         .result-value { 
             font-weight: 700; 
@@ -182,7 +177,7 @@
         }
 
         .cables-results-card { background: rgba(245, 158, 11, 0.08); border: 1px solid #f59e0b; border-radius: 12px; padding: 12px; margin: 14px 0 0 0; width: 100%; }
-        .cables-card-title { font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 10px; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 6px; text-align: start; }
+        .cables-card-title { font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 10px; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; text-align: start; }
         
         .cables-results-card .result-row { 
             border: 1px solid rgba(245, 158, 11, 0.2); 
@@ -205,7 +200,7 @@
         html[dir="rtl"] .cables-results-card .cable-disclaimer { text-align: start; direction: rtl; }
         html[dir="ltr"] .cables-results-card .cable-disclaimer { text-align: left; direction: ltr; word-spacing: normal; letter-spacing: normal; }
 
-        .stdSize { background-color: #f59e0b; color: #ffffff; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 12px; white-space: nowrap; display: inline-block; direction: rtl; }
+        .stdSize { background-color: #f59e0b; color: #ffffff; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 12px; white-space: nowrap; display: inline-block; }
 
         .engineering-alert { background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 14px 12px; margin-top: 12px; text-align: start; color: #ffffff; font-size: 13px; font-weight: 600; line-height: 1.7; box-shadow: 0 4px 6px rgba(0,0,0,0.15); width: 100%; direction: rtl; }
         .engineering-alert strong { color: #ffeb3b; }
@@ -252,7 +247,7 @@
             .print-client-box { background-color: #f8fafc !important; border: 1px solid #cbd5e1 !important; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 13pt !important; display: flex; gap: 8px; color: #000000 !important; }
             .print-client-name { color: #2563eb !important; font-weight: bold; }
 
-            .header, .pdf-accordion, button, .btn, .btn-add, .btn-delete, input[type="checkbox"], .checkbox-container, .social-links, .solar-footer, .lang-toggle, .gold-badge-container { display: none !important; }
+            .header, .pdf-accordion, button, .btn, .btn-add, .social-links, .solar-footer, .lang-toggle, .gold-badge-container { display: none !important; }
             
             .section-title, .title-text { 
                 font-size: 15pt !important; 
@@ -276,11 +271,43 @@
             
             .hybrid-accordion:not(.has-data), .cables-accordion:not(.has-data), .enterprise-accordion:not(.has-data) { display: none !important; }
             
-            #appliancesSectionWrapper { display: none !important; }
-            .appliance-item { display: none !important; }
-            .item-summary { display: none !important; }
+            #appliancesSectionWrapper { display: block !important; page-break-inside: auto; }
+            .appliance-item { 
+                display: block !important; 
+                background: #ffffff !important; 
+                border: 1px solid #cbd5e1 !important; 
+                padding: 10px !important;
+                margin-bottom: 10px !important;
+                border-radius: 8px !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                color: #000000 !important;
+            }
+            .appliance-header { margin-bottom: 8px !important; border-bottom: 1px dashed #cbd5e1 !important; padding-bottom: 6px !important; }
+            .device-name-input { font-size: 13pt !important; font-weight: bold !important; color: #000000 !important; border: none !important; padding: 0 !important; text-align: right !important; }
+            html[dir="ltr"] .device-name-input { text-align: left !important; }
+            
+            .controls-wrapper, .btn-delete, .checkbox-container { display: none !important; }
+            
+            .item-summary { 
+                display: flex !important; 
+                background: #f8fafc !important; 
+                border: 1px solid #cbd5e1 !important; 
+                margin-top: 10px !important; 
+                padding: 8px !important; 
+                color: #334155 !important;
+                border-radius: 6px !important;
+            }
+            .item-summary span { color: #000000 !important; font-weight: bold !important; }
+            
+            .ent-mode-msg { 
+                background: #f0fdf4 !important; 
+                border: 1px solid #059669 !important; 
+                color: #059669 !important; 
+                padding: 10px !important;
+                page-break-inside: avoid !important;
+            }
 
-            .ent-mode-msg { display: none !important; }
             .grid-inputs { display: block !important; text-align: start !important; }
             .input-group { display: inline-block !important; width: 48% !important; margin-bottom: 8px !important; vertical-align: top !important; text-align: start !important; color: #000000 !important; }
             .input-group[style*="span 2"] { width: 100% !important; }
@@ -337,6 +364,12 @@
 
             .hide-hybrid-print { display: none !important; }
             .full-width-print { width: 100% !important; max-width: 100% !important; display: block !important; text-align: center !important; margin-top: 8px !important; }
+            
+            #inverterResultRow { border: 1px solid #cbd5e1 !important; background: transparent !important; }
+            #resInverterWatts * { color: #000000 !important; background: transparent !important; border-color: #64748b !important; }
+            #residential-cap-warning-slot > div { background: #f8fafc !important; border: 1px dashed #94a3b8 !important; padding: 10px !important; margin-top: 10px !important; box-shadow: none !important; }
+            #residential-cap-warning-slot * { color: #000000 !important; text-shadow: none !important; }
+            #resMpptCurrent div { color: #000000 !important; font-weight: bold !important; }
         }
 
         /* --- Custom Modal CSS --- */
@@ -931,7 +964,7 @@ if ('serviceWorker' in navigator) {
             cablesResTitle: "مواصفات الكابلات والقواطع (هام جداً):",
             battCableRes: "كابل وقاطع البطارية:", pvCableRes: "كابل وقاطع الألواح:", acCableRes: "كابل وقاطع الأحمال (AC):",
             cableDisclaimer: "⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على كابلات نحاسية معتمدة ومطابقة للمواصفات. يرجى مراجعة الفني المختص لمراعاة ظروف ومسافات التوصيل الميدانية الفعليّة.",
-            
+
             resetData: "⚠️ تصفير البيانات (مسح كل شيء)",
             copyright: 'تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026',
             tagline: 'تطبيق حاسبة الطاقة الشمسية الذكية',
@@ -956,13 +989,22 @@ if ('serviceWorker' in navigator) {
             invAlert4: "المقترح الفني: إنفرتر بقدرة", 
             invAlert5: "واط", 
             invAlert6: "مع ضرورة الترقية الفورية لنظام 48 فولت.",
+            limitExceededBadge: "تجاوز الحد الأقصى (>16kW)",
             pdfSettingsTitle: "📄 إعدادات تصدير التقرير (PDF)", engNameLabel: "اسم المهندس/المؤسسة:",
             clientNameLabel: "اسم العميل/المشروع:", techReportTitle: "تقرير تصميم منظومة طاقة شمسية",
             prepBy: "إعداد:", dateTxt: "التاريخ:", exportPdfBtn: "📄 تصدير التقرير PDF",
             engNamePh: "مثال: م. أحمد أو مؤسسة الأفق", clientNamePh: "أدخل اسم العميل أو المشروع",
             reportFooterText: "تم إنشاء هذا التقرير آلياً بواسطة حاسبة الطاقة الشمسية الذكية",
             visitorCountText: "عدد زيارات الحاسبة: ", visitorCountOffline: "غير متصل", visitorCountError: "غير متاح",
-            hoursAlertTitle: "تنبيه إدخال غير صالح", hoursAlertMsg: "مجموع ساعات العمل خلال اليوم لا يمكن أن يتجاوز 24 ساعة. يرجى إدخال ساعات فعلية صحيحة.", okBtn: "موافق"
+            hoursAlertTitle: "تنبيه إدخال غير صالح", hoursAlertMsg: "مجموع ساعات العمل خلال اليوم لا يمكن أن يتجاوز 24 ساعة. يرجى إدخال ساعات فعلية صحيحة.", okBtn: "موافق",
+            
+            copperBusbars: "قضبان نحاسية",
+            combinerNet: "صندوق تجميع (Combiner)",
+            multiString: "مسارات تجميع رئيسية",
+            orParallel: "أو كابلات متوازية",
+            solarPvType: "", 
+            parallelRuns: "مسارات متوازية",
+            breaker: "قاطع"
         },
         en: {
             appTitle: "Smart Solar Calculator", appSubtitle: "Professional Integrated Edition",
@@ -1041,13 +1083,22 @@ if ('serviceWorker' in navigator) {
             invAlert4: "Technical Proposal: Inverter with", 
             invAlert5: "W", 
             invAlert6: "with immediate upgrade to 48V system required.",
+            limitExceededBadge: "LIMIT EXCEEDED (>16kW)",
             pdfSettingsTitle: "📄 PDF Report Settings", engNameLabel: "Engineer/Company Name:",
             clientNameLabel: "Client/Project Name:", techReportTitle: "Solar System Design Report",
             prepBy: "Prepared by:", dateTxt: "Date:", exportPdfBtn: "📄 Export PDF Report",
             engNamePh: "e.g., Eng. John or Skyline Co.", clientNamePh: "Enter client or project name",
             reportFooterText: "Report generated automatically by Smart Solar Calculator",
             visitorCountText: "Calculator Visits: ", visitorCountOffline: "Offline", visitorCountError: "Unavailable",
-            hoursAlertTitle: "Invalid Input Alert", hoursAlertMsg: "Total daily operating hours cannot exceed 24. Please enter valid hours.", okBtn: "OK"
+            hoursAlertTitle: "Invalid Input Alert", hoursAlertMsg: "Total daily operating hours cannot exceed 24. Please enter valid hours.", okBtn: "OK",
+            
+            copperBusbars: "Copper Busbars",
+            combinerNet: "Combiner Net",
+            multiString: "Multi-String Busbars",
+            orParallel: "or Parallel runs",
+            solarPvType: "", 
+            parallelRuns: "Parallel Runs",
+            breaker: "Breaker"
         }
     };
 
@@ -1150,6 +1201,17 @@ if ('serviceWorker' in navigator) {
             if(t[key]) el.innerHTML = t[key];
         });
 
+        // تحديث نص العداد الديناميكي إذا كان في حالة غير متصل أو غير متاح
+        const counterElement = document.getElementById('visitor-count');
+        if (counterElement) {
+            const currentText = counterElement.textContent;
+            if (currentText === dict['ar'].visitorCountOffline || currentText === dict['en'].visitorCountOffline) {
+                counterElement.textContent = t.visitorCountOffline;
+            } else if (currentText === dict['ar'].visitorCountError || currentText === dict['en'].visitorCountError) {
+                counterElement.textContent = t.visitorCountError;
+            }
+        }
+
         const sysVal = document.getElementById('systemVoltage') ? document.getElementById('systemVoltage').value : "48";
         const dodVal = document.getElementById('dodValue') ? document.getElementById('dodValue').value : "0.8";
         const cliVal = document.getElementById('climateFactor') ? document.getElementById('climateFactor').value : "1.25";
@@ -1216,6 +1278,20 @@ if ('serviceWorker' in navigator) {
     };
 
     window.prepareAndPrint = function() {
+        saveDataAndCalculate();
+        
+        const entDailyEl = document.getElementById("enterpriseDailyKwh");
+        const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
+        const enterpriseResultsWrapper = document.getElementById("enterpriseResultsWrapper");
+
+        if (enterpriseResultsWrapper) {
+            if (entDailyVal <= 0) {
+                enterpriseResultsWrapper.style.display = "none";
+            } else {
+                enterpriseResultsWrapper.style.display = "block";
+            }
+        }
+
         updateAccordionStates();
         const engInput = document.getElementById("engineerNameInput");
         const cliInput = document.getElementById("clientNameInput");
@@ -1526,7 +1602,7 @@ if ('serviceWorker' in navigator) {
         const entSysEl = document.getElementById("enterpriseSystemType");
         const entAccordion = document.getElementById("enterpriseAccordion");
         if(entAccordion) {
-            if(entDaily > 0 || (entSysEl && entSysEl.value !== "single")) entAccordion.classList.add("has-data");
+            if(entDaily > 0) entAccordion.classList.add("has-data");
             else entAccordion.classList.remove("has-data");
         }
     };
@@ -1592,7 +1668,6 @@ if ('serviceWorker' in navigator) {
     }
 
     window.calculateResults = function() {
-        // --- خوارزميات التدرج التلقائي (Auto-Scaling Formats) ---
         const formatW = (val, isPeak = false) => {
             const p = isPeak ? 'p' : '';
             if (val >= 1000000) return `${(val / 1000000).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MW${p}`;
@@ -1609,7 +1684,6 @@ if ('serviceWorker' in navigator) {
             if (val >= 1000) return `${(val / 1000).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kWh`;
             return `${val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Wh`;
         };
-        // ---------------------------------------------------------
 
         const t = dict[window.currentLang];
         const sysVoltEl = document.getElementById("systemVoltage");
@@ -1760,11 +1834,11 @@ if ('serviceWorker' in navigator) {
                 marketInv = [5000, 6000, 8000, 10000, 12000, 16000, 20000, 25000, 30000, 40000, 50000]; 
             }
         } else {
-            marketInv = (sysVolt === 12) ? [1000, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 2500, 3000, 4000, 5000] : [5000, 6000, 8000, 10000, 12000, 16000, 20000, 25000, 30000, 40000, 50000];
+            marketInv = (sysVolt === 12) ? [1000, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 2500, 3000, 4000, 5000] : [1000, 2000, 3000, 4000, 5000, 6000, 8000, 10000, 12000, 16000];
         }
 
         let finalInv = marketInv.find(size => size >= invRequired) || marketInv[marketInv.length - 1];
-        if (invRequired > marketInv[marketInv.length - 1]) {
+        if (entDailyKwh > 0 && invRequired > marketInv[marketInv.length - 1]) {
              finalInv = Math.ceil(invRequired / 1000) * 1000; 
         }
 
@@ -1811,232 +1885,81 @@ if ('serviceWorker' in navigator) {
         const mpptCurrent = effectiveSysVolt > 0 ? totalPanelPower / effectiveSysVolt : 0;
         
         let mpptDisplay = `${fmt2(mpptCurrent)} ${t.ampWord}`;
-        if ((effectiveSysVolt <= 48 && mpptCurrent > 120) || (effectiveSysVolt === 12 && mpptCurrent > 100)) {
-            let limit = (effectiveSysVolt === 48) ? 100 : 80;
+        if ((effectiveSysVolt <= 48 && mpptCurrent > 250) || (effectiveSysVolt === 12 && mpptCurrent > 150)) {
+            let limit = (effectiveSysVolt === 48) ? 150 : 100;
             mpptDisplay += `<div style="width:100%; font-size:11.5px; color:#ef4444; font-weight:normal; margin-top:2px; direction: rtl;">(${t.mpptAlert1} ${Math.ceil(mpptCurrent/limit).toLocaleString("en-US")} ${t.mpptAlert2} ${limit}A ${t.mpptAlert3})</div>`;
         }
         
         let batteryBufferNote = (nightLoadWh === 0) ? `<br><span style="font-size:11px; color:#94a3b8; display:inline-block; margin-top:2px;">${t.bufferNoteAr}</span>` : "";
 
-        // --- تطبيق التنسيق الجديد على الطاقة الكلية ---
         if(resTotalEnergyEl) resTotalEnergyEl.innerHTML = `<span dir="ltr" style="display:inline-block;">${formatWh(eTotal)}</span>${t.dayUnit}`;
         
         if(resBatteryAhEl) resBatteryAhEl.innerHTML = `${fmt2(battAh)} Ah ${entSysType === "hv" && entDailyKwh > 0 ? '<span style="font-size:11px; color:#94a3b8;">(High Voltage)</span>' : ''}`;
         
-        // --- تطبيق التنسيق الجديد على سعة البطارية الفعلية ---
         if(resBatteryKwhEl) {
             const unitWordAr = window.currentLang === 'ar' ? 'وحدة' : 'Units';
             let actualBattWh = battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0;
             resBatteryKwhEl.innerHTML = `<span dir="ltr" style="display:inline-block;">${formatWh(actualBattWh)}</span> <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${totalRacks} ${unitWordAr})</span>${batteryBufferNote}`;
         }
         
-        // --- تطبيق التنسيق الجديد على إجمالي قدرة الألواح ---
         let pnlText = getArabicPanelsString(panelsCount);
         if(resPanelsCountEl) resPanelsCountEl.innerHTML = `${panelsCount.toLocaleString("en-US")} ${pnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal; direction: ltr; display: inline-block;">(${formatW(totalPanelPower, true)})</span>`;
         
         if(resMpptCurrentEl) resMpptCurrentEl.innerHTML = mpptDisplay;
 
-        // --- تطبيق التنسيق الجديد على قيم الإنفرتر (Inverter Watts) ---
+        let isResidentialLimitExceeded = false;
+
         if(resInverterWattsEl) {
             if (totalDailyWh > 0) {
                 if (entDailyKwh === 0 && sysVolt === 48) {
-                    const standardUnits = [5000, 6000, 8000, 10000, 12000, 16000];
-                    let bestUnit = 16000;
-                    let bestCount = 1;
-                    let totalCapacityWatts = 0;
-                    let reqWattsInt = Math.round(invRequired);
-
-                    if (invRequired <= 16000) {
-                        bestUnit = standardUnits.find(u => u >= invRequired) || 16000;
-                        bestCount = 1;
-                        totalCapacityWatts = bestUnit;
-                    } else {
-                        let minTotalCapacity = Infinity;
-                        for (let unit of standardUnits) {
-                            let count = Math.ceil(invRequired / unit);
-                            let totalCapacity = count * unit;
-                            
-                            if (totalCapacity >= invRequired) {
-                                if (totalCapacity < minTotalCapacity) {
-                                    minTotalCapacity = totalCapacity;
-                                    bestUnit = unit;
-                                    bestCount = count;
-                                } else if (totalCapacity === minTotalCapacity && unit > bestUnit) {
-                                    bestUnit = unit;
-                                    bestCount = count;
-                                }
-                            }
-                        }
-                        totalCapacityWatts = bestCount * bestUnit;
-                    }
-
-                    const unitKw = bestUnit / 1000;
+                    const MAX_RESIDENTIAL_INVERTER_WATTS = 16000;
                     const enLang = window.currentLang === 'en';
 
-                    if (bestCount > 16 && sysVolt === 48) {
+                    if (invRequired > MAX_RESIDENTIAL_INVERTER_WATTS) {
+                        isResidentialLimitExceeded = true;
+                        
                         if (inverterResultRowEl) {
                             inverterResultRowEl.classList.remove("orange-alert-row");
-                            inverterResultRowEl.style.border = "1px solid #ef4444";
-                            inverterResultRowEl.style.background = "rgba(239, 68, 68, 0.05)";
+                            inverterResultRowEl.style.border = "1px solid rgba(16, 185, 129, 0.2)";
+                            inverterResultRowEl.style.background = "rgba(15, 23, 42, 0.4)";
                         }
+                        
                         resInverterWattsEl.innerHTML = `
-                            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ltr; padding: 4px 0;">
-                                <span class="stdSize" style="margin:0; background-color: rgba(239, 68, 68, 0.15); color: #ffffff; border: 1px solid #ef4444;">LIMIT EXCEEDED</span>
-                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${formatW(totalCapacityWatts)}</span>
+                            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
+                                <span class="stdSize" style="margin:0; background-color: #dc2626; color: #ffffff; border: 1px solid #ef4444;">${t.limitExceededBadge}</span>
+                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${formatW(invRequired)}</span>
                             </div>`;
                         
-                        const limitAlertAr = `
-                            <div class="engineering-alert" style="direction: rtl; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
-                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 تجاوز الحد الأقصى للتوازي (Max 16 Units):</div>
+                        const limitAlertText = enLang ? `
+                            <div class="engineering-alert" style="direction: ltr; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
+                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 System Limit Exceeded (Max 16 kW for 48V):</div>
                                 <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
-                                    عدد الوحدات المطلوبة بالتوازي (${bestCount} وحدات) يتجاوز الحد الأقصى المسموح به عملياً وبروتوكولياً في أنظمة الـ 48 فولت (16 وحدة كحد أقصى). <strong>يجب الانتقال فوراً لنظام ثلاثي الأطوار (3-Phase) أو الجهد العالي (HV).</strong>
+                                    The required inverter capacity (${formatW(invRequired)}) exceeds the standard single/small system limit of <strong>16 kW (48V)</strong>. To avoid astronomical cable sizes and electrical hazards, <strong>please switch to Large Systems & Commercial Settings</strong>.
+                                </div>
+                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Go to Large Systems & Commercial Settings ➔</div>
+                            </div>` : `
+                            <div class="engineering-alert" style="direction: rtl; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
+                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 تجاوز السقف المسموح (أقصى قدرة 16 كيلو لنظام 48V):</div>
+                                <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
+                                    قدرة الأحمال والإنفرتر المطلوبة (${formatW(invRequired)}) تتجاوز الحد الأقصى للمنظومات الصغيرة والمتوسطة (16kW على جهد 48V). لتفادي الأرقام الفلكية للكابلات والقواطع والمخاطر الحرارية، <strong>يرجى الانتقال فوراً إلى قسم المنظومات الكبيرة والمشاريع التجارية</strong> للربط بالتوازي والتدرج للجهد العالي (HV) أو الثري فاز.
                                 </div>
                                 <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">الانتقال لإعدادات المشاريع الكبيرة ➔</div>
                             </div>`;
-                        const limitAlertEn = `
-                            <div class="engineering-alert" style="direction: ltr; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
-                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 Parallel Units Limit Exceeded (Max 16):</div>
-                                <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
-                                    Required parallel units (${bestCount} units) exceed the maximum practical limit for 48V systems (16 units max). <strong>Immediate upgrade to 3-Phase or High Voltage (HV) is mandatory.</strong>
-                                </div>
-                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Commercial Mode ➔</div>
-                            </div>`;
-                        if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = enLang ? limitAlertEn : limitAlertAr;
-                        return;
-                    }
-
-                    if (invRequired <= 30000) {
+                            
+                        if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = limitAlertText;
+                    } else {
                         if (inverterResultRowEl) {
                             inverterResultRowEl.classList.remove("orange-alert-row");
                             inverterResultRowEl.style.border = "";
                             inverterResultRowEl.style.background = "";
                         }
 
-                        if (bestCount === 1) {
-                            resInverterWattsEl.innerHTML = `
-                                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
-                                    <span class="stdSize" style="margin:0; background-color: #10b981; color: #ffffff;">${t.stdSize}</span>
-                                    <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${formatW(totalCapacityWatts)}</span>
-                                </div>`;
-                            if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
-                        } else {
-                            const parallelTxt = enLang ? "Parallel Setup" : "توصيل بالتوازي";
-                            const distTxt = enLang ? "Parallel Distribution:" : "التوزيع بالتوازي:";
-                            const badgeBorder = "#10b981";
-                            
-                            resInverterWattsEl.innerHTML = `
-                                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
-                                    <span class="stdSize" style="margin:0; background-color: rgba(16, 185, 129, 0.15); color: #ffffff; border: 1px solid #10b981;">${parallelTxt}</span>
-                                    <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${formatW(totalCapacityWatts)}</span>
-                                </div>
-                                <div style="width: 100%; margin-top: 12px; font-size: 13px; color: #94a3b8; text-align: ${enLang ? 'left' : 'right'};" dir="${enLang ? 'ltr' : 'rtl'}">${distTxt}</div>
-                                <div style="width: 100%; margin-top: 6px; display: flex; justify-content: center;">
-                                    <div style="background-color: transparent; color: #ffffff; border: 1.5px solid ${badgeBorder}; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 15px; text-align: center; width: 100%; max-width: 320px;" dir="ltr">
-                                        ${unitKw} kW × ${bestCount}
-                                    </div>
-                                </div>`;
-                            
-                            if (invRequired > 16000) {
-                                 const alertTitle = enLang ? "Engineering Alert:" : "تنبيه هندسي:";
-                                 const alertMsg1 = enLang ? "Required capacity exceeded the single inverter limit for 48V (capped at 16kW)." : "تجاوزت القدرة المطلوبة الحد الأقصى للإنفرتر المنفرد في نظام 48 فولت (المحدد بـ 16 كيلوواط).";
-                                 const condTitle = enLang ? "Mandatory Conditions for Parallel Setup:" : "الشروط الإجبارية للربط بالتوازي:";
-                                 const cond1 = enLang ? "Exact match of devices (same brand, model, and firmware version)." : "تطابق الأجهزة (نفس الشركة، نفس الموديل، ونفس إصدار الفرموير Firmware).";
-                                 const cond2 = enLang ? "Equal lengths and cross-sections for battery and AC cables to ensure balanced voltage and resistance." : "تساوي أطوال ومقاطع كابلات البطاريات والكهرباء لضمان توازن الجهود والمقاومات.";
-
-                                 resCapWarningSlotEl.innerHTML = `
-                                 <div style="margin-top: 16px; margin-bottom: 0px; background: rgba(15, 23, 42, 0.4); border: 1px solid #059669; border-radius: 12px; padding: 14px;">
-                                     <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 10px; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; text-align: start; display:flex; align-items:center; gap:6px;">💡 ${alertTitle}</div>
-                                     <div style="color: #e2e8f0; font-size: 13.5px; line-height: 1.7; text-align: start; margin-bottom: 12px;">
-                                         ${alertMsg1}
-                                     </div>
-                                     <div style="color: #38bdf8; font-size: 13px; font-weight: 700; text-align: start; margin-bottom: 6px;">
-                                         ${condTitle}
-                                     </div>
-                                     <div style="color: #cbd5e1; font-size: 13px; line-height: 1.7; text-align: start;">
-                                         <ul style="margin-top: 0; margin-bottom: 0; padding-inline-start: 22px;">
-                                             <li style="margin-bottom: 6px;">${cond1}</li>
-                                             <li>${cond2}</li>
-                                         </ul>
-                                     </div>
-                                 </div>`;
-                            } else {
-                                 if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
-                            }
-                        }
-
-                    } else if (invRequired > 30000 && invRequired <= 48000) {
-                        if (inverterResultRowEl) {
-                            inverterResultRowEl.classList.add("orange-alert-row");
-                            inverterResultRowEl.style.border = "";
-                            inverterResultRowEl.style.background = "";
-                        }
-
-                        const parallelTxt = enLang ? "Parallel Setup" : "توصيل بالتوازي";
-                        const distTxt = enLang ? "Parallel Distribution:" : "التوزيع بالتوازي:";
-                        const badgeBorder = "#f59e0b";
-                        
                         resInverterWattsEl.innerHTML = `
                             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
-                                <span class="stdSize" style="margin:0; background-color: rgba(245, 158, 11, 0.15); color: #ffffff; border: 1px solid #f59e0b;">${parallelTxt}</span>
-                                <span style="font-weight: 700; font-size: 16px; color: #f59e0b;" dir="ltr">${formatW(totalCapacityWatts)}</span>
-                            </div>
-                            <div style="width: 100%; margin-top: 12px; font-size: 13px; color: #94a3b8; text-align: ${enLang ? 'left' : 'right'};" dir="${enLang ? 'ltr' : 'rtl'}">${distTxt}</div>
-                            <div style="width: 100%; margin-top: 6px; display: flex; justify-content: center;">
-                                <div style="background-color: transparent; color: #ffffff; border: 1.5px solid ${badgeBorder}; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 15px; text-align: center; width: 100%; max-width: 320px;" dir="ltr">
-                                    ${unitKw} kW × ${bestCount}
-                                </div>
+                                <span class="stdSize" style="margin:0; background-color: #10b981; color: #ffffff;">${t.stdSize}</span>
+                                <span style="font-weight: 700; font-size: 16px; color: #10b981;" dir="ltr">${formatW(finalInv)}</span>
                             </div>`;
-                            
-                        const alertHtmlAr = `
-                            <div style="margin-top: 16px; margin-bottom: 0px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 12px;">
-                                <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 8px; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 6px; text-align: start; display:flex; align-items:center; gap:6px;">💡 تنبيه هندسي حرج:</div>
-                                <div style="color: #cbd5e1; font-size: 13.5px; line-height: 1.7; text-align: start;">
-                                    المنظومة دخلت النطاق الحرج. لتقليل الأحمال على خطوط الـ AC، يُنصح بشدة الانتقال إلى نظام <strong>ثلاثي الأطوار (3-Phase 48V)</strong>.
-                                </div>
-                                <div style="margin-top: 12px; font-size: 13.5px; font-weight: 700; color: #10b981; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">الانتقال لوضع المشاريع التجارية ➔</div>
-                            </div>`;
-                        const alertHtmlEn = `
-                            <div style="margin-top: 16px; margin-bottom: 0px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 12px;">
-                                <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 8px; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 6px; text-align: start; display:flex; align-items:center; gap:6px;">💡 Critical Engineering Alert:</div>
-                                <div style="color: #cbd5e1; font-size: 13.5px; line-height: 1.7; text-align: start;">
-                                    System is in a critical range. To reduce AC line loads, it is highly recommended to upgrade to a <strong>3-Phase (48V)</strong> system.
-                                </div>
-                                <div style="margin-top: 12px; font-size: 13.5px; font-weight: 700; color: #10b981; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Commercial Mode ➔</div>
-                            </div>`;
-                            
-                        if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
-
-                    } else if (invRequired > 48000) {
-                        if (inverterResultRowEl) {
-                            inverterResultRowEl.classList.remove("orange-alert-row");
-                            inverterResultRowEl.style.border = "1px solid #ef4444";
-                            inverterResultRowEl.style.background = "rgba(239, 68, 68, 0.05)";
-                        }
-
-                        const dangerTxt = enLang ? "DANGER" : "خطر";
-                        resInverterWattsEl.innerHTML = `
-                            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; direction: ${enLang ? 'ltr' : 'rtl'}; padding: 4px 0;">
-                                <span class="stdSize" style="margin:0; background-color: rgba(239, 68, 68, 0.15); color: #ffffff; border: 1px solid #ef4444;">${dangerTxt}</span>
-                                <span style="font-weight: 700; font-size: 16px; color: #ef4444;" dir="ltr">${formatW(reqWattsInt)}</span>
-                            </div>`;
-                            
-                        const alertHtmlAr = `
-                            <div class="engineering-alert" style="direction: rtl; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
-                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 إيقاف هندسي تام (Hard Stop):</div>
-                                <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
-                                    هذا النظام يتجاوز حاجز <strong>1000 أمبير</strong> لنظام 48 فولت، مما يشكل خطراً حرارياً بالغاً! يمنع الربط بالتوازي لهذه القدرة. <strong>يجب الانتقال فوراً إلى نظام الجهد العالي (High Voltage HV).</strong>
-                                </div>
-                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">الانتقال لإعدادات المنظومات الكبيرة (HV) ➔</div>
-                            </div>`;
-                        const alertHtmlEn = `
-                            <div class="engineering-alert" style="direction: ltr; margin-top: 14px; background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 14px;">
-                                <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px; display:flex; align-items:center; gap:6px;">🛑 Engineering Hard Stop:</div>
-                                <div style="color: #ffffff; font-size: 13.5px; line-height: 1.7; text-align: start;">
-                                    This setup exceeds <strong>1000 Amps</strong> for a 48V system, creating extreme thermal risks! Parallel connection for this capacity is prohibited. <strong>Immediate upgrade to High Voltage (HV) is mandatory.</strong>
-                                </div>
-                                <div style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #34d399; cursor: pointer; text-decoration: underline; text-align: start;" onclick="scrollToEnterprise()">Switch to Commercial Mode ➔</div>
-                            </div>`;
-                        if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = enLang ? alertHtmlEn : alertHtmlAr;
+                        if (resCapWarningSlotEl) resCapWarningSlotEl.innerHTML = "";
                     }
 
                 } else {
@@ -2076,7 +1999,7 @@ if ('serviceWorker' in navigator) {
                 const resEntPhaseValEl = document.getElementById("resEntPhaseVal");
                 const resEntHvRowEl = document.getElementById("resEntHvRow");
                 const resEntHvValEl = document.getElementById("resEntHvVal");
-                const resEntBattValEl = document.getElementById("resEntBattVal");
+                const resEntBattValEl = document.getElementById("resEntBattCableRow"); 
                 const resEntBattCableRowEl = document.getElementById("resEntBattCableRow");
                 const resEntBattCableValEl = document.getElementById("resEntBattCableVal");
                 const resEntPvCableRowEl = document.getElementById("resEntPvCableRow");
@@ -2095,7 +2018,6 @@ if ('serviceWorker' in navigator) {
 
                 let numberOfUnits = Math.ceil(totalLoadKw / maxUnitKw);
                 
-                // --- التعديل هنا: تم توسيع المصفوفة لتشمل الأحجام التجارية والصغيرة ---
                 let standardCommercialUnits = [5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 80, 90, 100, 110, 120, 150];
                 let rawUnitKw = totalLoadKw / numberOfUnits;
                 let unitSizeKw = standardCommercialUnits.find(u => u >= rawUnitKw) || Math.ceil(rawUnitKw);
@@ -2103,9 +2025,9 @@ if ('serviceWorker' in navigator) {
                 if (entSysType === "three48") {
                     archTitle = "48V 3-Phase System";
                     if (totalLoadKw > maxUnitKw || numberOfUnits > 1) {
-                        invertersTxt = `${numberOfUnits} Units × ${unitSizeKw} kW 3-Phase (Parallel Units)`;
+                        invertersTxt = `${numberOfUnits} Units x ${unitSizeKw} kW 3-Phase (Parallel Units)`;
                     } else {
-                        invertersTxt = `1 × ${unitSizeKw} kW 3-Phase Inverter`;
+                        invertersTxt = `1 x ${unitSizeKw} kW 3-Phase Inverter`;
                     }
                     if(resEntPhaseRowEl) resEntPhaseRowEl.style.display = "flex";
                     if(resEntPhaseValEl) resEntPhaseValEl.innerHTML = `${(totalLoadKw / 3).toFixed(1)} kW / Phase`;
@@ -2114,9 +2036,9 @@ if ('serviceWorker' in navigator) {
                 else if (entSysType === "hv") {
                     archTitle = "160V-800V High Voltage HV";
                     if (totalLoadKw > maxUnitKw || numberOfUnits > 1) {
-                        invertersTxt = `${numberOfUnits} Units × ${unitSizeKw} kW HV Central Units`;
+                        invertersTxt = `${numberOfUnits} Units x ${unitSizeKw} kW HV Central Units`;
                     } else {
-                        invertersTxt = `1 × ${unitSizeKw} kW HV Unit`;
+                        invertersTxt = `1 x ${unitSizeKw} kW HV Unit`;
                     }
                     if(resEntPhaseRowEl) resEntPhaseRowEl.style.display = "none";
                     if(resEntHvRowEl) resEntHvRowEl.style.display = "flex";
@@ -2134,15 +2056,15 @@ if ('serviceWorker' in navigator) {
                         let totalStrings = Math.ceil(panelsCount / panelsPerString);
                         let stringVoc = panelsPerString * estimatedVoc;
 
-                        resEntHvValEl.innerHTML = `${totalStrings.toLocaleString("en-US")} Strings × ${panelsPerString} Panels<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(Max Voc ≈ ${Math.round(stringVoc)}V DC per String)</span>`;
+                        resEntHvValEl.innerHTML = `${totalStrings.toLocaleString("en-US")} Strings x ${panelsPerString} Panels<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(Max Voc ≈ ${Math.round(stringVoc)}V DC per String)</span>`;
                     }
                 } 
                 else if (entSysType === "single") {
                     archTitle = "Single-Phase System";
                     if (totalLoadKw > maxUnitKw || numberOfUnits > 1) {
-                        invertersTxt = `${numberOfUnits} Units × ${unitSizeKw} kW Parallel Units`;
+                        invertersTxt = `${numberOfUnits} Units x ${unitSizeKw} kW Parallel Units`;
                     } else {
-                        invertersTxt = `1 × ${unitSizeKw} kW Single-Phase`;
+                        invertersTxt = `1 x ${unitSizeKw} kW Single-Phase`;
                     }
                     if(resEntPhaseRowEl) resEntPhaseRowEl.style.display = "none";
                     if(resEntHvRowEl) resEntHvRowEl.style.display = "none";
@@ -2151,21 +2073,22 @@ if ('serviceWorker' in navigator) {
                 if(resEntSysArchEl) resEntSysArchEl.innerHTML = archTitle;
                 if(resEntInvertersEl) resEntInvertersEl.innerHTML = invertersTxt;
 
-                if (battKwh > 0 && resEntBattValEl) {
+                const resEntBattValEl2 = document.getElementById("resEntBattVal");
+                if (battKwh > 0 && resEntBattValEl2) {
                     if (entSysType === "hv") {
                         if (isContainer) {
-                            resEntBattValEl.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Containerized ESS: Built-in BMS & Cooling, Parallel Connection @ ${packVoltage}V DC]</span>`;
+                            resEntBattValEl2.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Containerized ESS: Built-in BMS & Cooling, Parallel Connection @ ${packVoltage}V DC]</span>`;
                         } else {
-                            resEntBattValEl.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Modular HV Stacks: Parallel Connection @ ${packVoltage}V DC]</span>`;
+                            resEntBattValEl2.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Modular HV Stacks: Parallel Connection @ ${packVoltage}V DC]</span>`;
                         }
                     } else {
                         let maxRacksPerBank = 8;
                         let parallelBanks = Math.ceil(totalRacks / maxRacksPerBank);
                         let racksPerBank = Math.ceil(totalRacks / parallelBanks);
-                        resEntBattValEl.innerHTML = `${totalRacks} Units (${batteryModuleLabel}) (~${battKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Units/Bank @ 48V)</span>`;
+                        resEntBattValEl2.innerHTML = `${totalRacks} Units (${batteryModuleLabel}) (~${battKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Units/Bank @ 48V)</span>`;
                     }
-                } else if (resEntBattValEl) {
-                    resEntBattValEl.innerHTML = `-`;
+                } else if (resEntBattValEl2) {
+                    resEntBattValEl2.innerHTML = `-`;
                 }
 
                 let bAmpsCalc = effectiveSysVolt > 0 ? (finalInv / effectiveSysVolt) * climateFactor : 0;
@@ -2179,7 +2102,7 @@ if ('serviceWorker' in navigator) {
                 if (bAmpsMax > 1000) {
                     let numberOfParallelPaths = Math.ceil(bAmpsMax / maxStandardBreaker);
                     let breakerPerPath = getStandardBreakerSize(bAmpsMax / numberOfParallelPaths);
-                    battBreakerDisplay = `Busbars + (${numberOfParallelPaths} × ${breakerPerPath}A)`;
+                    battBreakerDisplay = `Busbars + (${numberOfParallelPaths} x ${breakerPerPath}A)`;
                     battCableSize = `Copper Busbars (Rated > ${Math.ceil(bAmpsMax * 1.2)}A)`;
                 }
 
@@ -2199,8 +2122,8 @@ if ('serviceWorker' in navigator) {
                 if (pvMaxAmps > 1000) {
                     let numberOfParallelPaths = Math.ceil(pvMaxAmps / maxStandardBreaker);
                     let breakerPerPath = getStandardBreakerSize(pvMaxAmps / numberOfParallelPaths);
-                    pvBreakerDisplay = `Combiner Net + (${numberOfParallelPaths} × ${breakerPerPath}A)`;
-                    pvCableSize = `Multi-String Busbars / Trunk`;
+                    pvBreakerDisplay = `${t.combinerNet || 'Combiner Net'} + (${numberOfParallelPaths} x ${breakerPerPath}A)`;
+                    pvCableSize = t.multiString || `Multi-String Busbars / Trunk`;
                 }
 
                 if (battKwh === 0 && entSysType === "single") {
@@ -2208,14 +2131,14 @@ if ('serviceWorker' in navigator) {
                 } else {
                     if(resEntBattCableRowEl) {
                         resEntBattCableRowEl.style.display = "flex";
-                        resEntBattCableValEl.innerHTML = `${battCableSize} ${battCableSize.includes('Busbars') || battCableSize.includes('Parallel') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Protection: ${battBreakerDisplay}</span>`;
+                        resEntBattCableValEl.innerHTML = `${battCableSize} ${battCableSize.includes('Busbars') || battCableSize.includes('Parallel') ? '' : 'mm&sup2;'} | <span style="font-size:12px; color:#94a3b8;">Protection: ${battBreakerDisplay}</span>`;
                     }
                 }
 
                 if(resEntPvCableRowEl) {
                     resEntPvCableRowEl.style.display = "flex";
                     let fuseTxt = needsFuses ? ` <br><span style="font-size:11px; color:#f59e0b; margin-top:2px; display:inline-block;">+ String Fuses: ${fuseSize}A</span>` : '';
-                    resEntPvCableValEl.innerHTML = `${pvCableSize} ${pvCableSize.includes('Busbars') || pvCableSize.includes('Trunk') || pvCableSize.includes('Combiner') || pvCableSize.includes('Box') ? '' : 'mm²'} | <span style="font-size:12px; color:#94a3b8;">Main Prot.: ${pvBreakerDisplay}</span>${fuseTxt}`;
+                    resEntPvCableValEl.innerHTML = `${pvCableSize} ${pvCableSize.includes('Busbars') || pvCableSize.includes('Trunk') || pvCableSize.includes('Combiner') || pvCableSize.includes('Box') ? '' : 'mm&sup2;'} | <span style="font-size:12px; color:#94a3b8;">Main Prot.: ${pvBreakerDisplay}</span>${fuseTxt}`;
                 }
 
                 let enterpriseAlerts = "";
@@ -2251,7 +2174,7 @@ if ('serviceWorker' in navigator) {
         }
         
         if (cablesWrapperEl) {
-            if ((battDistance > 0 || acDistance > 0) && totalDailyWh > 0 && entDailyKwh === 0) {
+            if ((battDistance > 0 || acDistance > 0) && totalDailyWh > 0 && entDailyKwh === 0 && !isResidentialLimitExceeded) {
                 cablesWrapperEl.style.display = "block";
                 
                 const resBattCableEl = document.getElementById("resBattCable");
@@ -2259,18 +2182,28 @@ if ('serviceWorker' in navigator) {
                 const resAcCableEl = document.getElementById("resAcCable");
 
                 let bAmpsCalc = (finalInv / sysVolt) * climateFactor;
-                let maxBattAmps = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0, mpptCurrent * climateFactor);
+                let maxBattAmps = Math.min(bAmpsCalc, 500);
 
-                let requiredCable = 25;
-                if (maxBattAmps > 300) requiredCable = 150;
-                else if (maxBattAmps > 200) requiredCable = 95;
-                else if (maxBattAmps > 150) requiredCable = 70;
-                else if (maxBattAmps > 100) requiredCable = 50;
-                else if (maxBattAmps > 50) requiredCable = 35;
+                let battCableVal = "150";
+                let battBreakerDisplay = "";
+                
+                if (maxBattAmps <= 50) { battCableVal = "25"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
+                else if (maxBattAmps <= 100) { battCableVal = "35"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
+                else if (maxBattAmps <= 150) { battCableVal = "50"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
+                else if (maxBattAmps <= 200) { battCableVal = "70"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
+                else if (maxBattAmps <= 250) { battCableVal = "95"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
+                else if (maxBattAmps <= 300) { battCableVal = "120"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
+                else if (maxBattAmps <= 400) { battCableVal = "150"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
+                else {
+                    let parallelRuns = Math.ceil(maxBattAmps / 350);
+                    battCableVal = `${parallelRuns} x 150`;
+                    battBreakerDisplay = `(${parallelRuns} x 250A) DC`; 
+                }
 
-                let battCableCalc = (battDistance >= 3) ? (requiredCable * 1.5) : requiredCable;
-                let marketCables = [25, 35, 50, 70, 95, 120, 150];
-                let battCableVal = marketCables.find(c => c >= battCableCalc) || "Parallel";
+                let battFormattedStr = `<span dir="ltr">${battCableVal} mm&sup2;</span>`;
+                if (maxBattAmps > 400) {
+                    battFormattedStr = t.copperBusbars; 
+                }
 
                 let battBreaker = [63, 100, 125, 150, 200, 250, 300, 400].find(b => b >= maxBattAmps) || Math.ceil(maxBattAmps);
 
@@ -2283,14 +2216,14 @@ if ('serviceWorker' in navigator) {
                 let totalPvAmps = parallelStrings * estimatedImp * climateFactor;
                 let pvBreaker = (entSysType === "hv") ? 16 : ([16, 20, 25, 32, 40, 50, 63, 80, 100].find(b => b >= totalPvAmps) || 125);
 
-                let pvCableTxt = "4 mm²";
+                let pvCableTxt = "4 mm&sup2;";
                 if (entSysType !== "hv") {
-                    if (totalPvAmps > 60) pvCableTxt = "25 mm²";
-                    else if (totalPvAmps > 40) pvCableTxt = "16 mm²";
-                    else if (totalPvAmps > 25) pvCableTxt = "10 mm²";
-                    else if (totalPvAmps > 15) pvCableTxt = "6 mm²";
+                    if (totalPvAmps > 60) pvCableTxt = "25 mm&sup2;";
+                    else if (totalPvAmps > 40) pvCableTxt = "16 mm&sup2;";
+                    else if (totalPvAmps > 25) pvCableTxt = "10 mm&sup2;";
+                    else if (totalPvAmps > 15) pvCableTxt = "6 mm&sup2;";
                 } else {
-                    pvCableTxt = "4 mm² Solar PV"; 
+                    pvCableTxt = `4 mm&sup2;`; 
                 }
 
                 let aAmpsCalc = (entSysType === "three48") ? (finalInv / (380 * 1.732)) * climateFactor : (finalInv / 220) * climateFactor;
@@ -2312,10 +2245,9 @@ if ('serviceWorker' in navigator) {
                 let acMarketBreakers = [32, 45, 63, 80, 100, 125, 160, 200, 250, 300];
                 let acBreaker = acMarketBreakers.find(b => b >= aAmpsCalc) || 300;
                 
-                let battCableFormatted = battCableVal === "Parallel" ? `Parallel` : `<span dir="ltr">${battCableVal} mm²</span>`;
-                let acCableFormatted = aAmpsCalc > 160 ? `50 mm² or Parallel` : `<span dir="ltr">${acCableVal} mm²</span>`;
+                let acCableFormatted = aAmpsCalc > 160 ? `50 mm&sup2; ${t.orParallel || 'or Parallel'}` : `<span dir="ltr">${acCableVal} mm&sup2;</span>`;
 
-                if(resBattCableEl) resBattCableEl.innerHTML = `${battCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${battBreaker}A</span>`;
+                if(resBattCableEl) resBattCableEl.innerHTML = `${battFormattedStr} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${battBreakerDisplay || (battBreaker + "A DC")}</span>`;
                 if(resPvCableEl) resPvCableEl.innerHTML = `<span dir="ltr" style="font-weight:bold;">${pvCableTxt}</span> &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${pvBreaker}A DC</span>`;
                 if(resAcCableEl) resAcCableEl.innerHTML = `${acCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${acBreaker}A</span>`;
                 
