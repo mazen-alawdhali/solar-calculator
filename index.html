@@ -32,7 +32,6 @@
             flex-direction: column; 
             align-items: center; 
             transition: all 0.3s ease; 
-            -webkit-text-size-adjust: 100%;
         }
         
         .main-table { width: 100%; max-width: 500px; border-collapse: collapse; margin: 0 auto; border: none; }
@@ -266,7 +265,6 @@
             }
             .device-counter { display: none !important; }
 
-            /* -------- تعديلات المظهر للطباعة (حسب الصورة المرفقة) -------- */
             input { border: 1px solid #94a3b8 !important; background: #f1f5f9 !important; color: #000000 !important; padding: 4px !important; font-weight: bold !important; font-size: 10.5pt !important; border-radius: 6px !important; text-align: center !important; height: 32px !important; }
             .custom-select-options { display: none !important; }
             .custom-select-display { background: #f1f5f9 !important; border: 1px solid #94a3b8 !important; color: #000000 !important; padding: 4px 10px !important; font-weight: bold !important; font-size: 10.5pt !important; border-radius: 6px !important; height: 32px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; }
@@ -283,24 +281,20 @@
             .hybrid-accordion-body, .cables-accordion-body, .enterprise-accordion-body { max-height: none !important; opacity: 1 !important; display: block !important; padding: 10px 12px !important; overflow: visible !important; color: #000000 !important; background: transparent !important; }
             .hybrid-hint { color: #475569 !important; font-size: 9.5pt !important; margin-top: 0 !important; margin-bottom: 8px !important; display: block !important; }
             .enterprise-accordion *, .enterprise-accordion-header { color: #000000 !important; }
-            /* ------------------------------------------------------------- */
             
             .hybrid-accordion:not(.has-data), .cables-accordion:not(.has-data), .enterprise-accordion:not(.has-data) { display: none !important; }
             
-            /* إخفاء جدول حصر أحمال الأجهزة بالكامل في الطباعة عند تفعيل وضع المشاريع الكبيرة */
             body.enterprise-print-active #appliancesSectionWrapper { display: none !important; }
 
             #appliancesSectionWrapper { display: block !important; page-break-inside: auto; }
             
-            /* ---- التعديل الخاص بجدول الأجهزة للطباعة ---- */
-            #appliancesList { display: none !important; } /* إخفاء القائمة واستبدالها بالجدول */
+            #appliancesList { display: none !important; }
             #printAppliancesTableWrapper { display: block !important; width: 100%; margin-top: 10pt; page-break-inside: auto; }
             .print-devices-table { width: 100%; border-collapse: collapse; font-size: 10pt; text-align: center; color: #000; direction: rtl; }
             html[dir="ltr"] .print-devices-table { direction: ltr; }
             .print-devices-table th { background-color: #f1f5f9 !important; border: 1px solid #cbd5e1 !important; padding: 8px 6px !important; font-weight: bold; color: #334155 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .print-devices-table td { border: 1px solid #cbd5e1 !important; padding: 6px !important; }
             .print-devices-table tr:nth-child(even) td { background-color: #f8fafc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            /* ------------------------------------------- */
             
             .appliance-item { 
                 display: flex !important; 
@@ -402,7 +396,6 @@
             #resMpptCurrent div { color: #000000 !important; font-weight: bold !important; }
         }
 
-        /* --- Custom Modal CSS --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -735,7 +728,6 @@
 
                         <div id="appliancesList" aria-live="polite"></div>
                         
-                        <!-- جدول مخصص للطباعة فقط -->
                         <div id="printAppliancesTableWrapper" style="display: none;">
                             <table class="print-devices-table">
                                 <thead>
@@ -767,7 +759,6 @@
                             <div class="result-row"><div class="result-label" data-i18n="panelsCount">عدد الألواح الشمسية المطلوبة:</div><div class="result-value value-green" id="resPanelsCount">0</div></div>
                             <div class="result-row"><div class="result-label" data-i18n="mpptCurrent">تيار منظم الشحن الأدنى (MPPT):</div><div class="result-value value-blue" id="resMpptCurrent">0</div></div>
                             
-                            <!-- خانة الإنفرتر -->
                             <div class="result-row" id="inverterResultRow">
                                 <div class="result-label" data-i18n="invRequired">القدرة المطلوبة للإنفرتر (Inverter):</div>
                                 <div class="result-value value-amber" id="resInverterWatts" style="display: block;">0</div>
@@ -778,8 +769,8 @@
                                 <div class="cables-results-card">
                                     <div class="cables-card-title"><span data-i18n="cablesResTitle">مواصفات الكابلات والقواطع (هام جداً):</span></div>
                                     <div class="result-row"><div class="result-label" data-i18n="battCableRes">كابل وقاطع البطارية:</div><div class="result-value value-amber" id="resBattCable">0</div></div>
-                                    <div class="result-row"><div class="result-label" data-i18n="pvCableRes">كابل وقاطع الألواح:</div><div class="result-value value-green" id="resPvCable">0</div></div>
                                     <div class="result-row"><div class="result-label" data-i18n="acCableRes">كابل وقاطع الأحمال (AC):</div><div class="result-value value-blue" id="resAcCable">0</div></div>
+                                    <div class="result-row"><div class="result-label" data-i18n="pvCableRes">كابل وقاطع الألواح:</div><div class="result-value value-green" id="resPvCable">0</div></div>
                                     <div class="cable-disclaimer" id="cableDisclaimerBox" data-i18n="cableDisclaimer">⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على كابلات نحاسية معتمدة ومطابقة للمواصفات. يرجى مراجعة الفني المختص لمراعاة ظروف ومسافات التوصيل الميدانية الفعليّة.</div>
                                 </div>
                             </div>
@@ -908,7 +899,6 @@
     </tfoot>
 </table>
 
-<!-- Custom Modal HTML -->
 <div class="modal-overlay" id="customModal">
     <div class="modal-container">
         <div class="modal-icon" id="modalIcon">⚠️</div>
@@ -932,7 +922,6 @@ if ('serviceWorker' in navigator) {
 !function(){
     'use strict';
     
-    // XSS Sanitization Function
     window.escapeHTML = function(str) {
         if (!str) return '';
         return str.toString().replace(/[&<>'"]/g, function(tag) {
@@ -1333,7 +1322,6 @@ if ('serviceWorker' in navigator) {
         const entDailyEl = document.getElementById("enterpriseDailyKwh");
         const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
         
-        // تفعيل فئة إخفاء جدول الأجهزة في الطباعة عند تفعيل المشاريع الكبيرة
         if (entDailyVal > 0) {
             document.body.classList.add("enterprise-print-active");
         } else {
@@ -1350,7 +1338,6 @@ if ('serviceWorker' in navigator) {
             }
         }
 
-        // --- توليد محتوى جدول الطباعة الديناميكي ---
         const printTbody = document.getElementById("printAppliancesTableBody");
         if (printTbody) {
             printTbody.innerHTML = "";
@@ -1376,7 +1363,6 @@ if ('serviceWorker' in navigator) {
                 </tr>`;
             });
         }
-        // ---------------------------------------------
 
         updateAccordionStates();
         const engInput = document.getElementById("engineerNameInput");
@@ -1523,8 +1509,6 @@ if ('serviceWorker' in navigator) {
         const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
         
         const entCablesMsg = document.getElementById("ent-cables-override-msg");
-        const bDistEl = document.getElementById("battDistance");
-        const aDistEl = document.getElementById("acDistance");
         const appliancesSectionWrapper = document.getElementById("appliancesSectionWrapper");
 
         if (entDailyVal > 0) {
@@ -1694,9 +1678,6 @@ if ('serviceWorker' in navigator) {
     };
     
     window.saveDataAndCalculate = function() {
-        const entDailyEl = document.getElementById("enterpriseDailyKwh");
-        const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
-
         localStorage.setItem("solar_appliances_data_v11", JSON.stringify(appliances));
         if(document.getElementById("systemVoltage")) localStorage.setItem("solar_system_voltage", document.getElementById("systemVoltage").value);
         if(document.getElementById("panelWatts")) localStorage.setItem("solar_panel_watts", document.getElementById("panelWatts").value);
@@ -1723,26 +1704,49 @@ if ('serviceWorker' in navigator) {
         calculateResults();
     };
 
-    function getCableSizeFromAmps(amps) {
-        if (amps <= 50) return "25";
-        if (amps <= 100) return "35";
-        if (amps <= 150) return "50";
-        if (amps <= 200) return "70";
-        if (amps <= 250) return "95";
-        if (amps <= 300) return "120";
-        if (amps <= 400) return "150";
-        if (amps <= 600) return "2x120 (Parallel Runs)";
-        if (amps <= 800) return "2x150 or Busbars";
-        return "Copper Busbars / Multi-Bus"; 
-    }
-    
-    function getPVCableSizeFromAmps(amps) {
-        if (amps <= 20) return "4";
-        if (amps <= 30) return "6";
-        if (amps <= 50) return "10";
-        if (amps <= 75) return "16";
-        if (amps <= 100) return "25";
-        return "Combiner Box";
+    function getCableSizeWithVoltageDrop(current, distance, voltage) {
+        const rho = 0.0175; // مقاومة النحاس
+        const maxDropPercent = 0.03; // أقصى هبوط جهد مسموح به (3%)
+        const allowableDropV = voltage * maxDropPercent;
+        
+        let requiredAreaByVD = 0;
+        if (distance > 0 && voltage > 0) {
+            // معادلة هبوط الجهد الفعلية المرتبطة بالمسافة: S = (2 * L * I * rho) / Delta V
+            requiredAreaByVD = (2 * distance * current * rho) / allowableDropV;
+        }
+        
+        // التحقق من التحمل الحراري (Ampacity)
+        let thermalArea = 4;
+        if (current <= 30) thermalArea = 4;
+        else if (current <= 50) thermalArea = 10;
+        else if (current <= 75) thermalArea = 16;
+        else if (current <= 100) thermalArea = 25;
+        else if (current <= 130) thermalArea = 35;
+        else if (current <= 160) thermalArea = 50;
+        else if (current <= 200) thermalArea = 70;
+        else if (current <= 250) thermalArea = 95;
+        else if (current <= 300) thermalArea = 120;
+        else if (current <= 400) thermalArea = 150;
+        else thermalArea = 185;
+        
+        let finalArea = Math.max(requiredAreaByVD, thermalArea);
+        
+        const standardSizes = [4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300];
+        
+        if (finalArea > 300) {
+            let parallelCount = Math.ceil(finalArea / 240);
+            return `${parallelCount}x240 (مسارات متوازية)`;
+        }
+        
+        let selectedSize = standardSizes[standardSizes.length - 1];
+        for (let size of standardSizes) {
+            if (size >= finalArea) {
+                selectedSize = size;
+                break;
+            }
+        }
+        
+        return `${selectedSize}`;
     }
     
     function getStandardBreakerSize(amps) {
@@ -1884,8 +1888,6 @@ if ('serviceWorker' in navigator) {
         const eNightTotal = nightLoadWh * SYSTEM_LOSS_FACTOR;
         const eTotal = eDayTotal + eNightTotal;
 
-        let invRequired = Math.max(maxContinuous * INVERTER_SAFETY_FACTOR, syncSurge / 1.5);
-        
         const eNightTotalBatt = nightLoadWh * INVERTER_LOSS_FACTOR;
         const gridDirectNightWhBatt = gridDirectNightWh * INVERTER_LOSS_FACTOR;
         const nightOutageWh = Math.max(0, eNightTotalBatt - gridDirectNightWhBatt);
@@ -1894,7 +1896,7 @@ if ('serviceWorker' in navigator) {
 
         if (totalDailyWh > 0) {
             if (nightLoadWh === 0 || (entDailyKwh > 0 && hoursNight === 0)) {
-                let bufferKwh = (invRequired / 1000) * 1.2; 
+                let bufferKwh = ((maxContinuous * INVERTER_SAFETY_FACTOR) / 1000) * 1.2; 
                 battKwh = bufferKwh;
             } else {
                 battKwh = (nightOutageWh / dodValue) / 1000;
@@ -1912,17 +1914,106 @@ if ('serviceWorker' in navigator) {
         const totalSolarWhRequired = dayOutageWh + solarReqNightWh;
         const effectivePerformanceRatio = PANEL_PERFORMANCE_RATIO * panelClimateFactor;
         const reqPv = sunHours > 0 ? totalSolarWhRequired / (sunHours * effectivePerformanceRatio) : 0;
-        const panelsCount = panelWatts > 0 ? Math.ceil(reqPv / panelWatts) : 0;
-        const totalPanelPower = panelsCount * panelWatts;
+        let panelsCount = panelWatts > 0 ? Math.ceil(reqPv / panelWatts) : 0;
+        let totalPanelPower = panelsCount * panelWatts;
+
+        const MAX_RECOMMENDED_DC_AC_RATIO = 1.35;
+        let invRequiredFromLoad = Math.max(maxContinuous * INVERTER_SAFETY_FACTOR, syncSurge / 1.5);
+        let invRequiredFromPv = totalPanelPower > 0 ? (totalPanelPower / MAX_RECOMMENDED_DC_AC_RATIO) : 0;
+        let invRequired = Math.max(invRequiredFromLoad, invRequiredFromPv);
         
+        let isOverloaded = (totalDailyWh > 0 && entDailyKwh === 0) && ((sysVolt === 12 && (eTotal > 5000 || totalPanelPower > 3000 || invRequired > 3000)) || (sysVolt === 24 && (eTotal > 12000 || totalPanelPower > 5000 || invRequired > 5000)));
+
+        let effectiveSysVolt = sysVolt;
+        let standardRackKwh = 5.12;
+        let batteryModuleLabel = "5.12 kWh (51.2V 100Ah)";
+        let packVoltage = 51.2;
+        let isContainer = false;
+
+        if (entSysType === "hv" && entDailyKwh > 0) {
+            const hvOpts = [
+                { kwh: 230, label: "230 kWh Pack (768V 314Ah Liquid Cooling)", v: 768, c: true },
+                { kwh: 215, label: "215 kWh Pack (768V 280Ah Liquid Cooling)", v: 768, c: true },
+                { kwh: 100, label: "100 kWh Cabinet (614.4V)", v: 614.4, c: true },
+                { kwh: 50, label: "50 kWh Cabinet (512V)", v: 512, c: true },
+                { kwh: 30.72, label: "30.72 kWh Stackable (614.4V)", v: 614.4, c: false },
+                { kwh: 20.48, label: "20.48 kWh Stackable (409.6V)", v: 409.6, c: false },
+                { kwh: 15.36, label: "15.36 kWh Stackable (307.2V)", v: 307.2, c: false },
+                { kwh: 10.24, label: "10.24 kWh Stackable (204.8V)", v: 204.8, c: false }
+            ];
+
+            let bestExcess = Infinity;
+            let selectedOpt = hvOpts[hvOpts.length - 1];
+
+            if (battKwh > 0) {
+                for (let opt of hvOpts) {
+                    let racks = Math.ceil(battKwh / opt.kwh);
+                    if (racks > 12 && opt.kwh < 50) continue;
+
+                    let excess = (racks * opt.kwh) - battKwh;
+                    if (excess < bestExcess - 0.1) {
+                        bestExcess = excess;
+                        selectedOpt = opt;
+                    } else if (Math.abs(excess - bestExcess) <= 0.1) {
+                        let currentRacks = Math.ceil(battKwh / selectedOpt.kwh);
+                        if (racks < currentRacks) selectedOpt = opt;
+                    }
+                }
+            }
+
+            standardRackKwh = selectedOpt.kwh;
+            batteryModuleLabel = selectedOpt.label;
+            packVoltage = selectedOpt.v;
+            isContainer = selectedOpt.c;
+            effectiveSysVolt = packVoltage; 
+        } else {
+            const lvOpts = [
+                { kwh: 20.48, label: "20.48 kWh (51.2V 400Ah)" },
+                { kwh: 15.36, label: "15.36 kWh (51.2V 300Ah)" },
+                { kwh: 14.33, label: "14.33 kWh (51.2V 280Ah)" },
+                { kwh: 10.24, label: "10.24 kWh (51.2V 200Ah)" },
+                { kwh: 5.12,  label: "5.12 kWh (51.2V 100Ah)" },
+                { kwh: 2.56,  label: "2.56 kWh (51.2V 50Ah)" }
+            ];
+            
+            let bestExcess = Infinity;
+            let selectedOpt = lvOpts[lvOpts.length - 1];
+            packVoltage = 51.2;
+
+            if (battKwh > 0) {
+                for (let opt of lvOpts) {
+                    if (battKwh > 10 && opt.kwh < 5) continue;
+                    let racks = Math.ceil(battKwh / opt.kwh);
+                    if (racks > 16 && opt.kwh < 10) continue;
+
+                    let excess = (racks * opt.kwh) - battKwh;
+                    if (excess < bestExcess - 0.1) {
+                        bestExcess = excess;
+                        selectedOpt = opt;
+                    } else if (Math.abs(excess - bestExcess) <= 0.1) {
+                        let currentRacks = Math.ceil(battKwh / selectedOpt.kwh);
+                        if (racks < currentRacks) selectedOpt = opt;
+                    }
+                }
+            }
+            standardRackKwh = selectedOpt.kwh;
+            batteryModuleLabel = selectedOpt.label;
+            isContainer = false;
+        }
+
+        let totalRacks = battKwh > 0 ? Math.ceil(battKwh / standardRackKwh) : 0;
+
+        const battAh = effectiveSysVolt > 0 ? (battKwh * 1000) / effectiveSysVolt : 0;
+        const mpptCurrent = effectiveSysVolt > 0 ? totalPanelPower / effectiveSysVolt : 0;
+
         let marketInv;
         if (entDailyKwh > 0) {
             if (entSysType === 'three48') {
-                marketInv = [10000, 12000, 16000, 20000, 30000, 40000, 50000]; 
+                marketInv = [10000, 12000, 16000, 20000, 30000, 40000, 50000, 60000, 80000, 100000]; 
             } else if (entSysType === 'hv') {
-                marketInv = [25000, 30000, 40000, 50000, 60000, 80000, 100000, 120000]; 
+                marketInv = [25000, 30000, 40000, 50000, 60000, 80000, 100000, 120000, 150000]; 
             } else {
-                marketInv = [5000, 6000, 8000, 10000, 12000, 16000, 20000, 25000, 30000, 40000, 50000]; 
+                marketInv = [5000, 6000, 8000, 10000, 12000, 16000, 20000, 25000, 30000, 40000, 50000, 60000]; 
             }
         } else {
             marketInv = (sysVolt === 12) ? [1000, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 2500, 3000, 4000, 5000] : [1000, 2000, 3000, 4000, 5000, 6000, 8000, 10000, 12000, 16000];
@@ -1933,48 +2024,6 @@ if ('serviceWorker' in navigator) {
              finalInv = Math.ceil(invRequired / 1000) * 1000; 
         }
 
-        let isOverloaded = (totalDailyWh > 0 && entDailyKwh === 0) && ((sysVolt === 12 && (eTotal > 5000 || totalPanelPower > 3000 || invRequired > 3000)) || (sysVolt === 24 && (eTotal > 12000 || totalPanelPower > 5000 || invRequired > 5000)));
-
-        let effectiveSysVolt = sysVolt;
-        let standardRackKwh = 5.12;
-        let batteryModuleLabel = "5.12 kWh (51.2V 100Ah)";
-        let packVoltage = 51.2;
-        let isContainer = false;
-
-        if (entSysType === "hv" && entDailyKwh > 0) {
-            if (battKwh > 220) {
-                standardRackKwh = 230.00; batteryModuleLabel = "230 kWh Pack (768V 314Ah Liquid Cooling)"; packVoltage = 768; isContainer = true;
-            } else if (battKwh > 150) {
-                standardRackKwh = 215.00; batteryModuleLabel = "215 kWh Pack (768V 280Ah Liquid Cooling)"; packVoltage = 768; isContainer = true;
-            } else if (battKwh > 75) {
-                standardRackKwh = 100.00; batteryModuleLabel = "100 kWh Cabinet (614.4V)"; packVoltage = 614.4; isContainer = true;
-            } else if (battKwh > 40) {
-                standardRackKwh = 50.00; batteryModuleLabel = "50 kWh Cabinet (512V)"; packVoltage = 512; isContainer = true;
-            } else if (battKwh > 25) {
-                standardRackKwh = 30.72; batteryModuleLabel = "30.72 kWh Stackable (614.4V)"; packVoltage = 614.4; isContainer = false;
-            } else if (battKwh > 18) {
-                standardRackKwh = 20.48; batteryModuleLabel = "20.48 kWh Stackable (409.6V)"; packVoltage = 409.6; isContainer = false;
-            } else if (battKwh > 12) {
-                standardRackKwh = 15.36; batteryModuleLabel = "15.36 kWh Stackable (307.2V)"; packVoltage = 307.2; isContainer = false;
-            } else {
-                standardRackKwh = 10.24; batteryModuleLabel = "10.24 kWh Stackable (204.8V)"; packVoltage = 204.8; isContainer = false;
-            }
-            effectiveSysVolt = packVoltage; 
-        } else {
-            packVoltage = 51.2;
-            if (battKwh > 28) { standardRackKwh = 20.48; batteryModuleLabel = "20.48 kWh (51.2V 400Ah)"; }
-            else if (battKwh > 18) { standardRackKwh = 15.36; batteryModuleLabel = "15.36 kWh (51.2V 300Ah)"; }
-            else if (battKwh > 12) { standardRackKwh = 14.33; batteryModuleLabel = "14.33 kWh (51.2V 280Ah)"; }
-            else if (battKwh > 7.5) { standardRackKwh = 10.24; batteryModuleLabel = "10.24 kWh (51.2V 200Ah)"; }
-            else if (battKwh > 3.5) { standardRackKwh = 5.12; batteryModuleLabel = "5.12 kWh (51.2V 100Ah)"; }
-            else { standardRackKwh = 2.56; batteryModuleLabel = "2.56 kWh (51.2V 50Ah)"; }
-        }
-
-        let totalRacks = Math.ceil(battKwh / standardRackKwh);
-
-        const battAh = effectiveSysVolt > 0 ? (battKwh * 1000) / effectiveSysVolt : 0;
-        const mpptCurrent = effectiveSysVolt > 0 ? totalPanelPower / effectiveSysVolt : 0;
-        
         let mpptDisplay = `${fmt2(mpptCurrent)} ${t.ampWord}`;
         if ((effectiveSysVolt <= 48 && mpptCurrent > 250) || (effectiveSysVolt === 12 && mpptCurrent > 150)) {
             let limit = (effectiveSysVolt === 48) ? 150 : 100;
@@ -1989,7 +2038,7 @@ if ('serviceWorker' in navigator) {
         
         if(resBatteryKwhEl) {
             const unitWordAr = window.currentLang === 'ar' ? 'وحدة' : 'Units';
-            let actualBattWh = battKwh * effectiveSysVolt > 0 ? battKwh * 1000 : 0;
+            let actualBattWh = battKwh * effectiveSysVolt > 0 ? (totalRacks * standardRackKwh) * 1000 : 0;
             resBatteryKwhEl.innerHTML = `<span dir="ltr" style="display:inline-block;">${formatWh(actualBattWh)}</span> <span style="color:#64748b; font-size: 13px; font-weight: normal;">(${totalRacks} ${unitWordAr})</span>${batteryBufferNote}`;
         }
         
@@ -2090,7 +2139,6 @@ if ('serviceWorker' in navigator) {
                 const resEntPhaseValEl = document.getElementById("resEntPhaseVal");
                 const resEntHvRowEl = document.getElementById("resEntHvRow");
                 const resEntHvValEl = document.getElementById("resEntHvVal");
-                const resEntBattValEl = document.getElementById("resEntBattCableRow"); 
                 const resEntBattCableRowEl = document.getElementById("resEntBattCableRow");
                 const resEntBattCableValEl = document.getElementById("resEntBattCableVal");
                 const resEntPvCableRowEl = document.getElementById("resEntPvCableRow");
@@ -2146,6 +2194,13 @@ if ('serviceWorker' in navigator) {
                         let panelsPerString = Math.round(targetStringVolt / estimatedVoc);
                         let totalStrings = Math.ceil(panelsCount / panelsPerString);
                         let stringVoc = panelsPerString * estimatedVoc;
+                        
+                        panelsCount = totalStrings * panelsPerString;
+                        totalPanelPower = panelsCount * panelWatts;
+                        let updatedPnlText = getArabicPanelsString(panelsCount);
+                        if(resPanelsCountEl) {
+                            resPanelsCountEl.innerHTML = `${panelsCount.toLocaleString("en-US")} ${updatedPnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal; direction: ltr; display: inline-block;">(${formatW(totalPanelPower, true)})</span>`;
+                        }
 
                         resEntHvValEl.innerHTML = `${totalStrings.toLocaleString("en-US")} Strings x ${panelsPerString} Panels<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(Max Voc ≈ ${Math.round(stringVoc)}V DC per String)</span>`;
                     }
@@ -2166,17 +2221,18 @@ if ('serviceWorker' in navigator) {
 
                 const resEntBattValEl2 = document.getElementById("resEntBattVal");
                 if (battKwh > 0 && resEntBattValEl2) {
+                    let installedKwh = totalRacks * standardRackKwh;
                     if (entSysType === "hv") {
                         if (isContainer) {
-                            resEntBattValEl2.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Containerized ESS: Built-in BMS & Cooling, Parallel Connection @ ${packVoltage}V DC]</span>`;
+                            resEntBattValEl2.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (Total: ${installedKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Containerized ESS: Built-in BMS & Cooling, Parallel Connection @ ${packVoltage}V DC]</span>`;
                         } else {
-                            resEntBattValEl2.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (~${battKwh.toLocaleString("en-US", {maximumFractionDigits:1})} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Modular HV Stacks: Parallel Connection @ ${packVoltage}V DC]</span>`;
+                            resEntBattValEl2.innerHTML = `${totalRacks.toLocaleString("en-US")} Units (${batteryModuleLabel}) (Total: ${installedKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block; line-height:1.4;">[Modular HV Stacks: Parallel Connection @ ${packVoltage}V DC]</span>`;
                         }
                     } else {
                         let maxRacksPerBank = 8;
                         let parallelBanks = Math.ceil(totalRacks / maxRacksPerBank);
                         let racksPerBank = Math.ceil(totalRacks / parallelBanks);
-                        resEntBattValEl2.innerHTML = `${totalRacks} Units (${batteryModuleLabel}) (~${battKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Units/Bank @ 48V)</span>`;
+                        resEntBattValEl2.innerHTML = `${totalRacks} Units (${batteryModuleLabel}) (Total: ${installedKwh.toFixed(1)} kWh)<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(${parallelBanks} Parallel Banks, ~${racksPerBank} Units/Bank @ 48V)</span>`;
                     }
                 } else if (resEntBattValEl2) {
                     resEntBattValEl2.innerHTML = `-`;
@@ -2185,7 +2241,7 @@ if ('serviceWorker' in navigator) {
                 let bAmpsCalc = effectiveSysVolt > 0 ? (finalInv / effectiveSysVolt) * climateFactor : 0;
                 let bAmpsMax = Math.max(bAmpsCalc, (gridDayHours > 0 || gridNightHours > 0) ? (acChargeCurrent * climateFactor) : 0, mpptCurrent * climateFactor);
                 
-                let battCableSize = getCableSizeFromAmps(bAmpsMax);
+                let battCableSize = getCableSizeWithVoltageDrop(bAmpsMax, 2, effectiveSysVolt);
                 let battBreaker = getStandardBreakerSize(bAmpsMax);
                 let battBreakerDisplay = `${battBreaker}A DC`;
 
@@ -2204,7 +2260,7 @@ if ('serviceWorker' in navigator) {
                 let parallelStrings = Math.ceil(panelsCount / panelsPerString);
                 let pvMaxAmps = estimatedImp * parallelStrings * climateFactor;
 
-                let pvCableSize = getPVCableSizeFromAmps(pvMaxAmps);
+                let pvCableSize = getCableSizeWithVoltageDrop(pvMaxAmps, 15, maxMpptVolt);
                 let pvBreaker = getStandardBreakerSize(pvMaxAmps);
                 let pvBreakerDisplay = `${pvBreaker}A DC`;
                 let needsFuses = parallelStrings >= 3;
@@ -2235,6 +2291,15 @@ if ('serviceWorker' in navigator) {
                 let enterpriseAlerts = "";
                 if (mpptCurrent > 300 && entSysType !== "hv") {
                     enterpriseAlerts += `<div class="engineering-alert" style="margin-top: 12px; font-size: 12.5px; direction: rtl;">${t.hvWarning}</div>`;
+                }
+
+                let dcAcRatio = totalPanelPower / (finalInv > 0 ? finalInv : 1);
+                if (entDailyKwh > 0 && dcAcRatio > 1.5) {
+                    const enLang = window.currentLang === 'en';
+                    const clippingMsg = enLang ? 
+                        `⚠️ <b>PV Oversize Alert:</b> The DC/AC Ratio is <b>${dcAcRatio.toFixed(2)}</b>. This high ratio may result in power clipping if the selected ${finalInv/1000}kW inverter does not support oversized PV inputs.` :
+                        `⚠️ <b>تنبيه التحميل الزائد (Clipping):</b> نسبة قدرة الألواح للعاكس (DC/AC Ratio) تبلغ <b>${dcAcRatio.toFixed(2)}</b>. قد يتسبب ذلك في فقد أو قص طاقة الألواح إذا كان العاكس المختار (بقدرة ${finalInv/1000}kW) لا يدعم مدخلات PV مضاعفة.`;
+                    enterpriseAlerts += `<div class="engineering-alert" style="margin-top: 12px; font-size: 12.5px; direction: ${enLang ? 'ltr' : 'rtl'}; background: rgba(245, 158, 11, 0.1); border: 1.5px solid #f59e0b; color: #fcd34d; box-shadow: none;">${clippingMsg}</div>`;
                 }
 
                 const MAX_PARALLEL_INVERTERS_LIMIT = 16; 
@@ -2275,79 +2340,47 @@ if ('serviceWorker' in navigator) {
                 let bAmpsCalc = (finalInv / sysVolt) * climateFactor;
                 let maxBattAmps = Math.min(bAmpsCalc, 500);
 
-                let battCableVal = "150";
-                let battBreakerDisplay = "";
-                
-                if (maxBattAmps <= 50) { battCableVal = "25"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
-                else if (maxBattAmps <= 100) { battCableVal = "35"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
-                else if (maxBattAmps <= 150) { battCableVal = "50"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
-                else if (maxBattAmps <= 200) { battCableVal = "70"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
-                else if (maxBattAmps <= 250) { battCableVal = "95"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
-                else if (maxBattAmps <= 300) { battCableVal = "120"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
-                else if (maxBattAmps <= 400) { battCableVal = "150"; battBreakerDisplay = getStandardBreakerSize(maxBattAmps) + "A DC"; }
-                else {
-                    let parallelRuns = Math.ceil(maxBattAmps / 350);
-                    battCableVal = `${parallelRuns} x 150`;
-                    battBreakerDisplay = `(${parallelRuns} x 250A) DC`; 
-                }
+                let battCableSize = getCableSizeWithVoltageDrop(maxBattAmps, battDistance > 0 ? battDistance : 2, sysVolt);
+                let battBreaker = getStandardBreakerSize(maxBattAmps);
+                let battBreakerDisplay = `${battBreaker}A DC`;
 
-                let battFormattedStr = `<span dir="ltr">${battCableVal} mm&sup2;</span>`;
-                if (maxBattAmps > 400) {
-                    battFormattedStr = t.copperBusbars; 
+                let battFormattedStr = `<span dir="ltr">${battCableSize} mm&sup2;</span>`;
+                if (maxBattAmps > 400 || battCableSize.includes('x240') || battCableSize.includes('مسارات')) {
+                    battFormattedStr = `<span dir="ltr">${battCableSize}</span>`;
                 }
-
-                let battBreaker = [63, 100, 125, 150, 200, 250, 300, 400].find(b => b >= maxBattAmps) || Math.ceil(maxBattAmps);
 
                 let estimatedImp = panelWatts > 0 ? (panelWatts / 36) : 13;
                 let estimatedVoc = panelWatts > 0 ? (panelWatts > 450 ? 50 : 41) : 41;
-                let maxMpptVolt = sysVolt === 12 ? 100 : (sysVolt === 24 ? 145 : (entSysType === "hv" ? 800 : 450));
+                let maxMpptVolt = sysVolt === 12 ? 100 : (sysVolt === 24 ? 145 : 450);
                 let panelsPerString = Math.max(1, Math.floor((maxMpptVolt * 0.85) / estimatedVoc));
                 let parallelStrings = Math.ceil(panelsCount / panelsPerString);
 
                 let totalPvAmps = parallelStrings * estimatedImp * climateFactor;
-                let pvBreaker = (entSysType === "hv") ? 16 : ([16, 20, 25, 32, 40, 50, 63, 80, 100].find(b => b >= totalPvAmps) || 125);
+                let pvBreaker = [16, 20, 25, 32, 40, 50, 63, 80, 100].find(b => b >= totalPvAmps) || 125;
 
-                let pvCableTxt = "4 mm&sup2;";
-                if (entSysType !== "hv") {
-                    if (totalPvAmps > 60) pvCableTxt = "25 mm&sup2;";
-                    else if (totalPvAmps > 40) pvCableTxt = "16 mm&sup2;";
-                    else if (totalPvAmps > 25) pvCableTxt = "10 mm&sup2;";
-                    else if (totalPvAmps > 15) pvCableTxt = "6 mm&sup2;";
-                } else {
-                    pvCableTxt = `4 mm&sup2;`; 
-                }
+                let pvCableSize = getCableSizeWithVoltageDrop(totalPvAmps, 15, maxMpptVolt);
 
-                let aAmpsCalc = (entSysType === "three48") ? (finalInv / (380 * 1.732)) * climateFactor : (finalInv / 220) * climateFactor;
-                let acCableVal = "10";
-                if (aAmpsCalc <= 32) {
-                    acCableVal = "6";
-                } else if (aAmpsCalc <= 50) {
-                    acCableVal = "10";
-                } else if (aAmpsCalc <= 80) {
-                    acCableVal = "16";
-                } else if (aAmpsCalc <= 120) {
-                    acCableVal = "25";
-                } else if (aAmpsCalc <= 160) {
-                    acCableVal = "35";
-                } else {
-                    acCableVal = "50";
-                }
+                let aAmpsCalc = (finalInv / 220) * climateFactor;
+                let acCableSize = getCableSizeWithVoltageDrop(aAmpsCalc, acDistance > 0 ? acDistance : 5, 220);
 
                 let acMarketBreakers = [32, 45, 63, 80, 100, 125, 160, 200, 250, 300];
                 let acBreaker = acMarketBreakers.find(b => b >= aAmpsCalc) || 300;
                 
-                let acCableFormatted = aAmpsCalc > 160 ? `50 mm&sup2; ${t.orParallel || 'or Parallel'}` : `<span dir="ltr">${acCableVal} mm&sup2;</span>`;
+                let acCableFormatted = `<span dir="ltr">${acCableSize} mm&sup2;</span>`;
+                if (acCableSize.includes('x240') || acCableSize.includes('مسارات')) {
+                    acCableFormatted = `<span dir="ltr">${acCableSize}</span>`;
+                }
 
-                if(resBattCableEl) resBattCableEl.innerHTML = `${battFormattedStr} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${battBreakerDisplay || (battBreaker + "A DC")}</span>`;
-                if(resPvCableEl) resPvCableEl.innerHTML = `<span dir="ltr" style="font-weight:bold;">${pvCableTxt}</span> &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${pvBreaker}A DC</span>`;
+                if(resBattCableEl) resBattCableEl.innerHTML = `${battFormattedStr} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${battBreakerDisplay}</span>`;
+                if(resPvCableEl) resPvCableEl.innerHTML = `<span dir="ltr" style="font-weight:bold;">${pvCableSize} mm&sup2;</span> &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${pvBreaker}A DC</span>`;
                 if(resAcCableEl) resAcCableEl.innerHTML = `${acCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${acBreaker}A</span>`;
                 
                 const disclaimerBox = document.getElementById("cableDisclaimerBox");
                 if (disclaimerBox) {
                     if (window.currentLang === 'en') {
-                        disclaimerBox.innerHTML = '⚠️ Engineering Disclaimer: Suggested sizes rely on certified pure copper cables. Please consult a qualified technician to verify field installation conditions.';
+                        disclaimerBox.innerHTML = '⚠️ Engineering Disclaimer: Suggested sizes rely on certified pure copper cables and actual voltage drop calculations. Please consult a qualified technician.';
                     } else {
-                        disclaimerBox.innerHTML = '⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على كابلات نحاسية معتمدة ومطابقة للمواصفات. يرجى مراجعة الفني المختص لمراعاة ظروف ومسافات التوصيل الميدانية الفعليّة.';
+                        disclaimerBox.innerHTML = '⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على حسابات هبوط الجهد الفعلي وكابلات نحاسية معتمدة. يرجى مراجعة الفني المختص.';
                     }
                 }
             } else {
