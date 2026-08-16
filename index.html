@@ -571,15 +571,18 @@
                             </div>
 
                             <div class="input-group">
-                                <label data-i18n="panelClimateLabel">مناخ الألواح (للكفاءة):</label>
+                                <label style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                    <span data-i18n="panelClimateLabel">مناخ الألواح (الأداء الحراري):</span>
+                                    <span style="cursor: pointer; font-size: 13px;" onclick="showClimateHint()" title="تلميح">💡</span>
+                                </label>
                                 <div class="custom-select-wrapper">
                                     <div class="custom-select-display" onclick="toggleDropdown('panelClimateDropdown')">
-                                        <span id="panelClimateDisplay" data-i18n="pClimateMod">مناخ معتدل (كفاءة 100%)</span>
+                                        <span id="panelClimateDisplay" data-i18n="pClimateMod">مناخ معتدل</span>
                                         <span>▼</span>
                                     </div>
                                     <div class="custom-select-options" id="panelClimateDropdown">
-                                        <div class="custom-option" onclick="selectGlobalOption('panelClimateFactor', '1.0', 'pClimateMod', 'panelClimateDisplay', 'panelClimateDropdown')" data-i18n="pClimateMod">مناخ معتدل (كفاءة 100%)</div>
-                                        <div class="custom-option" onclick="selectGlobalOption('panelClimateFactor', '0.85', 'pClimateHot', 'panelClimateDisplay', 'panelClimateDropdown')" data-i18n="pClimateHot">مناخ حار جداً (كفاءة 85%)</div>
+                                        <div class="custom-option" onclick="selectGlobalOption('panelClimateFactor', '1.0', 'pClimateMod', 'panelClimateDisplay', 'panelClimateDropdown')" data-i18n="pClimateMod">مناخ معتدل</div>
+                                        <div class="custom-option" onclick="selectGlobalOption('panelClimateFactor', '0.85', 'pClimateHot', 'panelClimateDisplay', 'panelClimateDropdown')" data-i18n="pClimateHot">مناخ حار جداً</div>
                                     </div>
                                     <input type="hidden" id="panelClimateFactor" value="1.0">
                                 </div>
@@ -960,7 +963,9 @@ if ('serviceWorker' in navigator) {
             sysSettings: "⚡ إعدادات المنظومة الهندسية:", sysVoltage: "جهد النظام (Volt):",
             volt12: "12 فولت", volt24: "24 فولت", volt48: "48 فولت",
             panelWattsLabel: "قدرة اللوح المستهدف (W):", sunHoursLabel: "ساعات ذروة الشمس:",
-            panelClimateLabel: "مناخ الألواح (للكفاءة):", pClimateMod: "مناخ معتدل (كفاءة 100%)", pClimateHot: "مناخ حار جداً (كفاءة 85%)",
+            panelClimateLabel: "مناخ الألواح (الأداء الحراري):", pClimateMod: "مناخ معتدل", pClimateHot: "مناخ حار جداً",
+            climateHintTitle: "تلميح",
+            climateHintMsg: "تلميح: ارتفاع درجات الحرارة في الصيف يقلل من قدرة الألواح بنسبة تصل إلى 15%. اختر (مناخ حار) إذا كنت في منطقة صحراوية أو ساحلية شديدة الحرارة لضمان زيادة عدد الألواح وتغطية أحمالك بكفاءة.",
             dodLabel: "نسبة حماية البطارية:", dod80: "20% أمان (DoD 80%)", dod50: "50% أمان (DoD 50%)",
             hybridTitle: "🔌 إعدادات النظام الهجين (اختياري)",
             hybridHint: "إذا كانت الكهرباء العمومية متوفرة، أدخل البيانات هنا لتقليل حجم المنظومة. (اتركها 0 لنظام مستقل):",
@@ -1054,7 +1059,9 @@ if ('serviceWorker' in navigator) {
             sysSettings: "⚡ System Engineering Settings:", sysVoltage: "System Voltage (Volt):",
             volt12: "12 Volts", volt24: "24 Volts", volt48: "48 Volts",
             panelWattsLabel: "Target Panel Power (W):", sunHoursLabel: "Peak Sun Hours:",
-            panelClimateLabel: "Panel Climate (Efficiency):", pClimateMod: "Moderate Climate (100% Eff)", pClimateHot: "Very Hot Climate (85% Eff)",
+            panelClimateLabel: "Panel Climate (Thermal Performance):", pClimateMod: "Moderate Climate", pClimateHot: "Very Hot Climate",
+            climateHintTitle: "Hint",
+            climateHintMsg: "Hint: High summer temperatures reduce panel output by up to 15%. Select (Very Hot Climate) if you are in a desert or extremely hot coastal area to ensure increasing panel count and covering your loads efficiently.",
             dodLabel: "Battery Protection (DoD):", dod80: "20% Safe (DoD 80%)", dod50: "50% Safe (DoD 50%)",
             hybridTitle: "🔌 Hybrid System Settings (Optional)",
             hybridHint: "If grid/gen is available, enter details to reduce required system size. (Leave 0 for Off-Grid):",
@@ -1164,6 +1171,12 @@ if ('serviceWorker' in navigator) {
         if (m100 >= 3 && m100 <= 10) return "ألواح";
         if (m100 >= 11 && m100 <= 99) return "لوحاً";
         return "لوح";
+    };
+
+    window.showClimateHint = function() {
+        const t = dict[window.currentLang];
+        window.openAlertModal(t.climateHintTitle, t.climateHintMsg);
+        document.getElementById('modalIcon').innerText = '💡';
     };
     
     window.toggleDropdown = function(id) {
@@ -2034,7 +2047,7 @@ if ('serviceWorker' in navigator) {
         let totalRacks = battKwh > 0 ? Math.ceil(battKwh / standardRackKwh) : 0;
 
         const battAh = effectiveSysVolt > 0 ? (battKwh * 1000) / effectiveSysVolt : 0;
-        const mpptCurrent = effectiveSysVolt > 0 ? totalPanelPower / effectiveSysVolt : 0;
+        let mpptCurrent = effectiveSysVolt > 0 ? totalPanelPower / effectiveSysVolt : 0;
 
         let marketInv;
         if (entDailyKwh > 0) {
@@ -2231,6 +2244,9 @@ if ('serviceWorker' in navigator) {
                         if(resPanelsCountEl) {
                             resPanelsCountEl.innerHTML = `${panelsCount.toLocaleString("en-US")} ${updatedPnlText} <span style="color:#64748b; font-size: 13px; font-weight: normal; direction: ltr; display: inline-block;">(${formatW(totalPanelPower, true)})</span>`;
                         }
+
+                        mpptCurrent = effectiveSysVolt > 0 ? totalPanelPower / effectiveSysVolt : 0;
+                        if(resMpptCurrentEl) resMpptCurrentEl.innerHTML = `${fmt2(mpptCurrent)} ${t.ampWord}`;
 
                         resEntHvValEl.innerHTML = `${totalStrings.toLocaleString("en-US")} Strings x ${panelsPerString} Panels<br><span style="font-size:12px; color:#94a3b8; margin-top:2px; display:inline-block;">(Max Voc ≈ ${Math.round(stringVoc)}V DC per String)</span>`;
                     }
