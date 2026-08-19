@@ -589,18 +589,8 @@
                             </div>
 
                             <div class="input-group" style="grid-column: span 2;">
-                                <label data-i18n="dodLabel">نسبة حماية البطارية:</label>
-                                <div class="custom-select-wrapper">
-                                    <div class="custom-select-display" onclick="toggleDropdown('dodDropdown')">
-                                        <span id="dodDisplay" data-i18n="dod80">20% أمان (DoD 80%)</span>
-                                        <span>▼</span>
-                                    </div>
-                                    <div class="custom-select-options" id="dodDropdown">
-                                        <div class="custom-option" onclick="selectGlobalOption('dodValue', '0.8', 'dod80', 'dodDisplay', 'dodDropdown')" data-i18n="dod80">20% أمان (DoD 80%)</div>
-                                        <div class="custom-option" onclick="selectGlobalOption('dodValue', '0.5', 'dod50', 'dodDisplay', 'dodDropdown')" data-i18n="dod50">50% أمان (DoD 50%)</div>
-                                    </div>
-                                    <input type="hidden" id="dodValue" value="0.8">
-                                </div>
+                                <label data-i18n="dodLabel">نسبة حماية البطارية (DoD):</label>
+                                <input type="text" inputmode="numeric" id="dodValue" placeholder="DoD 80%" value="DoD 80%" lang="en" onfocus="formatDodInput(this, true)" onblur="formatDodInput(this, false)">
                             </div>
                         </div>
 
@@ -957,6 +947,25 @@ if ('serviceWorker' in navigator) {
         }
     });
 
+    window.formatDodInput = function(input, isFocused) {
+        if (!input) return;
+        if (isFocused) {
+            let val = input.value.replace(/[^\d.]/g, '');
+            input.value = val;
+        } else {
+            let val = parseFloat(input.value.replace(/[^\d.]/g, ''));
+            if (isNaN(val) || val <= 0) {
+                val = 80;
+            } else if (val >= 1 && val < 50) {
+                val = 100 - val;
+            } else if (val > 100) {
+                val = 100;
+            }
+            input.value = `DoD ${val}%`;
+            saveDataAndCalculate();
+        }
+    };
+
     const dict = {
         ar: {
             appTitle: "حاسبة الطاقة الشمسية الذكية", appSubtitle: "إصدار احترافي متكامل",
@@ -966,7 +975,7 @@ if ('serviceWorker' in navigator) {
             panelClimateLabel: "مناخ الألواح (الأداء الحراري):", pClimateMod: "مناخ معتدل", pClimateHot: "مناخ حار جداً",
             climateHintTitle: "تلميح",
             climateHintMsg: "ارتفاع درجات الحرارة في الصيف يقلل من قدرة الألواح بنسبة تصل إلى 15%. اختر (مناخ حار) إذا كنت في منطقة صحراوية أو ساحلية شديدة الحرارة لضمان زيادة عدد الألواح وتغطية أحمالك بكفاءة.",
-            dodLabel: "نسبة حماية البطارية:", dod80: "20% أمان (DoD 80%)", dod50: "50% أمان (DoD 50%)",
+            dodLabel: "نسبة حماية البطارية (DoD):", dod80: "20% أمان (DoD 80%)", dod50: "50% أمان (DoD 50%)",
             hybridTitle: "🔌 إعدادات النظام الهجين (اختياري)",
             hybridHint: "إذا كانت الكهرباء العمومية متوفرة، أدخل البيانات هنا لتقليل حجم المنظومة. (اتركها 0 لنظام مستقل):",
             gridDayHoursLabel: "ساعات الشحن نهاراً (ألواح):", gridNightHoursLabel: "ساعات الشحن ليلاً (بطارية):", acAmpsLabel: "تيار شاحن الشبكة (Amps):",
@@ -1062,7 +1071,7 @@ if ('serviceWorker' in navigator) {
             panelClimateLabel: "Panel Climate (Thermal Performance):", pClimateMod: "Moderate Climate", pClimateHot: "Very Hot Climate",
             climateHintTitle: "Hint",
             climateHintMsg: "High summer temperatures reduce panel output by up to 15%. Select (Very Hot Climate) if you are in a desert or extremely hot coastal area to ensure increasing panel count and covering your loads efficiently.",
-            dodLabel: "Battery Protection (DoD):", dod80: "20% Safe (DoD 80%)", dod50: "50% Safe (DoD 50%)",
+            dodLabel: "Battery Protection Rate (DoD):", dod80: "20% Safe (DoD 80%)", dod50: "50% Safe (DoD 50%)",
             hybridTitle: "🔌 Hybrid System Settings (Optional)",
             hybridHint: "If grid/gen is available, enter details to reduce required system size. (Leave 0 for Off-Grid):",
             gridDayHoursLabel: "Daytime Charge Hours (Panels):", gridNightHoursLabel: "Nighttime Charge Hours (Battery):", acAmpsLabel: "AC Charge Current (A):",
@@ -1270,14 +1279,12 @@ if ('serviceWorker' in navigator) {
         }
 
         const sysVal = document.getElementById('systemVoltage') ? document.getElementById('systemVoltage').value : "48";
-        const dodVal = document.getElementById('dodValue') ? document.getElementById('dodValue').value : "0.8";
         const cliVal = document.getElementById('climateFactor') ? document.getElementById('climateFactor').value : "1.25";
         const pCliVal = document.getElementById('panelClimateFactor') ? document.getElementById('panelClimateFactor').value : "1.0";
         const entTypeEl = document.getElementById('enterpriseSystemType');
         const entType = entTypeEl ? entTypeEl.value : "single";
 
         if(document.getElementById('sysVoltDisplay')) document.getElementById('sysVoltDisplay').innerText = sysVal == "12" ? t.volt12 : (sysVal == "24" ? t.volt24 : t.volt48);
-        if(document.getElementById('dodDisplay')) document.getElementById('dodDisplay').innerText = dodVal == "0.5" ? t.dod50 : t.dod80;
         if(document.getElementById('panelClimateDisplay')) document.getElementById('panelClimateDisplay').innerText = pCliVal == "0.85" ? t.pClimateHot : t.pClimateMod;
         if(document.getElementById('climateDisplay')) document.getElementById('climateDisplay').innerText = cliVal == "1.5" || cliVal == "1.50" ? t.climateHot : t.climateMod;
         if(document.getElementById('sysTypeDisplay')) document.getElementById('sysTypeDisplay').innerText = entType === "three48" ? t.three48Opt : (entType === "hv" ? t.hvOpt : t.singlePhaseOpt);
@@ -1452,24 +1459,38 @@ if ('serviceWorker' in navigator) {
         try {
             try { const data = localStorage.getItem("solar_appliances_data_v11"); appliances = data ? JSON.parse(data) : []; } catch(e) { appliances = []; }
             
-            const ids = ["systemVoltage","panelWatts","sunHours","panelClimateFactor","dodValue", "gridDayHours", "gridNightHours", "acChargeCurrent", "enterpriseSystemType", "enterpriseDailyKwh", "enterpriseHoursDay", "enterpriseHoursNight"];
-            const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_panel_climate","solar_dod_value", "solar_grid_day_hours", "solar_grid_night_hours", "solar_ac_amps", "solar_ent_sys_type", "solar_ent_daily_kwh", "solar_ent_hours_day", "solar_ent_hours_night"];
+            const ids = ["systemVoltage","panelWatts","sunHours","panelClimateFactor","dodValue","gridDayHours","gridNightHours","acChargeCurrent","enterpriseSystemType","enterpriseDailyKwh","enterpriseHoursDay","enterpriseHoursNight"];
+            const keys = ["solar_system_voltage","solar_panel_watts","solar_sun_hours","solar_panel_climate","solar_dod_value","solar_grid_day_hours","solar_grid_night_hours","solar_ac_amps","solar_ent_sys_type","solar_ent_daily_kwh","solar_ent_hours_day","solar_ent_hours_night"];
             
             ids.forEach((id, i) => { 
                 const el = document.getElementById(id);
-                const val = localStorage.getItem(keys[i]);
+                let val = localStorage.getItem(keys[i]);
+                if (id === "dodValue") {
+                    if (val) {
+                        let numVal = parseFloat(val.replace(/[^\d.]/g, ''));
+                        if (isNaN(numVal) || numVal <= 0) {
+                            numVal = 80;
+                        } else if (numVal >= 1 && numVal < 50) {
+                            numVal = 100 - numVal;
+                        } else if (numVal > 100) {
+                            numVal = 100;
+                        }
+                        val = `DoD ${numVal}%`;
+                    } else {
+                        val = "DoD 80%";
+                    }
+                }
                 if(el && val) el.value = val; 
             });
+
+            const bDistEl = document.getElementById("battDistance");
+            if(bDistEl && localStorage.getItem("solar_batt_dist")) bDistEl.value = localStorage.getItem("solar_batt_dist");
+            const aDistEl = document.getElementById("acDistance");
+            if(aDistEl && localStorage.getItem("solar_ac_dist")) aDistEl.value = localStorage.getItem("solar_ac_dist");
             
             const entSysEl = document.getElementById("enterpriseSystemType");
             if(entSysEl && !entSysEl.value) entSysEl.value = "single";
 
-            const bDistEl = document.getElementById("battDistance");
-            if(bDistEl && localStorage.getItem("solar_batt_dist")) bDistEl.value = localStorage.getItem("solar_batt_dist");
-            
-            const aDistEl = document.getElementById("acDistance");
-            if(aDistEl && localStorage.getItem("solar_ac_dist")) aDistEl.value = localStorage.getItem("solar_ac_dist");
-            
             const climEl = document.getElementById("climateFactor");
             if(climEl && localStorage.getItem("solar_climate")) climEl.value = localStorage.getItem("solar_climate");
             
@@ -1491,13 +1512,13 @@ if ('serviceWorker' in navigator) {
                 const entAcc = document.getElementById('enterpriseAccordion');
                 if(entAcc) entAcc.classList.add('open');
             }
-            
+
             if(entDailyVal === 0 && ((bDistEl && parseFloat(bDistEl.value) > 0) || (aDistEl && parseFloat(aDistEl.value) > 0))) {
                 const cabAcc = document.getElementById('cablesAccordion');
                 if(cabAcc) cabAcc.classList.add('open');
             }
 
-            ["panelWatts","sunHours","gridDayHours","gridNightHours","acChargeCurrent","battDistance","acDistance"].forEach(id => {
+            ["panelWatts","sunHours","dodValue","gridDayHours","gridNightHours","acChargeCurrent","battDistance","acDistance"].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.addEventListener("input", saveDataAndCalculate);
             });
@@ -1749,16 +1770,19 @@ if ('serviceWorker' in navigator) {
 
     function getCableSizeWithVoltageDrop(current, distance, voltage) {
         const rho = 0.0175; // مقاومة النحاس
-        const maxDropPercent = 0.03; // أقصى هبوط جهد مسموح به (3%)
+        const maxDropPercent = 0.03; // أقصى هبوط جهد مسموح به (%3)
         const allowableDropV = voltage * maxDropPercent;
         
         let requiredAreaByVD = 0;
         if (distance > 0 && voltage > 0) {
-            // معادلة هبوط الجهد الفعلية المرتبطة بالمسافة: S = (2 * L * I * rho) / Delta V
+            // معادلة هبوط الجهد الفعلية
+            // المرتبطة بالمسافة:
+            // S = (2 * L * I * rho) / Delta V
             requiredAreaByVD = (2 * distance * current * rho) / allowableDropV;
         }
         
-        // التحقق من التحمل الحراري (Ampacity)
+        // التحقق من التحمل الحراري
+        // (Ampacity)
         let thermalArea = 4;
         if (current <= 30) thermalArea = 4;
         else if (current <= 50) thermalArea = 10;
@@ -1829,7 +1853,9 @@ if ('serviceWorker' in navigator) {
         const panelWatts = panelWattsEl ? (parseFloat(panelWattsEl.value) || 450) : 450;
         const sunHours = sunHoursEl ? (parseFloat(sunHoursEl.value) || 6) : 6;
         const panelClimateFactor = pClimEl ? (parseFloat(pClimEl.value) || 1.0) : 1.0;
-        const dodValue = dodValueEl ? (parseFloat(dodValueEl.value) || 0.8) : 0.8;
+        let dodRaw = dodValueEl ? parseFloat(dodValueEl.value.replace(/[^\d.]/g, '')) : 80;
+        if (isNaN(dodRaw) || dodRaw <= 0) dodRaw = 80;
+        const dodValue = dodRaw / 100;
         
         const gDayEl = document.getElementById("gridDayHours");
         const gNightEl = document.getElementById("gridNightHours");
@@ -2493,7 +2519,7 @@ if ('serviceWorker' in navigator) {
         if(document.getElementById("panelWatts")) document.getElementById("panelWatts").value="450"; 
         if(document.getElementById("sunHours")) document.getElementById("sunHours").value="6"; 
         if(document.getElementById("panelClimateFactor")) document.getElementById("panelClimateFactor").value="1.0"; 
-        if(document.getElementById("dodValue")) document.getElementById("dodValue").value="0.8"; 
+        if(document.getElementById("dodValue")) document.getElementById("dodValue").value="DoD 80%"; 
         
         if(document.getElementById("gridDayHours")) document.getElementById("gridDayHours").value="";
         if(document.getElementById("gridNightHours")) document.getElementById("gridNightHours").value="";
