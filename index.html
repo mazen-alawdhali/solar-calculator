@@ -954,12 +954,13 @@ if ('serviceWorker' in navigator) {
             input.value = val;
         } else {
             let val = parseFloat(input.value.replace(/[^\d.]/g, ''));
-            if (isNaN(val) || val <= 0) {
+            if (isNaN(val) || val < 10 || val > 100) {
+                const title = window.currentLang === 'en' ? "Invalid Input Alert" : "تنبيه إدخال غير صالح";
+                const msg = window.currentLang === 'en' ? "Battery protection rate (DoD) must be between 10% and 100%." : "نسبة حماية البطارية (DoD) يجب أن تكون بين 10% و 100%.";
+                window.openAlertModal(title, msg);
                 val = 80;
-            } else if (val >= 1 && val < 50) {
+            } else if (val >= 10 && val < 50) {
                 val = 100 - val;
-            } else if (val > 100) {
-                val = 100;
             }
             input.value = `DoD ${val}%`;
             saveDataAndCalculate();
@@ -1468,12 +1469,10 @@ if ('serviceWorker' in navigator) {
                 if (id === "dodValue") {
                     if (val) {
                         let numVal = parseFloat(val.replace(/[^\d.]/g, ''));
-                        if (isNaN(numVal) || numVal <= 0) {
+                        if (isNaN(numVal) || numVal < 10 || numVal > 100) {
                             numVal = 80;
-                        } else if (numVal >= 1 && numVal < 50) {
+                        } else if (numVal >= 10 && numVal < 50) {
                             numVal = 100 - numVal;
-                        } else if (numVal > 100) {
-                            numVal = 100;
                         }
                         val = `DoD ${numVal}%`;
                     } else {
