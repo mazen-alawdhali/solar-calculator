@@ -2000,6 +2000,10 @@ if ('serviceWorker' in navigator) {
 
         if (entSysType === "hv" && entDailyKwh > 0) {
             const hvOpts = [
+                { kwh: 5000, label: "5.0 MWh ESS Container", v: 1000, c: true },
+                { kwh: 1500, label: "1.5 MWh ESS Container", v: 1000, c: true },
+                { kwh: 500, label: "0.5 MWh ESS Container", v: 800, c: true },
+                { kwh: 256, label: "256 kWh ESS Cabinet", v: 768, c: true },
                 { kwh: 230, label: "230 kWh Pack (768V 314Ah Liquid Cooling)", v: 768, c: true },
                 { kwh: 215, label: "215 kWh Pack (768V 280Ah Liquid Cooling)", v: 768, c: true },
                 { kwh: 100, label: "100 kWh Cabinet (614.4V)", v: 614.4, c: true },
@@ -2035,18 +2039,35 @@ if ('serviceWorker' in navigator) {
             isContainer = selectedOpt.c;
             effectiveSysVolt = packVoltage; 
         } else {
-            const lvOpts = [
-                { kwh: 20.48, label: "20.48 kWh (51.2V 400Ah)" },
-                { kwh: 15.36, label: "15.36 kWh (51.2V 300Ah)" },
-                { kwh: 14.33, label: "14.33 kWh (51.2V 280Ah)" },
-                { kwh: 10.24, label: "10.24 kWh (51.2V 200Ah)" },
-                { kwh: 5.12,  label: "5.12 kWh (51.2V 100Ah)" },
-                { kwh: 2.56,  label: "2.56 kWh (51.2V 50Ah)" }
-            ];
+            let lvOpts = [];
+            if (sysVolt === 12) {
+                lvOpts = [
+                    { kwh: 2.56, label: "2.56 kWh (12.8V 200Ah)" },
+                    { kwh: 1.28, label: "1.28 kWh (12.8V 100Ah)" },
+                    { kwh: 0.64, label: "0.64 kWh (12.8V 50Ah)" }
+                ];
+                packVoltage = 12.8;
+            } else if (sysVolt === 24) {
+                lvOpts = [
+                    { kwh: 5.12, label: "5.12 kWh (25.6V 200Ah)" },
+                    { kwh: 2.56, label: "2.56 kWh (25.6V 100Ah)" }
+                ];
+                packVoltage = 25.6;
+            } else {
+                lvOpts = [
+                    { kwh: 20.48, label: "20.48 kWh (51.2V 400Ah)" },
+                    { kwh: 15.36, label: "15.36 kWh (51.2V 300Ah)" },
+                    { kwh: 14.33, label: "14.33 kWh (51.2V 280Ah)" },
+                    { kwh: 10.24, label: "10.24 kWh (51.2V 200Ah)" },
+                    { kwh: 7.68,  label: "7.68 kWh (51.2V 150Ah)" },
+                    { kwh: 5.12,  label: "5.12 kWh (51.2V 100Ah)" },
+                    { kwh: 2.56,  label: "2.56 kWh (51.2V 50Ah)" }
+                ];
+                packVoltage = 51.2;
+            }
             
             let bestExcess = Infinity;
             let selectedOpt = lvOpts[lvOpts.length - 1];
-            packVoltage = 51.2;
 
             if (battKwh > 0) {
                 for (let opt of lvOpts) {
@@ -2077,14 +2098,14 @@ if ('serviceWorker' in navigator) {
         let marketInv;
         if (entDailyKwh > 0) {
             if (entSysType === 'three48') {
-                marketInv = [10000, 12000, 16000, 20000, 30000, 40000, 50000, 60000, 80000, 100000]; 
+                marketInv = [8000, 10000, 12000, 15000, 20000, 25000, 30000, 40000, 50000, 60000, 80000, 100000]; 
             } else if (entSysType === 'hv') {
-                marketInv = [25000, 30000, 40000, 50000, 60000, 80000, 100000, 120000, 150000]; 
+                marketInv = [10000, 15000, 20000, 25000, 30000, 40000, 50000, 60000, 75000, 100000, 125000, 150000, 250000]; 
             } else {
-                marketInv = [5000, 6000, 8000, 10000, 12000, 16000, 20000, 25000, 30000, 40000, 50000, 60000]; 
+                marketInv = [5000, 6000, 8000, 10000, 12000, 15000, 16000, 20000, 25000, 30000]; 
             }
         } else {
-            marketInv = (sysVolt === 12) ? [1000, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 2500, 3000, 4000, 5000] : [5000, 6000, 8000, 10000, 12000, 16000];
+            marketInv = (sysVolt === 12) ? [1000, 1200, 1500, 2000, 3000] : (sysVolt === 24) ? [2000, 3000, 3200, 3500, 4200] : [3000, 3500, 3600, 4600, 5000, 5500, 6000, 6200, 6600, 7200, 8000, 8200, 10000, 10200, 11000, 12000, 15000, 16000];
         }
 
         let finalInv = marketInv.find(size => size >= invRequired) || marketInv[marketInv.length - 1];
