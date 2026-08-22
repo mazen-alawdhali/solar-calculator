@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="حاسبة الطاقة الشمسية الذكية - أداة هندسية احترافية لحساب الألواح، البطاريات، العواكس، ومقاطع الكابلات بدقة عالية.">
-    <meta name="keywords" content="حاسبة الطاقة الشمسية, حساب أحمال الطاقة الشمسية, سعة بطارية الليثيوم, الإنفرتر الهجين, تيار MPPT, طاقة شمسية, حساب الكابلات الشمسية, Solar Calculator">
+    <meta name="keywords" content="حاسبة الطاقة الشمسية, حساب أحمال الطاقة الشمسية, سعة بطارية الليثيوم, الإنفرتر الهجين, تيار MPPT, طاقة شمسية, حساب الكابلات الشمسية, Solar Calculator, Smart Solar Calculator, Solar Panel Calculator, Lithium Battery Sizing, Hybrid Inverter Capacity, Solar Cable Size Calculator, High Voltage PV System">
     <meta property="og:title" content="حاسبة الطاقة الشمسية الذكية | V9 PRO MAX">
     <meta property="og:description" content="أداة هندسية دقيقة لحساب الألواح الشمسية، سعة البطاريات، قدرة الإنفرتر، وحجم الكابلات للمشاريع السكنية والتجارية.">
     <meta property="og:type" content="website">
@@ -16,6 +16,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "حاسبة الطاقة الشمسية الذكية",
+      "alternateName": "Smart Solar Calculator",
       "description": "تطبيق هندسي تفاعلي لحساب متطلبات المنظومات الشمسية بدقة، يشمل حساب الألواح، الإنفرتر، البطاريات والكابلات.",
       "applicationCategory": "EngineeringApplication",
       "operatingSystem": "All",
@@ -856,7 +857,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-reset" onclick="resetToDefault()" data-i18n="resetData">⚠️ تصفير البيانات (مسح كل شيء)</button>
+                    <button class="btn btn-reset" onclick="resetToDefault()" data-i18n="resetData">⚠️ مسح جميع البيانات</button>
 
                     <footer class="solar-footer">
                         <p class="copyright-text" data-i18n="copyright">تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026</p>
@@ -919,11 +920,11 @@
 <div class="modal-overlay" id="customModal">
     <div class="modal-container">
         <div class="modal-icon" id="modalIcon">⚠️</div>
-        <div class="modal-title" id="modalTitle">تأكيد مسح البيانات</div>
-        <div class="modal-message" id="modalMessage">هل أنت متأكد من مسح جميع الأجهزة والبيانات المدخلة؟ لا يمكن التراجع عن هذه الخطوة.</div>
+        <div class="modal-title" id="modalTitle">تأكيد حذف البيانات</div>
+        <div class="modal-message" id="modalMessage">هل أنت متأكد من حذف جميع الأجهزة والبيانات المدخلة؟ لا يمكن التراجع عن هذه الخطوة.</div>
         <div class="modal-buttons">
             <button class="modal-btn modal-btn-cancel" onclick="closeModal()" id="modalCancelBtn">إلغاء</button>
-            <button class="modal-btn modal-btn-confirm" onclick="confirmResetAction()" id="modalConfirmBtn">نعم، امسح البيانات</button>
+            <button class="modal-btn modal-btn-confirm" onclick="confirmResetAction()" id="modalConfirmBtn">نعم، احذف البيانات</button>
             <button class="modal-btn modal-btn-ok" style="display: none;" onclick="closeModal()" id="modalOkBtn">موافق</button>
         </div>
     </div>
@@ -1044,7 +1045,7 @@ if ('serviceWorker' in navigator) {
             battCableRes: "كابل وقاطع البطارية:", pvCableRes: "كابل وقاطع الألواح:", acCableRes: "كابل وقاطع الأحمال (AC):",
             cableDisclaimer: "⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على كابلات نحاسية معتمدة ومطابقة للمواصفات. يرجى مراجعة الفني المختص لمراعاة ظروف ومسافات التوصيل الميدانية الفعليّة.",
 
-            resetData: "⚠️ تصفير البيانات (مسح كل شيء)",
+            resetData: "⚠️ مسح جميع البيانات",
             copyright: 'تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026',
             tagline: 'تطبيق حاسبة الطاقة الشمسية الذكية',
             goldEdition: 'الإصدار الذهبي',
@@ -1140,7 +1141,7 @@ if ('serviceWorker' in navigator) {
             battCableRes: "Battery Cable & Breaker:", pvCableRes: "PV Array Cable & Breaker:", acCableRes: "AC Load Cable & Breaker:",
             cableDisclaimer: "⚠️ Engineering Disclaimer: Suggested sizes rely on certified pure copper cables. Please consult a qualified technician to verify field installation conditions.",
 
-            resetData: "⚠️ Reset Data (Clear All)",
+            resetData: "⚠️ Clear All Data",
             copyright: 'Designed & Developed by <span class="author-name">Mazen Al-Awdhali</span> &copy; 2026',
             tagline: 'Smart Solar Calculator App',
             goldEdition: 'Gold Edition',
@@ -2530,10 +2531,10 @@ if ('serviceWorker' in navigator) {
             document.getElementById('modalCancelBtn').innerText = 'Cancel';
             document.getElementById('modalConfirmBtn').innerText = 'Yes, Clear Data';
         } else {
-            document.getElementById('modalTitle').innerText = 'تأكيد مسح البيانات';
-            document.getElementById('modalMessage').innerText = 'هل أنت متأكد من مسح جميع الأجهزة والبيانات المدخلة؟ لا يمكن التراجع عن هذه الخطوة.';
+            document.getElementById('modalTitle').innerText = 'تأكيد حذف البيانات';
+            document.getElementById('modalMessage').innerText = 'هل أنت متأكد من حذف جميع الأجهزة والبيانات المدخلة؟ لا يمكن التراجع عن هذه الخطوة.';
             document.getElementById('modalCancelBtn').innerText = 'إلغاء';
-            document.getElementById('modalConfirmBtn').innerText = 'نعم، امسح البيانات';
+            document.getElementById('modalConfirmBtn').innerText = 'نعم، احذف البيانات';
         }
         
         modal.classList.add('active');
