@@ -11,10 +11,16 @@ export default async function handler(request, response) {
   }
 
   try {
-    // زيادة العداد مباشرة من قاعدة البيانات وحفظه فيها
-    const count = await kv.incr('visitor_count');
+    // قراءة اسم التطبيق من الرابط
+    const appName = request.query.app;
     
-    return response.status(200).json({ count: count });
+    // إذا لم يحدد تطبيق، يستخدم المفتاح القديم للحاسبة الذكية، وإلا يستحدث مفتاحاً مخصصاً
+    const key = appName ? `visitor_count_${appName}` : 'visitor_count';
+
+    // زيادة العداد الخاص بالتطبيق المحدد
+    const count = await kv.incr(key);
+    
+    return response.status(200).json({ count: count, visits: count });
   } catch (error) {
     return response.status(500).json({ error: error.message });
   }
