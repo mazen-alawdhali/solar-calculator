@@ -413,6 +413,8 @@
             .engineering-alert { display: block !important; background: #fff5f5 !important; border: 2px solid #dc2626 !important; color: #b91c1c !important; box-shadow: none !important; margin-top: 10px !important; padding: 10px !important; border-radius: 8px !important; font-size: 12pt !important; text-align: start !important; page-break-inside: avoid !important; break-inside: avoid !important; }
             .engineering-alert strong { color: #dc2626 !important; font-weight: bold !important; font-size: 13pt !important; }
             
+            #disclaimerCard { display: block !important; border: 1px solid #f59e0b !important; color: #000000 !important; background: #fffbe2 !important; page-break-inside: avoid !important; }
+
             .print-footer-content { display: block !important; text-align: center; font-size: 10pt; color: #64748b; padding-top: 8px; border-top: 1px solid #cbd5e1; margin-top: 15px; font-weight: bold; }
 
             .hide-hybrid-print { display: none !important; }
@@ -838,6 +840,9 @@
                                     <div id="ent-warning-container"></div>
                                 </div>
                             </div>
+                            <div id="disclaimerCard" class="engineering-alert" style="display: none; margin-top: 14px; background: rgba(245, 158, 11, 0.08); border: 1px solid #f59e0b; color: #e2e8f0; font-size: 12.5px; line-height: 1.6; text-align: start;" data-i18n="disclaimerNote">
+                                💡 <strong>تنبيه هام:</strong> تعتبر مخرجات هذه الحاسبة نموذج محاكاة تقديري هندسي للمساعدة في التخطيط الأولي للمنظومة الشمسية. للحصول على أداء ميداني مضمون ولتراعي ظروف الموقع الفعلية وجودة التركيب، يُنصح دائماً بمراجعة التقييم النهائي مع مهندس أو فني طاقة شمسية مختص.
+                            </div>
                         </div>
                     </div>
 
@@ -1058,6 +1063,7 @@ if ('serviceWorker' in navigator) {
             cablesResTitle: "مواصفات الكابلات والقواطع (هام جداً):",
             battCableRes: "كابل وقاطع البطارية:", pvCableRes: "كابل وقاطع الألواح:", acCableRes: "كابل وقاطع الأحمال (AC):",
             cableDisclaimer: "⚠️ توصية هندسية إرشادية (إخلاء مسؤولية): المقاسات الموضحة تعتمد على كابلات نحاسية معتمدة ومطابقة للمواصفات. يرجى مراجعة الفني المختص لمراعاة ظروف ومسافات التوصيل الميدانية الفعليّة.",
+            disclaimerNote: "💡 <strong>تنبيه هام:</strong> تعتبر مخرجات هذه الحاسبة نموذج محاكاة تقديري هندسي للمساعدة في التخطيط الأولي للمنظومة الشمسية. للحصول على أداء ميداني مضمون ولتراعي ظروف الموقع الفعلية وجودة التركيب، يُنصح دائماً بمراجعة التقييم النهائي مع مهندس أو فني طاقة شمسية مختص.",
 
             resetData: "⚠️ تصفير البيانات",
             copyright: 'تصميم وتطوير <span class="author-name">مازن العوذلي</span> &copy; 2026',
@@ -1156,6 +1162,7 @@ if ('serviceWorker' in navigator) {
             cablesResTitle: "Cables & Breakers Specs (CRITICAL):",
             battCableRes: "Battery Cable & Breaker:", pvCableRes: "PV Array Cable & Breaker:", acCableRes: "AC Load Cable & Breaker:",
             cableDisclaimer: "⚠️ Engineering Disclaimer: Suggested sizes rely on certified pure copper cables. Please consult a qualified technician to verify field installation conditions.",
+            disclaimerNote: "💡 <strong>Important Note:</strong> The output of this calculator is an estimated engineering simulation model for initial planning. For guaranteed field performance and to account for site-specific installation conditions, always review the final design with a qualified solar technician.",
 
             resetData: "⚠️ Reset All Data",
             copyright: 'Designed & Developed by <span class="author-name">Mazen Al-Awdhali</span> &copy; 2026',
@@ -2511,6 +2518,15 @@ if ('serviceWorker' in navigator) {
                 }
             } else {
                 cablesWrapperEl.style.display = "none";
+            }
+        }
+
+        const disclaimerEl = document.getElementById("disclaimerCard");
+        if (disclaimerEl) {
+            if (totalDailyWh > 0) {
+                disclaimerEl.style.display = "block";
+            } else {
+                disclaimerEl.style.display = "none";
             }
         }
     };
