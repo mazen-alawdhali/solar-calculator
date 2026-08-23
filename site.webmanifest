@@ -1,6 +1,11 @@
 {
   "name": "حاسبة الطاقة الشمسية الذكية",
   "short_name": "حاسبة الطاقة",
+  "description": "تطبيق احترافي لحساب وتصميم منظومات الطاقة الشمسية والأحمال الميدانية",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#10b981",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -14,8 +19,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  ]
 }
