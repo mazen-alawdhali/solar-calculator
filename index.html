@@ -125,6 +125,9 @@
         .btn-add { background-color: #059669; color: white; margin-top: 8px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2); }
         .btn-export { background-color: #2563eb; color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
         .btn-reset { background-color: #dc2626; color: white; margin: 0 auto; width: calc(100% - 32px); font-size: 14px; padding: 12px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
+
+        .tool-btn-battery { background: linear-gradient(180deg, #1e293b 0%, #000000 100%); border: 1px solid #10b981; color: #10b981; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 10px rgba(0, 0, 0, 0.5); transition: all 0.2s ease; }
+        .tool-btn-battery:hover { border-color: #34d399; color: #34d399; background: linear-gradient(180deg, #334155 0%, #0a0a0a 100%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 12px rgba(16, 185, 129, 0.3); }
         
         .appliance-item { background-color: #0f172a; border: 1px solid #334155; border-radius: 14px; padding: 14px; margin-bottom: 14px; scroll-margin-top: 24px; overflow: visible; width: 100%; }
         .appliance-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 12px; width: 100%; }
@@ -872,7 +875,7 @@
                         <div style="font-size: 14.5px; font-weight: 700; color: #10b981; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;" data-i18n="serviceAppsTitle">🛠️ تطبيقات خدمية</div>
                         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                             <a href="https://solar-panels-pro.vercel.app/" target="_blank" class="btn" style="flex: 1; font-size: 13.5px; padding: 12px; text-decoration: none; background: rgba(37, 99, 235, 0.1); border: 1px solid #2563eb; color: #60a5fa; min-width: 130px;" id="pnlNavBtn" data-i18n="pnlNavBtn">☀️ حاسبة الألواح</a>
-                            <a href="https://battery-monitor-pro.vercel.app/" target="_blank" class="btn" style="flex: 1; font-size: 13.5px; padding: 12px; text-decoration: none; background: rgba(6, 182, 212, 0.1); border: 1px solid #06b6d4; color: #22d3ee; min-width: 130px; margin-top: 0;" id="battNavBtn" data-i18n="battNavBtn">🔋 حاسبة البطارية</a>
+                            <a href="https://battery-monitor-pro.vercel.app/" target="_blank" class="btn tool-btn-battery" style="flex: 1; font-size: 13.5px; padding: 12px; text-decoration: none; min-width: 130px; margin-top: 0;" id="battNavBtn" data-i18n="battNavBtn">🔋 حاسبة البطارية</a>
                         </div>
                     </div>
 
