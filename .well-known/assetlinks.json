@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "com.mazen.smart.solar.energy.calc.twa",
-        "sha256_cert_fingerprints": ["46:B9:51:68:0D:FD:4E:AF:6B:48:71:C7:35:40:CB:B0:8B:3B:87:8A:C1:EF:01:D9:55:36:43:D1:7D:6F:01:A1"]
+        "sha256_cert_fingerprints": ["80:63:91:85:96:E7:65:C8:B0:6B:8C:16:14:DB:2E:B2:69:76:09:59:A1:15:50:E4:E0:01:F2:98:22:C6:8C:07"]
       }
     }]
