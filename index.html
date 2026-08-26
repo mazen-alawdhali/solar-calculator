@@ -59,7 +59,7 @@
         .main-table { width: 100%; max-width: 500px; border-collapse: collapse; margin: 0 auto; border: none; }
         .main-table td { padding: 0; border: none; }
 
-        .container { width: 100%; max-width: 500px; background-color: #1e293b; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4); overflow: visible; padding-bottom: 24px; position: relative; margin: 0 auto; }
+        .container { width: 100%; max-width: 500px; background-color: #1e293b; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4); overflow: visible; padding-bottom: 24px; position: relative; margin: 0 auto; border: 1px solid rgba(16, 185, 129, 0.25); }
         
         .lang-toggle { position: absolute; top: 12px; left: 12px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px); transition: 0.2s; z-index: 10; display: flex; align-items: center; gap: 4px; }
         html[dir="ltr"] .lang-toggle { left: auto; right: 12px; }
@@ -69,9 +69,9 @@
         .nav-chip { background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.35); color: white; padding: 2px 10px; border-radius: 14px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px); transition: 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; line-height: 1.3; }
         .nav-chip:hover { background: rgba(255, 255, 255, 0.3); }
 
-        .header { background: linear-gradient(135deg, #059669, #10b981); color: white; text-align: center; padding: 44px 16px 14px; border-top-left-radius: 24px; border-top-right-radius: 24px; }
+        .header { background: url('header_balanced_sky_600w.webp') center/cover no-repeat; color: white; text-align: center; padding: 44px 16px 14px; border-top-left-radius: 24px; border-top-right-radius: 24px; }
         
-        .title-box { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.15); padding: 18px 24px; border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.35); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); backdrop-filter: blur(5px); }
+        .title-box { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(6, 95, 70, 0.6); padding: 18px 24px; border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.35); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); backdrop-filter: blur(8px); }
         .title-box h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); color: #ffffff; }
         .title-box .subtitle { margin: 8px 0 0 0; font-size: 14.5px; color: #ffffff; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
         
@@ -901,7 +901,7 @@
                               <path d="M60 10 L110 25 C110 80 60 135 60 140 C60 135 10 80 10 25 Z" fill="url(#goldFill)" stroke="url(#goldGradient)" stroke-width="3" stroke-linejoin="round"/>
                               <circle cx="60" cy="34" r="7" fill="url(#goldGradient)" />
                               <path d="M60 18 L60 23 M46 25 L50 29 M74 25 L70 29 M38 34 L44 34 M82 34 L76 34 M46 43 L50 39 M74 43 L70 39" stroke="url(#goldGradient)" stroke-width="2.5" stroke-linecap="round" />
-                              <text x="60" y="70" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="900" fill="url(#goldGradient)" text-anchor="middle" letter-spacing="1">V9 PRO MAX</text>
+                              <text x="60" y="70" font-family="Arial, Helvetica, sans-serif" font-size="12.5" font-weight="900" fill="url(#goldGradient)" text-anchor="middle" letter-spacing="0.3">V9 PRO MAX</text>
                               <path d="M26 88 L46 92 L42 112 L22 108 Z" fill="none" stroke="url(#goldGradient)" stroke-width="1.5" stroke-linejoin="round"/>
                               <path d="M33 89 L29 109 M40 91 L36 111 M24 95 L44 99 M23 101 L43 105" stroke="url(#goldGradient)" stroke-width="1"/>
                               <path d="M94 88 L74 92 L78 112 L98 108 Z" fill="none" stroke="url(#goldGradient)" stroke-width="1.5" stroke-linejoin="round"/>
@@ -1505,7 +1505,7 @@ if ('serviceWorker' in navigator) {
         }
     });
 
-    window.startApp = function() {
+    window.startApp = function() {         const totalImages = 6;         const randomNum = Math.floor(Math.random() * totalImages) + 1;         const headerEl = document.querySelector('.header');         if (headerEl) headerEl.style.backgroundImage = `url('header_bg_${randomNum}.webp')`;
         try {
             try { const data = localStorage.getItem("solar_appliances_data_v11"); appliances = data ? JSON.parse(data) : []; } catch(e) { appliances = []; }
             
