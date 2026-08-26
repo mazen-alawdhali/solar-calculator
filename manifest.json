@@ -1,0 +1,23 @@
+{
+  "name": "حاسبة الطاقة الشمسية الذكية",
+  "short_name": "حاسبة الطاقة",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#35ce10",
+  "display": "standalone",
+  "id": "/",
+  "description": "تطبيق حاسبة الطاقة الشمسية الذكية لحساب الأحمال والبطاريات والألواح الشمسية بدقة عالية."
+}
