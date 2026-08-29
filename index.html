@@ -1939,7 +1939,7 @@ if ('serviceWorker' in navigator) {
         const alertContainerEl = document.getElementById("ent-warning-container");
         const cablesWrapperEl = document.getElementById("cablesResultsWrapper");
         
-        let dayLoadWh = 0, nightLoadWh = 0, syncSurge = 0, maxContinuous = 0;
+        let dayLoadWh = 0, nightLoadWh = 0, maxContinuous = 0, backgroundContinuous = 0, syncSurge = 0;
         
         if (entDailyKwh > 0) {
             let totalDailyWh = entDailyKwh * 1000;
@@ -1961,7 +1961,7 @@ if ('serviceWorker' in navigator) {
                 dayLoadWh += itemDay;
                 nightLoadWh += itemNight;
                 maxContinuous += (w * count);
-                if(app.sync) syncSurge += (parseFloat(app.surgeWatts)||w) * count;
+                                    let surgeW = parseFloat(app.surgeWatts) || 0;                     if(app.sync && surgeW > w) {                         syncSurge += surgeW * count;                     } else {                         backgroundContinuous += w * count;                     }
             });
         }
         
@@ -2030,9 +2030,11 @@ if ('serviceWorker' in navigator) {
         let totalPanelPower = panelsCount * panelWatts;
 
         const MAX_RECOMMENDED_DC_AC_RATIO = 1.35;
-        let invRequiredFromLoad = Math.max(maxContinuous * INVERTER_SAFETY_FACTOR, syncSurge / 1.5);
-        let invRequiredFromPv = totalPanelPower > 0 ? (totalPanelPower / MAX_RECOMMENDED_DC_AC_RATIO) : 0;
+        let invRequiredFromLoad = (backgroundContinuous + (syncSurge / 1.5)) * INVERTER_SAFETY_FACTOR;
+        let offGridPanels = panelWatts > 0 && sunHours > 0 ? Math.ceil((eTotal / (sunHours * effectivePerformanceRatio)) / panelWatts) : 0; let invRequiredFromPv = (offGridPanels * panelWatts) > 0 ? ((offGridPanels * panelWatts) / MAX_RECOMMENDED_DC_AC_RATIO) : 0;
         let invRequired = Math.max(invRequiredFromLoad, invRequiredFromPv);
+      console.log("📊 فحص العاكس اللحظي:", { الأحمال: invRequiredFromLoad, الألواح: invRequiredFromPv, النهائي: invRequired });
+
         
         let isOverloaded = (totalDailyWh > 0 && entDailyKwh === 0) && ((sysVolt === 12 && (eTotal > 5000 || totalPanelPower > 3000 || invRequired > 3000)) || (sysVolt === 24 && (eTotal > 12000 || totalPanelPower > 5000 || invRequired > 5000)));
 
@@ -2457,7 +2459,7 @@ if ('serviceWorker' in navigator) {
                     </div>`;
                 }
 
-                alertContainerEl.innerHTML = enterpriseAlerts;
+                alertContainerEl.innerHTML = enterpriseAlerts; console.log("🏢 فحص المشاريع التجارية:", { نوع_النظام: entSysType, استهلاك_المشروع: entDailyKwh, عدد_العواكس: numberOfUnits, قدرة_العاكس_الواحد: unitSizeKw, عدد_وحدات_البطارية: totalRacks, سعة_الوحدة: standardRackKwh });
 
             } else {
                 enterpriseWrapperEl.style.display = "none";
@@ -2509,7 +2511,7 @@ if ('serviceWorker' in navigator) {
 
                 if(resBattCableEl) resBattCableEl.innerHTML = `${battFormattedStr} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${battBreakerDisplay}</span>`;
                 if(resPvCableEl) resPvCableEl.innerHTML = `<span dir="ltr" style="font-weight:bold;">${pvCableSize} mm&sup2;</span> &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${pvBreaker}A DC</span>`;
-                if(resAcCableEl) resAcCableEl.innerHTML = `${acCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${acBreaker}A</span>`;
+                if(resAcCableEl) resAcCableEl.innerHTML = `${acCableFormatted} &nbsp;|&nbsp; <span dir="ltr" style="font-weight:bold;">${acBreaker}A</span>`; console.log("🔌 فحص القواطع والكابلات:", { جهد_النظام: sysVolt, مسافة_البطارية: battDistance, مقطع_كابل_البطارية: battCableSize, تيار_البطارية: maxBattAmps, قاطع_البطارية: battBreaker });
                 
                 const disclaimerBox = document.getElementById("cableDisclaimerBox");
                 if (disclaimerBox) {
@@ -2627,5 +2629,14 @@ if ('serviceWorker' in navigator) {
     window.onload = window.startApp;
 }();
 </script>
+  <script>
+    if (window.location.search.includes('debug=true')) {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/eruda';
+        document.body.appendChild(script);
+        script.onload = function () { eruda.init(); };
+    }
+</script>
+
 </body>
 </html>
