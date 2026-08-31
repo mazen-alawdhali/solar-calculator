@@ -2144,7 +2144,7 @@ if ('serviceWorker' in navigator) {
         let marketInv;
         if (entDailyKwh > 0) {
             if (entSysType === 'three48') {
-                marketInv = [8000, 10000, 12000, 15000, 20000, 25000, 30000, 40000, 50000, 60000, 80000, 100000]; 
+                marketInv = [5000, 6000, 8000, 10000, 12000, 15000, 20000, 25000, 30000, 40000, 50000, 60000, 80000, 100000]; 
             } else if (entSysType === 'hv') {
                 marketInv = [10000, 15000, 20000, 25000, 30000, 40000, 50000, 60000, 75000, 100000, 125000, 150000, 250000]; 
             } else {
@@ -2292,7 +2292,7 @@ if ('serviceWorker' in navigator) {
 
                 let numberOfUnits = Math.ceil(totalLoadKw / maxUnitKw);
                 
-                let standardCommercialUnits = [5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 80, 90, 100, 110, 120, 150];
+                let standardCommercialUnits = [5, 6, 8, 10, 12, 15, 16, 20, 25, 30, 40, 50, 60, 75, 80, 90, 100, 110, 120, 150];
                 let rawUnitKw = totalLoadKw / numberOfUnits;
                 let unitSizeKw = standardCommercialUnits.find(u => u >= rawUnitKw) || Math.ceil(rawUnitKw);
 
