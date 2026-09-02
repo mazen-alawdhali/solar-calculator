@@ -2,7 +2,7 @@
       "relation": ["delegate_permission/common.handle_all_urls"],
       "target": {
         "namespace": "android_app",
-        "package_name": "com.mazen.Smart.Solar.Energy.Calc.twa",
+        "package_name": "com.mazen.Smart.Solar.Energy.Calc",
         "sha256_cert_fingerprints": ["64:6D:33:DB:03:A9:32:42:A4:64:18:1C:23:89:05:80:67:B6:79:C9:19:8A:6A:76:D5:B7:C2:FA:D8:3F:A8:5D"]
       }
     }]
