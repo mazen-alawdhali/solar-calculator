@@ -136,11 +136,11 @@
 <body>
 
 <div class="container">
-    <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">EN <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">EN <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"></path></svg></button>
 
     <div class="header">
         <h1 class="main-title" data-i18n="title">سياسة الخصوصية</h1>
-        <p class="subtitle" data-i18n="subtitle">تاريخ آخر تحديث: 5 سبتمبر 2026</p>
+        <p class="subtitle" data-i18n="subtitle">تاريخ آخر تحديث: 8 سبتمبر 2026</p>
     </div>
 
     <p data-i18n="intro">إن حماية خصوصيتك أمر أساسي بالنسبة لنا. تم تصميم تطبيق <strong>حاسبة الطاقة الشمسية الذكية</strong> ليعمل كأداة هندسية آمنة ومستقلة بالكامل.</p>
@@ -172,7 +172,7 @@
         ar: {
             pageTitle: "سياسة الخصوصية - حاسبة الطاقة الشمسية الذكية",
             title: "سياسة الخصوصية",
-            subtitle: "تاريخ آخر تحديث: 5 سبتمبر 2026",
+            subtitle: "تاريخ آخر تحديث: 8 سبتمبر 2026",
             intro: "إن حماية خصوصيتك أمر أساسي بالنسبة لنا. تم تصميم تطبيق <strong>حاسبة الطاقة الشمسية الذكية</strong> ليعمل كأداة هندسية آمنة ومستقلة بالكامل.",
             overview: "<strong>نظرة عامة على البيانات:</strong> هذا التطبيق لا يقوم بجمع، أو تخزين، أو مشاركة، أو معالجة أي بيانات شخصية، أو معلومات معرّفة بالمستخدم بأي شكل من الأشكال.",
             sec1Title: "1. جمع البيانات واستخدامها",
@@ -187,7 +187,7 @@
         en: {
             pageTitle: "Privacy Policy - Smart Solar Calculator",
             title: "Privacy Policy",
-            subtitle: "Last updated: September 5, 2026",
+            subtitle: "Last updated: September 8, 2026",
             intro: "Protecting your privacy is fundamental to us. The <strong>Smart Solar Calculator</strong> app is designed to function as a safe, standalone engineering calculation tool.",
             overview: "<strong>Data Overview:</strong> This application does not collect, store, share, or process any personal data or user-identifiable information in any way.",
             sec1Title: "1. Data Collection & Usage",
@@ -201,7 +201,8 @@
         }
     };
 
-    let currentLang = localStorage.getItem('solar_app_lang') || 'ar';
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentLang = urlParams.get('lang') || localStorage.getItem('solar_app_lang') || 'ar';
 
     function toggleLanguage() {
         currentLang = currentLang === 'ar' ? 'en' : 'ar';
