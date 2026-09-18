@@ -1939,7 +1939,7 @@ if ('serviceWorker' in navigator) {
         const alertContainerEl = document.getElementById("ent-warning-container");
         const cablesWrapperEl = document.getElementById("cablesResultsWrapper");
         
-        let dayLoadWh = 0, nightLoadWh = 0, maxContinuous = 0, backgroundContinuous = 0, syncSurge = 0;
+        let dayLoadWh = 0, nightLoadWh = 0, maxContinuous = 0, backgroundContinuous = 0, syncSurge = 0, maxSingleSurge = 0, syncDeviceCount = 0;
         
         if (entDailyKwh > 0) {
             let totalDailyWh = entDailyKwh * 1000;
@@ -1961,7 +1961,7 @@ if ('serviceWorker' in navigator) {
                 dayLoadWh += itemDay;
                 nightLoadWh += itemNight;
                 maxContinuous += (w * count);
-                                    let surgeW = parseFloat(app.surgeWatts) || 0;                     if(app.sync && surgeW > w) {                         syncSurge += surgeW * count;                     } else {                         backgroundContinuous += w * count;                     }
+                                    let surgeW = parseFloat(app.surgeWatts) || 0;                     backgroundContinuous += w * count;                     if(surgeW > w) {                         if(app.sync) {                             syncSurge += (surgeW - w) * count;                             syncDeviceCount += count;                         } else {                             let singleSurge = (surgeW - w) * 1;                              if(singleSurge > maxSingleSurge) maxSingleSurge = singleSurge;                         }                     }
             });
         }
         
@@ -2030,7 +2030,7 @@ if ('serviceWorker' in navigator) {
         let totalPanelPower = panelsCount * panelWatts;
 
         const MAX_RECOMMENDED_DC_AC_RATIO = 1.35;
-        let invRequiredFromLoad = (backgroundContinuous + (syncSurge / 1.5)) * INVERTER_SAFETY_FACTOR;
+        let effectiveSyncSurge = (syncDeviceCount > 1) ? (syncSurge / 1.5) : syncSurge; let invRequiredFromLoad = (backgroundContinuous + Math.max(effectiveSyncSurge, maxSingleSurge)) * INVERTER_SAFETY_FACTOR;
         let offGridPanels = panelWatts > 0 && sunHours > 0 ? Math.ceil((eTotal / (sunHours * effectivePerformanceRatio)) / panelWatts) : 0; let invRequiredFromPv = (offGridPanels * panelWatts) > 0 ? ((offGridPanels * panelWatts) / MAX_RECOMMENDED_DC_AC_RATIO) : 0;
         let invRequired = Math.max(invRequiredFromLoad, invRequiredFromPv);
       console.log("📊 فحص العاكس اللحظي:", { الأحمال: invRequiredFromLoad, الألواح: invRequiredFromPv, النهائي: invRequired });
