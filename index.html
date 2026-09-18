@@ -1960,12 +1960,12 @@ if ('serviceWorker' in navigator) {
                 let itemNight = w * count * nH * (duty/100);
                 dayLoadWh += itemDay;
                 nightLoadWh += itemNight;
-                maxContinuous += (w * count);
+                if (app.sync) {     if (app.sync) maxContinuous += (w * count); }
                                     let surgeW = parseFloat(app.surgeWatts) || 0;                     if(app.sync && surgeW > w) {                         syncSurge += surgeW * count;                     } else {                         backgroundContinuous += w * count;                     }
             });
         }
         
-        let totalDailyWh = dayLoadWh + nightLoadWh;
+        if (maxContinuous === 0 && appliances.length > 0) { maxContinuous = Math.max(0, ...appliances.map(a => (parseFloat(a.watts)||0) * (parseFloat(a.count)||1))); } let totalDailyWh = dayLoadWh + nightLoadWh;
 
         let maxDayHours = 0;
         let maxNightHours = 0;
