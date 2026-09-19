@@ -97,7 +97,7 @@
         
         .custom-select-options { display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background-color: #1e293b; border: 1px solid #334155; border-radius: 10px; z-index: 999; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-height: 220px; overflow-y: auto; }
         .custom-select-options.show { display: block; animation: fadeIn 0.2s; }
-        .custom-option { padding: 12px; color: #e2e8f0; font-size: 12.5px; text-align: center; cursor: pointer; border-bottom: 1px solid #334155; transition: 0.2s; }
+        .custom-option { padding: 8px 10px; color: #e2e8f0; font-size: 11.5px; text-align: center; cursor: pointer; border-bottom: 1px solid #334155; transition: 0.2s; }         .custom-select-options { max-height: none; overflow-y: visible; }
         .custom-option:last-child { border-bottom: none; }
         .custom-option:hover { background-color: #0f172a; color: #10b981; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
@@ -1076,7 +1076,7 @@ if ('serviceWorker' in navigator) {
             contW: "القدرة المستمرة (واط):", contWPh: "للبطارية والألواح",
             surgeW: "قدرة الإقلاع (أجهزة ثقيلة):", surgeWPh: "لحساب سعة الإنفرتر",
             qty: "العدد:", duty: "نسبة التشغيل (% Duty):",
-            duty100: "100% مستمر (إضاءة/شاشات)", duty70: "70% متوسط (مكيف/سخان)", duty50: "50% متقطع (ثلاجة/إنفرتر)",
+            duty100: "100% (إضاءة / شاشات)", duty70: "70% (مكيف / ثلاجة / سخان)", duty50: "50% (أجهزة إنفرتر)", duty30: "30% (مضخة/غسالة)",
             dayH: "ساعات العمل (نهاراً):", nightH: "ساعات العمل (ليلاً):",
             totalCons: "الاستهلاك الكلي:", wh: "واط.ساعة",
             emptyMsg: "لا توجد أجهزة مضافة حالياً. اضغط على '+ إضافة جهاز جـديد' للبدء.",
@@ -1175,7 +1175,7 @@ if ('serviceWorker' in navigator) {
             contW: "Continuous Power (W):", contWPh: "For Battery/Panels",
             surgeW: "Surge Power (Heavy):", surgeWPh: "For Inverter Capacity Calculation Only",
             qty: "Quantity:", duty: "Duty Cycle (%):",
-            duty100: "100% Continuous (Lights/TV)", duty70: "70% Average (AC/Heater)", duty50: "50% Intermittent (Fridge)",
+            duty100: "100% (Lights / Screens)", duty70: "70% (AC / Fridge / Heater)", duty50: "50% (Inverter Appliances)", duty30: "30% (Pump/Washer)",
             dayH: "Daytime Hours:", nightH: "Nighttime Hours:",
             totalCons: "Total Consumption:", wh: "Wh",
             emptyMsg: "No appliances added. Click '+ Add New Appliance' to start.",
@@ -1659,7 +1659,7 @@ if ('serviceWorker' in navigator) {
         }
         
         appliances.forEach((app, i) => {
-            let dutyDisplayText = app.duty == 100 ? t.duty100 : (app.duty == 70 ? t.duty70 : t.duty50);
+            let dutyDisplayText = app.duty == 100 ? t.duty100 : (app.duty == 70 ? t.duty70 : (app.duty == 30 ? t.duty30 : t.duty50));
             
             const html = `<div class="appliance-item">
                 <div class="appliance-header">
@@ -1675,7 +1675,7 @@ if ('serviceWorker' in navigator) {
                     <div class="input-group"><label>${t.qty}</label><input type="number" lang="en" value="${app.count||1}" min="1" step="1" oninput="updateApplianceProperty(${i},'count',this.value)"></div>
                     
                     <div class="input-group">
-                        <label>${t.duty}</label>
+                        <label style="display: flex; align-items: center; justify-content: space-between; gap: 4px;">     <span>${t.duty}</span>     <span style="cursor: pointer; font-size: 14px;" onclick="window.openAlertModal('نسبة التشغيل (Duty Cycle)', '💡 لأجهزة التكييف والثلاجات الحديثة التي تعمل بتقنية الإنفرتر (Inverter)، يُنصح باختيار 50% (أجهزة إنفرتر) من قائمة نسبة التشغيل، وترَك خانة قدرة الإقلاع فارغة للحصول على تحجيم واقعي ودقيق للإنفرتر (العاكس).')" title="توضيح">💡</span> </label>
                         <div class="custom-select-wrapper">
                             <div class="custom-select-display" onclick="toggleDropdown('dutyDropdown_${i}')">
                                 <span>${dutyDisplayText}</span>
@@ -1684,7 +1684,7 @@ if ('serviceWorker' in navigator) {
                             <div class="custom-select-options" id="dutyDropdown_${i}">
                                 <div class="custom-option" onclick="selectDutyOption(${i}, 100, 'dutyDropdown_${i}')">${t.duty100}</div>
                                 <div class="custom-option" onclick="selectDutyOption(${i}, 70, 'dutyDropdown_${i}')">${t.duty70}</div>
-                                <div class="custom-option" onclick="selectDutyOption(${i}, 50, 'dutyDropdown_${i}')">${t.duty50}</div>
+                                <div class="custom-option" onclick="selectDutyOption(${i}, 50, 'dutyDropdown_${i}')">${t.duty50}</div> <div class="custom-option" onclick="selectDutyOption(${i}, 30, 'dutyDropdown_${i}')">${t.duty30}</div>
                             </div>
                         </div>
                     </div>
