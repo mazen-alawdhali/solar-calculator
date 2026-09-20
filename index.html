@@ -1549,14 +1549,14 @@ if ('serviceWorker' in navigator) {
             const gNightEl = document.getElementById("gridNightHours");
             const acAmpsEl = document.getElementById("acChargeCurrent");
             
-            if((gDayEl && parseFloat(gDayEl.value) > 0) || (gNightEl && parseFloat(gNightEl.value) > 0) || (acAmpsEl && parseFloat(acAmpsEl.value) > 0)) {
+            if((gDayEl && parseFloat(gDayEl.value) > 0) || (gNightEl && parseFloat(gNightEl.value) > 0)) {
                 const hybAcc = document.getElementById('hybridAccordion');
                 if(hybAcc) hybAcc.classList.add('open');
             }
             
             const entDailyEl = document.getElementById("enterpriseDailyKwh");
             const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
-            if((entSysEl && entSysEl.value !== "single") || entDailyVal > 0 || localStorage.getItem("solar_ent_opened") === "true") {
+            if(entDailyVal > 0) {
                 const entAcc = document.getElementById('enterpriseAccordion');
                 if(entAcc) entAcc.classList.add('open');
             }
