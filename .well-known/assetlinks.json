@@ -1,8 +1,10 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "com.mazen.Smart.Solar.Energy.Calc",
-        "sha256_cert_fingerprints": ["64:6D:33:DB:03:A9:32:42:A4:64:18:1C:23:89:05:80:67:B6:79:C9:19:8A:6A:76:D5:B7:C2:FA:D8:3F:A8:5D"]
-      }
-    }]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.mazen.Smart.Solar.Energy.Calc",
+      "sha256_cert_fingerprints": ["65:79:80:83:8B:FF:FF:9C:EF:6C:B7:80:6E:16:4E:18:FD:80:62:A9:DF:F9:FB:64:BB:1C:93:06:66:B2:33:99"]
+    }
+  }
+]
