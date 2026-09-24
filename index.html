@@ -1621,7 +1621,7 @@ if ('serviceWorker' in navigator) {
         const entDailyVal = entDailyEl ? (parseFloat(entDailyEl.value) || 0) : 0;
         
         const entCablesMsg = document.getElementById("ent-cables-override-msg");
-        const appliancesSectionWrapper = document.getElementById("appliancesSectionWrapper");
+        const appliancesSectionWrapper = document.getElementById("appliancesSectionWrapper"); let isEnt = entDailyVal > 0; let svWrap = document.getElementById("sysVoltDropdown"); if(svWrap){ let sd = svWrap.previousElementSibling; sd.style.pointerEvents = isEnt ? "none" : "auto"; sd.style.opacity = isEnt ? "0.4" : "1"; if(isEnt){ document.getElementById("systemVoltage").value = "48"; document.getElementById("sysVoltDisplay").innerText = dict[window.currentLang].volt48; } } let bDist = document.getElementById("battDistance"); let aDist = document.getElementById("acDistance"); if(bDist && aDist){ if(isEnt){ bDist.value = "0"; aDist.value = "0"; } bDist.disabled = isEnt; aDist.disabled = isEnt; bDist.style.opacity = isEnt ? "0.4" : "1"; aDist.style.opacity = isEnt ? "0.4" : "1"; }
 
         if (entDailyVal > 0) {
             if(appliancesSectionWrapper) appliancesSectionWrapper.style.display = "block"; 
