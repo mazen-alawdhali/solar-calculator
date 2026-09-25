@@ -593,12 +593,12 @@
 
                             <div class="input-group">
                                 <label data-i18n="panelWattsLabel">قدرة اللوح المستهدف (W):</label>
-                                <input type="number" id="panelWatts" placeholder="450" min="10" lang="en">
+                                <input type="text" inputmode="numeric" id="panelWatts" placeholder="450" lang="en">
                             </div>
 
                             <div class="input-group">
                                 <label data-i18n="sunHoursLabel">ساعات ذروة الشمس:</label>
-                                <input type="number" id="sunHours" placeholder="6" min="1" max="15" step="0.5" lang="en">
+                                <input type="text" inputmode="decimal" id="sunHours" placeholder="6" lang="en">
                             </div>
 
                             <div class="input-group">
@@ -639,15 +639,15 @@
                                 <div class="grid-inputs">
                                     <div class="input-group">
                                         <label data-i18n="gridDayHoursLabel">ساعات الشحن نهاراً (ألواح):</label>
-                                        <input type="number" id="gridDayHours" placeholder="0" min="0" max="24" step="0.5" lang="en">
+                                        <input type="text" inputmode="decimal" id="gridDayHours" placeholder="0" lang="en">
                                     </div>
                                     <div class="input-group">
                                         <label data-i18n="gridNightHoursLabel">ساعات الشحن ليلاً (بطارية):</label>
-                                        <input type="number" id="gridNightHours" placeholder="0" min="0" max="24" step="0.5" lang="en">
+                                        <input type="text" inputmode="decimal" id="gridNightHours" placeholder="0" lang="en">
                                     </div>
                                     <div class="input-group" style="grid-column: span 2;">
                                         <label data-i18n="acAmpsLabel">تيار شاحن الشبكة (Amps):</label>
-                                        <input type="number" id="acChargeCurrent" placeholder="30" min="0" max="200" step="1" lang="en">
+                                        <input type="text" inputmode="numeric" id="acChargeCurrent" placeholder="30" lang="en">
                                     </div>
                                 </div>
                             </div>
@@ -670,11 +670,11 @@
                                 <div class="grid-inputs">
                                     <div class="input-group">
                                         <label data-i18n="battDistLabel">مسافة كابل البطارية (متر):</label>
-                                        <input type="number" id="battDistance" placeholder="0" min="0" step="0.5" lang="en">
+                                        <input type="text" inputmode="decimal" id="battDistance" placeholder="0" lang="en">
                                     </div>
                                     <div class="input-group">
                                         <label data-i18n="acDistLabel">مسافة كابل الأحمال (متر):</label>
-                                        <input type="number" id="acDistance" placeholder="0" min="0" step="1" lang="en">
+                                        <input type="text" inputmode="numeric" id="acDistance" placeholder="0" lang="en">
                                     </div>
                                     
                                     <div class="input-group" style="grid-column: span 2;">
@@ -725,17 +725,17 @@
 
                                     <div class="input-group">
                                         <label data-i18n="entDailyKwhLabel">إجمالي الاستهلاك اليومي (kWh):</label>
-                                        <input type="number" id="enterpriseDailyKwh" min="0" step="any" placeholder="مثال 50 كيلو واط" lang="en">
+                                        <input type="text" inputmode="decimal" id="enterpriseDailyKwh" placeholder="مثال 50 كيلو واط" lang="en">
                                     </div>
 
                                     <div class="input-group">
                                         <label data-i18n="entHoursDayLabel">عدد الساعات نهاراً:</label>
-                                        <input type="number" id="enterpriseHoursDay" min="0" max="24" step="0.5" placeholder="10" lang="en">
+                                        <input type="text" inputmode="decimal" id="enterpriseHoursDay" placeholder="10" lang="en">
                                     </div>
 
                                     <div class="input-group">
                                         <label data-i18n="entHoursNightLabel">عدد الساعات ليلاً:</label>
-                                        <input type="number" id="enterpriseHoursNight" min="0" max="24" step="0.5" placeholder="5" lang="en">
+                                        <input type="text" inputmode="decimal" id="enterpriseHoursNight" placeholder="5" lang="en">
                                     </div>
                                 </div>
                             </div>
@@ -1568,14 +1568,14 @@ if ('serviceWorker' in navigator) {
 
             ["panelWatts","sunHours","dodValue","gridDayHours","gridNightHours","acChargeCurrent","battDistance","acDistance"].forEach(id => {
                 const el = document.getElementById(id);
-                if(el) el.addEventListener("input", saveDataAndCalculate);
+                if(el) el.addEventListener("input", function() { let raw = this.value.replace(/[٠-٩]/g, d => "0123456789"["٠١٢٣٤٥٦٧٨٩".indexOf(d)]); if(id === "panelWatts" || id === "acChargeCurrent" || id === "acDistance"){ let val = raw.replace(/[^\d]/g, '').substring(0, 7); if (val.length > 1 && val.startsWith('0')) val = val.replace(/^0+/, ''); this.value = val; } else { let val = raw.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').substring(0, 7); if(val.startsWith('.')) val = '0' + val; this.value = val; } saveDataAndCalculate(); });
             });
 
-            ["enterpriseDailyKwh", "enterpriseHoursDay", "enterpriseHoursNight"].forEach(id => {
+            ["gridDayHours", "gridNightHours"].forEach(id => { const el = document.getElementById(id); if(el) el.addEventListener("input", function() { let d = parseFloat(document.getElementById("gridDayHours").value)||0; let n = parseFloat(document.getElementById("gridNightHours").value)||0; if(d + n > 24) { window.openAlertModal(dict[window.currentLang].hoursAlertTitle, dict[window.currentLang].hoursAlertMsg); if(id === "gridDayHours") this.value = Math.max(0, 24 - n); else this.value = Math.max(0, 24 - d); saveDataAndCalculate(); } }); });             ["enterpriseDailyKwh", "enterpriseHoursDay", "enterpriseHoursNight"].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) {
                     el.addEventListener("input", function() {
-                        if (id === 'enterpriseHoursDay' || id === 'enterpriseHoursNight') {
+                        let cv = this.value.replace(/[٠-٩]/g, d => "0123456789"["٠١٢٣٤٥٦٧٨٩".indexOf(d)]).replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').substring(0, 7); if(cv.startsWith('.')) cv = '0' + cv; this.value = cv; if (id === 'enterpriseHoursDay' || id === 'enterpriseHoursNight') {
                             const dInput = document.getElementById("enterpriseHoursDay");
                             const nInput = document.getElementById("enterpriseHoursNight");
                             let dVal = parseFloat(dInput.value) || 0;
@@ -1670,9 +1670,9 @@ if ('serviceWorker' in navigator) {
                     </div>
                 </div>
                 <div class="grid-inputs">
-                    <div class="input-group"><label>${t.contW}</label><input type="number" lang="en" placeholder="${t.contWPh}" value="${app.watts||''}" min="0" step="any" oninput="updateApplianceProperty(${i},'watts',this.value)"></div>
-                    <div class="input-group"><label>${t.surgeW}</label><input type="number" lang="en" placeholder="${t.surgeWPh}" value="${app.surgeWatts||''}" min="0" step="any" oninput="updateApplianceProperty(${i},'surgeWatts',this.value)"></div>
-                    <div class="input-group"><label>${t.qty}</label><input type="number" lang="en" value="${app.count||1}" min="1" step="1" oninput="updateApplianceProperty(${i},'count',this.value)"></div>
+                    <div class="input-group"><label>${t.contW}</label><input type="text" inputmode="numeric" lang="en" placeholder="${t.contWPh}" value="${app.watts||''}" oninput="updateApplianceProperty(${i},'watts',this.value, this)"></div>
+                    <div class="input-group"><label>${t.surgeW}</label><input type="text" inputmode="numeric" lang="en" placeholder="${t.surgeWPh}" value="${app.surgeWatts||''}" oninput="updateApplianceProperty(${i},'surgeWatts',this.value, this)"></div>
+                    <div class="input-group"><label>${t.qty}</label><input type="text" inputmode="numeric" lang="en" value="${app.count||1}" oninput="updateApplianceProperty(${i},'count',this.value, this)"></div>
                     
                     <div class="input-group">
                         <label style="display: flex; align-items: center; justify-content: space-between; gap: 4px;">     <span>${t.duty}</span>     <span style="cursor: pointer; font-size: 14px;" onclick="window.openAlertModal(window.currentLang === 'en' ? 'Duty Cycle Hint' : 'نسبة التشغيل (Duty Cycle)', window.currentLang === 'en' ? '💡 For modern Inverter ACs and refrigerators, it is recommended to select 50% (Inverter) from the duty cycle list and leave the surge power blank for accurate inverter sizing.' : '💡 لأجهزة التكييف والثلاجات الحديثة التي تعمل بتقنية الإنفرتر (Inverter)، يُنصح باختيار 50% (أجهزة إنفرتر) من قائمة نسبة التشغيل، وترَك خانة قدرة الإقلاع فارغة للحصول على تحجيم واقعي ودقيق للإنفرتر (العاكس).')" title="${window.currentLang === 'en' ? 'Hint' : 'توضيح'}">💡</span> </label>
@@ -1689,8 +1689,8 @@ if ('serviceWorker' in navigator) {
                         </div>
                     </div>
 
-                    <div class="input-group"><label>${t.dayH}</label><input id="dayH_${i}" type="number" lang="en" value="${app.dayHours||0}" min="0" max="${Math.max(0, 24 - (parseFloat(app.nightHours)||0))}" step="any" oninput="updateApplianceProperty(${i},'dayHours',this.value)"></div>
-                    <div class="input-group"><label>${t.nightH}</label><input id="nightH_${i}" type="number" lang="en" value="${app.nightHours||0}" min="0" max="${Math.max(0, 24 - (parseFloat(app.dayHours)||0))}" step="any" oninput="updateApplianceProperty(${i},'nightHours',this.value)"></div>
+                    <div class="input-group"><label>${t.dayH}</label><input id="dayH_${i}" type="text" inputmode="decimal" lang="en" value="${app.dayHours||0}" oninput="updateApplianceProperty(${i},'dayHours',this.value, this)"></div>
+                    <div class="input-group"><label>${t.nightH}</label><input id="nightH_${i}" type="text" inputmode="decimal" lang="en" value="${app.nightHours||0}" oninput="updateApplianceProperty(${i},'nightHours',this.value, this)"></div>
                 </div>
                 <div class="item-summary">
                     <div class="summary-sync-text" id="summary-surge-${i}" style="${(app.sync && app.surgeWatts) ? 'display:block;' : 'display:none;'}">${app.sync && app.surgeWatts ? `${t.surgeText} <span class="value-amber"><span dir="ltr" style="display:inline-block;">${fmt2(app.surgeWatts * (app.count||1))}</span> ${t.wWord}</span>` : ""}</div>
@@ -1714,8 +1714,8 @@ if ('serviceWorker' in navigator) {
     
     window.deleteDevice = function(i) { appliances.splice(i,1); saveDataAndCalculate(); renderAppliances(); };
     
-    window.updateApplianceProperty = function(i,p,v) { 
-        appliances[i][p] = (p==="sync"||p==="name"||p==="surgeWatts") ? v : (v===""?"":parseFloat(v)); 
+    window.updateApplianceProperty = function(i,p,v,el) { 
+        let raw = (v !== null && v !== undefined) ? v.toString().replace(/[٠-٩]/g, d => "0123456789"["٠١٢٣٤٥٦٧٨٩".indexOf(d)]) : ""; if((p==="count"||p==="watts"||p==="surgeWatts") && el){ let cv = raw.replace(/[^\d]/g, '').substring(0, 7); if(cv.length>1 && cv.startsWith('0')) cv = cv.replace(/^0+/, ''); el.value = cv; v = cv; } else if((p==="dayHours"||p==="nightHours") && el){ let cv = raw.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').substring(0, 7); if(cv.startsWith('.')) cv = '0' + cv; el.value = cv; v = cv; } appliances[i][p] = (p==="sync"||p==="name"||p==="surgeWatts") ? v : (v===""?"":parseFloat(v)); 
         
         if (p === 'dayHours' || p === 'nightHours') {
             let dVal = parseFloat(appliances[i].dayHours) || 0;
