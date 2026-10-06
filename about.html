@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title id="pageTitle">نبذة عن الحاسبة - حاسبة الطاقة الشمسية الذكية</title>
+    <meta name="description" content="نبذة تعريفية ودليل هندسي لحاسبة الطاقة الشمسية الذكية، أدوات الحساب الميدانية، المنظومات الكبيرة والهجينة، وحقوق الملكية والتطوير.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #000000; 
+            color: #e2e8f0; 
+            margin: 0; 
+            padding: 16px 12px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            line-height: 1.6;
+        }
+        .container { 
+            width: 100%; 
+            max-width: 650px; 
+            background-color: #000000; 
+            border-radius: 24px; 
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8); 
+            padding-bottom: 24px; 
+            border: 1px solid #334155; 
+        }
+        .header { 
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.60), rgba(15, 23, 42, 0.80)); 
+            color: white; 
+            text-align: center; 
+            padding: 40px 16px 20px 16px; 
+            border-top-left-radius: 24px; 
+            border-top-right-radius: 24px; 
+            position: relative; 
+            border-bottom: 1px solid #334155; 
+        }
+        .header h1 { margin: 0; font-size: 22px; font-weight: 900; color: #10b981; }
+        .header p { margin: 8px 0 0 0; font-size: 13px; font-weight: 600; color: #94a3b8; }
+        
+        .lang-btn { 
+            position: absolute; 
+            top: 16px; 
+            left: 16px; 
+            background: #000000; 
+            color: white; 
+            border: 1px solid #334155; 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            font-family: inherit;
+        }
+        .lang-btn svg { width: 15px; height: 15px; fill: currentColor; }
+        .lang-btn:hover { background: #1e293b; }
+        [dir="ltr"] .lang-btn { left: auto; right: 16px; }
+
+        .content-section { padding: 20px; border-bottom: 1px solid #1e293b; }
+        .content-section:last-of-type { border-bottom: none; }
+        .section-title { font-size: 16px; font-weight: 700; color: #10b981; margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .text-block { font-size: 13.5px; color: #cbd5e1; margin-bottom: 12px; }
+        
+        ul.features-list { padding-right: 20px; margin: 0; }
+        [dir="ltr"] ul.features-list { padding-right: 0; padding-left: 20px; }
+        ul.features-list li { font-size: 13px; color: #cbd5e1; margin-bottom: 10px; line-height: 1.6; }
+
+        .badge-dev {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .dev-name { color: #10b981; font-weight: 700; font-size: 15px; }
+
+        .footer-nav { text-align: center; padding: 20px 16px 0 16px; }
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: #0f172a;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-back:hover { background-color: #38bdf8; color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>EN
+        </button>
+        <h1 id="headerTitle">💡 نبذة عن الحاسبة الذكية</h1>
+        <p id="headerSub">المنصة الهندسية المتكاملة لتصميم واحتساب أنظمة الطاقة الشمسية</p>
+    </div>
+
+    <!-- قسم المقدمة والرؤية -->
+    <div class="content-section">
+        <div class="section-title" id="sec1Title">📌 الرؤية والهدف الهندسي</div>
+        <div class="text-block" id="sec1Text">
+            تُعد <strong>حاسبة الطاقة الشمسية الذكية (Smart Solar Energy Calculator)</strong> منصة برمجية وهندسية متقدمة، صُممت خصيصاً لتلبية متطلبات المهندسين، الفنيين، والمستخدمين المهتمين بتصميم واحتساب أنظمة الطاقة الشمسية بدقة عالية. تهدف المنصة إلى تحويل معادلات التصميم النظرية المعقدة إلى خوارزميات ميدانية سهلة وسريعة، تضمن أمان المكونات وتمنع أخطاء التقدير العشوائي.
+        </div>
+    </div>
+
+    <!-- قسم قائمة الميزات الشاملة -->
+    <div class="content-section">
+        <div class="section-title" id="sec2Title">⚡ الدليل الشامل لميزات وإضافات الحاسبة</div>
+        <ul class="features-list" id="featuresList">
+            <!-- يتم تعبئتها عبر الجافاسكربت -->
+        </ul>
+    </div>
+
+    <!-- قسم إخلاء المسؤولية -->
+    <div class="content-section">
+        <div class="section-title" id="sec3Title">⚠️ تنبيه وإخلاء مسؤولية قانونية</div>
+        <div class="text-block" id="sec3Text">
+            تعتبر مخرجات هذه الحاسبة نموذج محاكاة تقديري للمساعدة في التخطيط الأولي للمنظومة الشمسية. للحصول على أداء ميداني مضمون وتفادي فواقد التركيب، يُنصح دائماً بمراجعة التقييم النهائي مع مهندس أو فني طاقة شمسية مختص.
+        </div>
+    </div>
+
+    <!-- بطاقة المطور وحقوق الملكية -->
+    <div class="content-section">
+        <div class="section-title" id="sec4Title">👨‍‍💻 التطوير وحقوق الملكية</div>
+        <div class="badge-dev">
+            <div id="devLabel" style="font-size: 12px; color: #94a3b8;">تم التصميم والتطوير بواسطة:</div>
+            <div class="dev-name">م. مازن العوذلي</div>
+            <div id="copyRight" style="font-size: 12px; color: #64748b; margin-top: 4px;">جميع الحقوق محفوظة &copy; 2026</div>
+        </div>
+    </div>
+
+    <div class="footer-nav">
+        <a href="index.html" class="btn-back" id="btnBack">
+            🏠 العودة للحاسبة الرئيسية
+        </a>
+    </div>
+</div>
+
+<script>
+let currentLang = 'ar';
+const globeIcon = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
+
+const i18n = {
+    ar: {
+        langBtn: globeIcon + 'EN',
+        pageTitle: 'نبذة عن الحاسبة - حاسبة الطاقة الشمسية الذكية',
+        headerTitle: '💡 نبذة عن الحاسبة الذكية',
+        headerSub: 'المنصة الهندسية المتكاملة لتصميم واحتساب أنظمة الطاقة الشمسية',
+        sec1Title: '📌 الرؤية والهدف الهندسي',
+        sec1Text: 'تُعد <strong>حاسبة الطاقة الشمسية الذكية (Smart Solar Energy Calculator)</strong> منصة برمجية وهندسية متقدمة، صُممت خصيصاً لتلبية متطلبات المهندسين، الفنيين، والمستخدمين المهتمين بتصميم واحتساب أنظمة الطاقة الشمسية بدقة عالية. تهدف المنصة إلى تحويل معادلات التصميم النظرية المعقدة إلى خوارزميات ميدانية سهلة وسريعة، تضمن أمان المكونات وتمنع أخطاء التقدير العشوائي.',
+        sec2Title: '⚡ الدليل الشامل لميزات وإضافات الحاسبة',
+        features: [
+            '<strong>العمل بدون إنترنت (Offline First):</strong> تصميم متكامل كـ PWA لتنفيذ جميع الحسابات الميدانية في المواقع النائية والمقطوعة من الشبكة.',
+            '<strong>واجهة ثنائية اللغة (Arabic / English):</strong> دعم كامل ومستمر للغتين العربية والإنجليزية بمرونة وسلاسة في كافة الشاشات والنتائج.',
+            '<strong>حسابات الأحمال وبنوك البطاريات:</strong> التقدير الدقيق لسعة بطاريات الليثيوم والرصاص بالـ (Ah) والـ (kWh)، مع الالتزام التام بنسبة عمق التفريغ الآمن (DoD).',
+            '<strong>مصفوفة الألواح والشحن الشمسي:</strong> تحديد القدرة الكلية المطلوبة بالواط (W) وعدد الألواح وتيار منظم الشحن (MPPT) بناءً على كفاءة المنطقة وساعات ذروة الشمس.',
+            '<strong>خوارزمية العاكس المزدوج (Dual Inverter Logic):</strong> خيار مخصص لمنع قص الطاقة (Clipping) عبر الاستعانة بمنظمات شحن خارجية أو حساب السعة الإجمالية للإنفرتر المدمج.',
+            '<strong>إعدادات الأنظمة الهجينة (Hybrid System):</strong> إمكانية دمج التغذية مع الكهرباء العامة أو المولد الكهربائي وتأمين ساعات الشحن نهاراً وليلاً لتقليل التكاليف.',
+            '<strong>قسم المنظومات الكبيرة والمشاريع (Enterprise Mode):</strong> دعم كامل لأنظمة الجهد العالي (High Voltage - HV 160V-800V) والأنظمة ثلاثية الأطوار (3-Phase) مع توزع العواكس بالتوازي.',
+            '<strong>تقدير الكابلات وقواطع الحماية (DC/AC):</strong> حساب مقاسات الموصلات النحاسية بـ (مم²) وأحجام القواطع والمصاهر مع الالتزام بمعامل الأمان المناخي.',
+            '<strong>تصدير تقارير فنية PDF:</strong> طباعة تقرير هندسي موثق يتضمن ترويسة رسمية، اسم المهندس/المؤسسة، واسم العميل بضغطة زر.',
+            '<strong>منظومة التطبيقات الخدمية المساندة:</strong> تكامل واستدعاء مباشر لأدوات خدمية مساندة مثل "حاسبة الألواح" و"حاسبة زمن البطارية" لتغطية احتياجات الموقع.'
+        ],
+        sec3Title: '⚠️ تنبيه وإخلاء مسؤولية قانونية',
+        sec3Text: 'تعتبر مخرجات هذه الحاسبة نموذج محاكاة تقديري للمساعدة في التخطيط الأولي للمنظومة الشمسية. للحصول على أداء ميداني مضمون وتفادي فواقد التركيب، يُنصح دائماً بمراجعة التقييم النهائي مع مهندس أو فني طاقة شمسية مختص.',
+        sec4Title: '👨‍💻 التطوير وحقوق الملكية',
+        devLabel: 'تم التصميم والتطوير بواسطة:',
+        devName: 'م. مازن العوذلي',
+        copyRight: 'جميع الحقوق محفوظة &copy; 2026',
+        btnBack: '🏠 العودة للحاسبة الرئيسية'
+    },
+    en: {
+        langBtn: globeIcon + 'AR',
+        pageTitle: 'About - Smart Solar Energy Calculator',
+        headerTitle: '💡 About Smart Solar Calculator',
+        headerSub: 'Comprehensive Engineering Platform for Solar System Sizing',
+        sec1Title: '📌 Vision & Purpose',
+        sec1Text: 'The <strong>Smart Solar Energy Calculator</strong> is an advanced engineering platform designed to assist solar engineers, technicians, and end-users in calculating off-grid and hybrid solar installations with high precision. It transforms complex formulas into seamless field tools to minimize estimation errors.',
+        sec2Title: '⚡ Complete Feature & Capabilities Guide',
+        features: [
+            '<strong>Offline First (PWA):</strong> Fully operational in remote locations without active internet connections.',
+            '<strong>Bilingual Interface (Arabic / English):</strong> Native switching between Arabic and English across all UI elements and reports.',
+            '<strong>Load & Battery Bank Sizing:</strong> Accurate calculation of Lithium and Lead-Acid capacity (Ah / kWh) adhering strictly to Depth of Discharge (DoD).',
+            '<strong>PV Array & MPPT Sizing:</strong> Calculates required solar wattage (W), module count, and minimum MPPT charge controller current considering Peak Sun Hours.',
+            '<strong>Dual-Inverter Algorithm:</strong> Prevents PV power clipping by offering options for external MPPTs or sizing heavy All-In-One inverters.',
+            '<strong>Hybrid System Configuration:</strong> Integrates utility grid or generator charging schedules (day/night) to optimize storage capacity.',
+            '<strong>Enterprise & Commercial Mode:</strong> Fully supports High Voltage (HV 160V-800V) systems, 3-Phase balancing, and parallel inverter topologies.',
+            '<strong>Cables & Protection Sizing (DC/AC):</strong> Recommends copper wire cross-sections (mm²) and breaker sizes adjusted for climate safety factors.',
+            '<strong>Professional PDF Export:</strong> Generates documented technical project reports featuring engineer/company branding and client info.',
+            '<strong>Ecosystem Integration:</strong> Quick access to specialized utilities including PV Sizing and Battery Runtime calculators.'
+        ],
+        sec3Title: '⚠️ Engineering Disclaimer',
+        sec3Text: 'The calculations generated by this tool are estimated simulation models for initial planning. Users are advised to review final designs with a certified solar engineer prior to installation.',
+        sec4Title: '👨‍💻 Developer & Copyright',
+        devLabel: 'Designed & Developed by:',
+        devName: 'Eng. Mazen Al-Awdhali',
+        copyRight: 'All Rights Reserved &copy; 2026',
+        btnBack: '🏠 Back to Calculator'
+    }
+};
+
+function toggleLanguage() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    localStorage.setItem('solar_app_lang', currentLang);
+    applyLanguage();
+}
+
+function applyLanguage() {
+    const data = i18n[currentLang];
+    document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = currentLang;
+
+    document.getElementById('langBtn').innerHTML = data.langBtn;
+    document.getElementById('pageTitle').innerText = data.pageTitle;
+    document.getElementById('headerTitle').innerText = data.headerTitle;
+    document.getElementById('headerSub').innerText = data.headerSub;
+    document.getElementById('sec1Title').innerText = data.sec1Title;
+    document.getElementById('sec1Text').innerHTML = data.sec1Text;
+    document.getElementById('sec2Title').innerText = data.sec2Title;
+    
+    // إدراج الميزات الشاملة
+    const listEl = document.getElementById('featuresList');
+    listEl.innerHTML = '';
+    data.features.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = item;
+        listEl.appendChild(li);
+    });
+
+    document.getElementById('sec3Title').innerText = data.sec3Title;
+    document.getElementById('sec3Text').innerText = data.sec3Text;
+    document.getElementById('sec4Title').innerText = data.sec4Title;
+    document.getElementById('devLabel').innerText = data.devLabel;
+    document.querySelector('.dev-name').innerText = data.devName;
+    document.getElementById('copyRight').innerHTML = data.copyRight;
+    document.getElementById('btnBack').innerText = data.btnBack;
+}
+
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang');
+    const savedLang = localStorage.getItem('solar_app_lang') || localStorage.getItem('batteryMonitorLang');
+    
+    if (langParam && (langParam === 'ar' || langParam === 'en')) {
+        currentLang = langParam;
+    } else if (savedLang && (savedLang === 'ar' || savedLang === 'en')) {
+        currentLang = savedLang;
+    }
+    
+    applyLanguage();
+};
+</script>
+</body>
+</html>
