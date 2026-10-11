@@ -82,7 +82,7 @@
         .device-counter { display: none; color: #10b981; font-size: 12.5px; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 20px; }
         
         .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .input-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; height: 100%; justify-content: space-between; } 
+.input-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; height: 100%; justify-content: space-between; position: relative; }  .hint-bulb-btn { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.5); border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 19px; height: 19px; font-size: 11px; line-height: 1; padding: 0; transition: transform 0.2s, background 0.2s; flex-shrink: 0; } .hint-bulb-btn:hover { transform: scale(1.15); background: rgba(245, 158, 11, 0.3); } .hint-tooltip { display: none; position: absolute; top: 40px; right: 0; left: 0; background: #1e293b; border: 1px solid #10b981; border-radius: 12px; padding: 12px; font-size: 11px; line-height: 1.5; color: #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.7); z-index: 1000; text-align: right; } [dir="ltr"] .hint-tooltip { text-align: left; } .hint-tooltip.show { display: block; animation: fadeIn 0.2s; }
         .input-group label { font-size: 11.5px; color: #94a3b8; font-weight: 600; line-height: 1.35; white-space: normal; } 
         
         input { width: 100%; height: 42px; background-color: #0f172a; border: 1px solid #475569; color: white; padding: 0 12px; border-radius: 10px; font-size: 14px; text-align: center; outline: none; transition: border-color 0.2s, box-shadow 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -604,7 +604,7 @@
                             <div class="input-group">
                                 <label style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
                                     <span data-i18n="panelClimateLabel">مناخ الألواح (الأداء الحراري):</span>
-                                    <span style="cursor: pointer; font-size: 13px;" onclick="showClimateHint()" title="تلميح">💡</span>
+                                    <button type="button" class="hint-bulb-btn" onclick="toggleTooltip('panelClimateTooltip', event)" title="تلميح">💡</button></label>                                 <div class="hint-tooltip" id="panelClimateTooltip">                                     <div style="font-weight: 700; color: #38bdf8; margin-bottom: 6px;" data-i18n="climateHintTitle">تلميح</div>                                     <div data-i18n="climateHintMsg">ارتفاع درجات الحرارة في الصيف يقلل من قدرة الألواح بنسبة تصل إلى 15%. اختر (مناخ حار) إذا كنت في منطقة صحراوية أو ساحلية شديدة الحرارة لضمان زيادة عدد الألواح وتغطية أحمالك بكفاءة.</div>                                 </div>
                                 </label>
                                 <div class="custom-select-wrapper">
                                     <div class="custom-select-display" onclick="toggleDropdown('panelClimateDropdown')">
@@ -678,7 +678,7 @@
                                     </div>
                                     
                                     <div class="input-group" style="grid-column: span 2;">
-                                        <label style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;"><span data-i18n="climateLabel">مناخ الكابلات (للأمان):</span><span style="cursor: pointer; font-size: 13px;" onclick="showCableClimateHint()" title="تلميح">💡</span></label>
+                                        <label style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;"><span data-i18n="climateLabel">مناخ الكابلات (للأمان):</span><button type="button" class="hint-bulb-btn" onclick="toggleTooltip('cableClimateTooltip', event)" title="تلميح">💡</button></label>                                         <div class="hint-tooltip" id="cableClimateTooltip">                                             <div style="font-weight: 700; color: #38bdf8; margin-bottom: 6px;" data-i18n="climateHintTitle">تلميح</div>                                             <div data-i18n="cableClimateHintMsg">ارتفاع درجات الحرارة يزيد من المقاومة الكهربائية للكابلات ويقلل قدرتها على تحمل التيار (Derating Factor). اختر (مناخ حار جداً) في المناطق الصحراوية أو الساحلية لزيادة معامل الأمان لتجنب سخونة الكابلات وهبوط الجهد.</div>                                         </div></label>
                                         <div class="custom-select-wrapper">
                                             <div class="custom-select-display" onclick="toggleDropdown('climateDropdown')">
                                                 <span id="climateDisplay" data-i18n="climateMod">مناخ معتدل (أمان 1.25)</span>
@@ -1237,7 +1237,7 @@ if ('serviceWorker' in navigator) {
         document.getElementById('modalIcon').innerText = '💡';
     };
     
-    window.toggleDropdown = function(id) {
+    window.toggleTooltip = function(id, event) {     if (event) event.stopPropagation();     document.querySelectorAll('.hint-tooltip').forEach(el => {         if(el.id !== id) el.classList.remove('show');     });     const tooltip = document.getElementById(id);     if (tooltip) tooltip.classList.toggle('show'); };  window.toggleDropdown = function(id) {
         document.querySelectorAll('.custom-select-options').forEach(el => {
             if(el.id !== id) el.classList.remove('show');
         });
@@ -1284,7 +1284,7 @@ if ('serviceWorker' in navigator) {
     };
 
     document.addEventListener('click', function(event) {
-        if (!event.target.closest('.custom-select-wrapper')) {
+            if (!event.target.closest('.hint-tooltip') && !event.target.closest('.hint-bulb-btn')) {         document.querySelectorAll('.hint-tooltip').forEach(tooltip => {             tooltip.classList.remove('show');         });     }     if (!event.target.closest('.custom-select-wrapper')) {
             document.querySelectorAll('.custom-select-options').forEach(el => el.classList.remove('show'));
             document.querySelectorAll('.custom-select-wrapper').forEach(el => el.style.zIndex = '1');
         }
@@ -1675,7 +1675,7 @@ if ('serviceWorker' in navigator) {
                     <div class="input-group"><label>${t.qty}</label><input type="text" inputmode="numeric" lang="en" value="${app.count||1}" oninput="updateApplianceProperty(${i},'count',this.value, this)"></div>
                     
                     <div class="input-group">
-                        <label style="display: flex; align-items: center; justify-content: space-between; gap: 4px;">     <span>${t.duty}</span>     <span style="cursor: pointer; font-size: 14px;" onclick="window.openAlertModal(window.currentLang === 'en' ? 'Duty Cycle Guide' : 'دليل نسبة التشغيل (Duty Cycle)', window.currentLang === 'en' ? '💡 Operating ratio of appliances:&#92;n&#92;n• 100%: Continuous loads (Lights, TVs, or Inverter ACs in Eco mode).&#92;n• 70%: Standard thermostatted loads (ACs, Fridges).&#92;n• 50%: Modern Inverter ACs/Fridges in normal mode.&#92;n• 30%: Intermittent loads (Pumps, Washers).&#92;n&#92;nNote: Leave surge power blank for inverter devices.' : '💡 متوسط زمن عمل الجهاز الفعلي:&#92;n&#92;n• 100%: أحمال مستمرة (إضاءة، شاشات، أو مكيف إنفرتر بوضع توفير الطاقة بـ واط منخفض).&#92;n• 70%: أحمال تقليدية بثرموستات (مكيف/ثلاجة عادية).&#92;n• 50%: أجهزة إنفرتر حديثة (مكيف/ثلاجة) بالوضع الطبيعي.&#92;n• 30%: أحمال متقطعة (مضخات، غسالات).&#92;n&#92;nملاحظة: اترك خانة قدرة الإقلاع فارغة لأجهزة الإنفرتر.')" title="${window.currentLang === 'en' ? 'Guide' : 'دليل'}">💡</span> </label>
+                        <label style="display: flex; align-items: center; justify-content: space-between; gap: 4px;">     <span>${t.duty}</span>     <button type="button" class="hint-bulb-btn" onclick="toggleTooltip('dutyTooltip_${i}', event)" title="${window.currentLang === 'en' ? 'Guide' : 'دليل'}">💡</button> </label>                         <div class="hint-tooltip" id="dutyTooltip_${i}">                             <div style="font-weight: 700; color: #38bdf8; margin-bottom: 6px;">${window.currentLang === 'en' ? 'Duty Cycle Guide' : 'دليل نسبة التشغيل (Duty Cycle)'}</div>                             <div style="line-height: 1.6;">${window.currentLang === 'en' ? '• 100%: Continuous loads (Lights, TVs, or Inverter ACs in Eco mode).<br>• 70%: Standard thermostatted loads (ACs, Fridges).<br>• 50%: Modern Inverter ACs/Fridges in normal mode.<br>• 30%: Intermittent loads (Pumps, Washers).<br><br><b>Note:</b> Leave surge power blank for inverter devices.' : '• 100%: أحمال مستمرة (إضاءة، شاشات، أو مكيف إنفرتر بوضع توفير الطاقة).<br>• 70%: أحمال تقليدية بثرموستات (مكيف، ثلاجة عادية).<br>• 50%: أجهزة إنفرتر حديثة بالوضع الطبيعي.<br>• 30%: أحمال متقطعة (مضخات، غسالات).<br><br><b>ملاحظة:</b> اترك خانة قدرة الإقلاع فارغة لأجهزة الإنفرتر.'}</div>                         </div> </label>
                         <div class="custom-select-wrapper">
                             <div class="custom-select-display" onclick="toggleDropdown('dutyDropdown_${i}')">
                                 <span>${dutyDisplayText}</span>
